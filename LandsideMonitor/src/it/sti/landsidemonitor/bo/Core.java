@@ -9,7 +9,7 @@ import it.sti.landsidemonitor.dto.SensorDTO;
 
 public class Core {
 
-	//Test
+
 
 	/*Metodo delegato al recupero delle impostazioni dei sensori sul DB*/
 	
