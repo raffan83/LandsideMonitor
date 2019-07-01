@@ -23,6 +23,9 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 	int VALORE_MANCATA_RICEZIONE_SONDA;
 	int SENSIBILITA_PREALLARME;
 	
+	boolean statoPreallarme=true;
+	boolean statoAllarme=true;
+	
 	public MainSensor(RasterPanel mainPanel, PortReader pr, SensorDTO _sensor) {
 		mainP=mainPanel;
 		portReader=pr;
@@ -43,7 +46,13 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 			
 			if(Costanti.DEBUG) {System.out.println(value);}
 			
-	
+			
+			 if(sensor.getStato()==0) 
+			 {
+				 statoPreallarme=true;
+				 statoAllarme=true;
+			 }
+			 
 				String pivot=value.split(",")[0];/*Recupero l'ID del sensore dalla stringa di lettura*/
 			
 				if(pivot.equals(sensor.getIdentifier())) 
@@ -109,7 +118,13 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 						mainP.cambiaStato(sensor.getId(), 2);
 						sensor.setStatoOriginale(2);
 						Core.cambiaStato(sensor.getId() ,2);
-						portReader.write("B");
+
+						if(statoPreallarme==true) 
+						{
+							portReader.write("B");
+							statoPreallarme=false;
+						}
+						
 						//}
 						
 					}
@@ -121,7 +136,13 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 					mainP.cambiaStato(sensor.getId(), 1);
 					sensor.setStatoOriginale(1);
 					Core.cambiaStato(sensor.getId() ,1);
-					portReader.write("A");
+					
+					if(statoAllarme==true) 
+					{
+						portReader.write("A");
+						statoAllarme=false;
+					}
+					
 				}
 				
 				
@@ -159,7 +180,14 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 						mainP.cambiaStato(sensor.getId(), 2);
 						sensor.setStatoOriginale(2);
 						Core.cambiaStato(sensor.getId() ,2);
-						portReader.write("B");
+						
+						if(statoPreallarme==true) 
+						{
+							portReader.write("B");
+							statoPreallarme=false;
+						}
+						
+						
 						//}
 					}
 				}
@@ -170,7 +198,13 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 					mainP.cambiaStato(sensor.getId(), 1);
 					sensor.setStatoOriginale(1);
 					Core.cambiaStato(sensor.getId() ,1);
-					portReader.write("A");
+					
+					if(statoAllarme==true) 
+					{
+						portReader.write("A");
+						statoAllarme=false;
+					}
+					
 				}
 				/*ASSE Z*/
 				
@@ -207,7 +241,12 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 						mainP.cambiaStato(sensor.getId(), 2);
 						sensor.setStatoOriginale(2);
 						Core.cambiaStato(sensor.getId() ,2);
-						portReader.write("B");
+						
+						if(statoPreallarme==true) 
+						{
+							portReader.write("B");
+							statoPreallarme=false;
+						}
 						
 					//}
 					}
@@ -219,7 +258,13 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 					mainP.cambiaStato(sensor.getId(), 1);
 					sensor.setStatoOriginale(1);
 					Core.cambiaStato(sensor.getId() ,1);
-					portReader.write("A");
+					
+					if(statoAllarme==true) 
+					{
+						portReader.write("A");
+						statoAllarme=false;
+					}
+					
 				}				
 			
 				}else

@@ -32,11 +32,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-
 import it.sti.landsidemonitor.bo.Core;
 import it.sti.landsidemonitor.bo.Costanti;
+import it.sti.landsidemonitor.bo.PortReader;
 import it.sti.landsidemonitor.bo.Utility;
 import it.sti.landsidemonitor.dto.SensorDTO;
+import jssc.SerialPortException;
 import net.miginfocom.swing.MigLayout;
 
 public class FrameSonde extends JFrame implements ActionListener{
@@ -50,8 +51,9 @@ public class FrameSonde extends JFrame implements ActionListener{
 	ModelSonde modelSonde;
 	JPopupMenu popupMenu;
 	JMenuItem jmit;
+	PortReader pr;
 	
-	public FrameSonde(RasterPanel mainPan) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException 
+	public FrameSonde(RasterPanel mainPan,PortReader _pr) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException 
 	{
 	mainP=mainPan;
 	
@@ -369,6 +371,18 @@ public class FrameSonde extends JFrame implements ActionListener{
                 	 
                 	 mainP.cambiaStato(Integer.parseInt(idSonda), 0);
                 	 mainP.cambiaStatoOriginale(Integer.parseInt(idSonda), 0);
+                	 
+                	 try {
+                		 SensorDTO sensor=mainP.getSonda(idSonda);                		 
+                		Core.cambiaStato(sensor.getId(), 0); 
+ 						pr.write("R");
+ 						
+ 					} catch (Exception e) {
+ 						// TODO Auto-generated catch block
+ 						e.printStackTrace();
+ 					}
+                 	 
+                	 
                  }
              });
              return button3;

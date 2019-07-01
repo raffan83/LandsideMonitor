@@ -153,7 +153,7 @@ public class MainFrame extends JFrame {
 				
 					try 
 					{
-					JFrame f=new FrameSonde(mainPanel);
+					JFrame f=new FrameSonde(mainPanel,pr);
 	            	f.setDefaultCloseOperation(1);
 	      	        f.setVisible(true);
 					}catch (Exception ex2) {
