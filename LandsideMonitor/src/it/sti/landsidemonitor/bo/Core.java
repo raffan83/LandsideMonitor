@@ -1,6 +1,5 @@
 package it.sti.landsidemonitor.bo;
 
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import it.sti.landsidemonitor.dao.MainDAO;
