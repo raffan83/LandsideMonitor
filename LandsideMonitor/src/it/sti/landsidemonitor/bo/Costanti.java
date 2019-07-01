@@ -18,6 +18,7 @@ public class Costanti {
 	public  static double SCREEN_X=0;
 	public  static double SCREEN_Y=0;
 	
+	//test
 	
 	
 }
