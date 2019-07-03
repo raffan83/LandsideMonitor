@@ -7,6 +7,7 @@ package it.sti.landsidemonitor.executor;
 import javax.swing.SwingUtilities;
 
 import it.sti.landsidemonitor.bo.Core;
+import it.sti.landsidemonitor.bo.SendEmailBO;
 import it.sti.landsidemonitor.gui.MainFrame;
 
 
@@ -33,6 +34,22 @@ public class Executor {
 	            	g1.setDefaultCloseOperation(3);
 	      	        g1.setVisible(true);
 
+	      	        Thread t = new Thread(new Runnable() {
+						
+						@Override
+						public void run() {
+						
+							 try {
+							//	SendEmailBO.sendEmailAlarm("raffan83@gmail.com");
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							
+						}
+					});
+	      	   //    t.start();
+	      	        
 	      	        }
 	            	catch(Exception ex)
 	      	        {

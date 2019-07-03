@@ -76,11 +76,25 @@ public class RasterPanel extends JPanel{
 	    	
 	    	Point point=listaSensori.get(i).getPoint();
 	    	g.setColor(getStato(stato));
-	    	if(stato==2)
+	    	if(stato==4)
 	    	{
 	    		 g.fillOval(point.x, point.y,20, 20);
 	    		 g.setFont(new Font("Arial", Font.BOLD, 16)); 
-	    		 g.drawString("PRE ALLARME "+listaSensori.get(i).getIdentifier(), point.x,point.y);
+	    		 g.drawString("PRE ALLARME 3 "+listaSensori.get(i).getIdentifier(), point.x,point.y);
+	    		
+	    	}
+	    	else if(stato==3)
+	    	{
+	    		 g.fillOval(point.x, point.y,20, 20);
+	    		 g.setFont(new Font("Arial", Font.BOLD, 16)); 
+	    		 g.drawString("PRE ALLARME 2 "+listaSensori.get(i).getIdentifier(), point.x,point.y);
+	    		
+	    	}
+	    	else if(stato==2)
+	    	{
+	    		 g.fillOval(point.x, point.y,20, 20);
+	    		 g.setFont(new Font("Arial", Font.BOLD, 16)); 
+	    		 g.drawString("PRE ALLARME 1 "+listaSensori.get(i).getIdentifier(), point.x,point.y);
 	    		
 	    	}
 	    	else if(stato==1)
@@ -118,10 +132,17 @@ public class RasterPanel extends JPanel{
 		  
 		  if(stato==2)
 		  {
-			return Color.ORANGE;  
+			return Color.YELLOW;  
 		  }
-		  
 		  if(stato==3)
+		  {
+			return Color.MAGENTA;  
+		  }
+		  if(stato==4)
+		  {
+			return Color.ORANGE;  
+		  } 
+		  if(stato==5)
 		  {
 			return Color.BLACK;  
 		  }

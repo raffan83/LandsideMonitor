@@ -65,7 +65,6 @@ public class GraphSensor extends JFrame {
 									Thread.sleep(Costanti.FRAMERATE_READ_GRAPH);
 									String value=MainFrame.pr.getValue();
 									
-									if(Costanti.DEBUG) {System.out.println(value);}
 									
 									if(value.split(",").length==4) 
 										{

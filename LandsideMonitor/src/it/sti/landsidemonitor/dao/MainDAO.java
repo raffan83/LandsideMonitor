@@ -280,8 +280,26 @@ public class MainDAO {
 				param.setFRAMERATE_READ_GRAPH(rs.getInt("FRAMERATE_READ_GRAPH"));
 				param.setDEBUG(rs.getString("DEBUG"));
 				param.setVALORE_MANCATA_RICEZIONE_SONDA(rs.getInt("VALORE_MANCATA_RICEZIONE_SONDA"));
-				param.setLIMITE_ALLARME(rs.getDouble("lIMITE_ALLARME"));
-				param.setLIMITE_PREALLARME(rs.getDouble("LIMITE_PREALLARME"));
+				
+				param.setLIMITE_MIN_P1(rs.getDouble("LIMITE_MIN_P1"));
+				param.setLIMITE_MAX_P1(rs.getDouble("LIMITE_MAX_P1"));
+				param.setITERAZIONI_P1(rs.getInt("ITERAZIONI_P1"));
+				
+				param.setLIMITE_MIN_P2(rs.getDouble("LIMITE_MIN_P2"));
+				param.setLIMITE_MAX_P2(rs.getDouble("LIMITE_MAX_P2"));
+				param.setITERAZIONI_P2(rs.getInt("ITERAZIONI_P2"));
+				
+				param.setLIMITE_MIN_P3(rs.getDouble("LIMITE_MIN_P3"));
+				param.setLIMITE_MAX_P3(rs.getDouble("LIMITE_MAX_P3"));
+				param.setITERAZIONI_P3(rs.getInt("ITERAZIONI_P3"));
+				
+				param.setHOST_NAME_MAIL(rs.getString("HOST_NAME_MAIL"));
+				param.setUSERNAME_MAIL(rs.getString("USER_NAME_MAIL"));
+				param.setPASSWORD_MAIL(rs.getString("PASSWORD_MAIL"));
+				param.setSMTP_AUTH(rs.getString("SMTP_AUTH"));
+				param.setPORT_MAIL(rs.getString("PORT_MAIL"));
+				param.setSSL(rs.getString("SSL"));
+				param.setDEST_MAIL(rs.getString("DEST_MAIL"));
 			}
 			
 			
@@ -308,7 +326,7 @@ public class MainDAO {
 			con=getConnection();
 			pst=con.prepareStatement("UPDATE tbl_param SET PORT=?,FRAMERATE=?,LIMIT_GRAPH_X_AXIS=?,LIMIT_GRAPH_Y_AXIS=?,"
 					+ "LIMIT_GRAPH_Z_AXIS=?,FRAMERATE_READ_GRAPH=?,DEBUG=?,VALORE_MANCATA_RICEZIONE_SONDA=?,LIMITE_ALLARME=?,"
-					+ "LIMITE_PREALLARME=? WHERE id=1");
+					+ "LIMITE_PREALLARME=?,HOST_NAME_MAIL=?,USER_NAME_MAIL=?,PASSWORD_MAIL=?,SMTP_AUTH=?,PORT_MAIL=?,SSL=?,DEST_MAIL=? WHERE id=1");
 			
 			pst.setString(1, param.getPORT());
 			pst.setInt(2,param.getFRAMERATE());
@@ -318,8 +336,15 @@ public class MainDAO {
 			pst.setInt(6, param.getFRAMERATE_READ_GRAPH());
 			pst.setString(7, param.getDEBUG());
 			pst.setInt(8, param.getVALORE_MANCATA_RICEZIONE_SONDA());
-			pst.setDouble(9, param.getLIMITE_ALLARME());
-			pst.setDouble(10, param.getLIMITE_PREALLARME());
+		//	pst.setDouble(9, param.getLIMITE_ALLARME());
+		//	pst.setDouble(10, param.getLIMITE_PREALLARME());
+			pst.setString(11, param.getHOST_NAME_MAIL());
+			pst.setString(12, param.getUSERNAME_MAIL());
+			pst.setString(13, param.getPASSWORD_MAIL());
+			pst.setString(14, param.getSMTP_AUTH());
+			pst.setString(15, param.getPORT_MAIL());
+			pst.setString(16, param.getSSL());
+			pst.setString(17, param.getDEST_MAIL());
 			
 			pst.execute();
 		}catch (Exception e) {

@@ -25,14 +25,14 @@ public class PortReader implements SerialPortEventListener {
 		while(true){
 			try {             
 				by = serialPort.readBytes(1);
-				if(by[0]!=10 && by[0]!=13){                         
-					
-						str +=(char)by[0];//accumola nella stringa 
-					                        
+				if(by[0]!=10 && by[0]!=13)
+				{                         
+						str +=(char)by[0];//accumola nella stringa                       
 				}else{                       
 					if(by[0]==13) {                                  
 						try{
 							msg=str;
+							//System.out.println(msg);
 							break;
 						}catch(NumberFormatException ex){
 							//System.out.println(ex);

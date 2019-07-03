@@ -56,7 +56,7 @@ public class FrameSonde extends JFrame implements ActionListener{
 	public FrameSonde(RasterPanel mainPan,PortReader _pr) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException 
 	{
 	mainP=mainPan;
-	
+	pr=_pr;
 	Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 	int x = (dim.width - 1000) / 2;
 	int y = (dim.height - 600) / 2;
@@ -373,7 +373,7 @@ public class FrameSonde extends JFrame implements ActionListener{
                 	 mainP.cambiaStatoOriginale(Integer.parseInt(idSonda), 0);
                 	 
                 	 try {
-                		 SensorDTO sensor=mainP.getSonda(idSonda);                		 
+                		SensorDTO sensor=mainP.getSonda(idSonda);                		 
                 		Core.cambiaStato(sensor.getId(), 0); 
  						pr.write("R");
  						

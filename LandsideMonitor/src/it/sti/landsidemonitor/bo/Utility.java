@@ -14,12 +14,22 @@ public class Utility {
 		}
 		else if (stato == 2) 
 		{
-			return "PRE ALLARME";
+			return "PRE ALLARME 1 ";
 		}
 		else if (stato==3)
 		{
+			return "PRE ALLARME 2";
+		}
+		else if (stato==4)
+		{
+			return "PRE ALLARME 3";
+		}
+		else if (stato==5)
+		{
 			return "NON ATTIVA";
-		}else 
+		}
+		
+		else 
 		{
 			return "";
 		}

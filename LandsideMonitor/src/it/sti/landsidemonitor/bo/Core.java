@@ -85,9 +85,27 @@ public class Core {
 		}
 		
 		Costanti.VALORE_MANCATA_RICEZIONE_SONDA=parametri.getVALORE_MANCATA_RICEZIONE_SONDA();
-		Costanti.LIMITE_ALLARME=parametri.getLIMITE_ALLARME();
-		Costanti.LIMITE_PREALLARME=parametri.getLIMITE_PREALLARME();
 		
+		Costanti.LIMITE_MIN_P1=parametri.getLIMITE_MIN_P1();
+		Costanti.LIMITE_MAX_P1=parametri.getLIMITE_MAX_P1();
+		Costanti.ITERAZIONI_P1=parametri.getITERAZIONI_P1();
+		
+		Costanti.LIMITE_MIN_P2=parametri.getLIMITE_MIN_P2();
+		Costanti.LIMITE_MAX_P2=parametri.getLIMITE_MAX_P2();
+		Costanti.ITERAZIONI_P2=parametri.getITERAZIONI_P2();
+		
+		Costanti.LIMITE_MIN_P3=parametri.getLIMITE_MIN_P3();
+		Costanti.LIMITE_MAX_P3=parametri.getLIMITE_MAX_P3();
+		Costanti.ITERAZIONI_P3=parametri.getITERAZIONI_P3();
+		
+		
+		Costanti.HOST_NAME_MAIL=parametri.getHOST_NAME_MAIL();
+		Costanti.USERNAME_MAIL=parametri.getUSERNAME_MAIL();
+		Costanti.PASSWORD_MAIL=parametri.getPASSWORD_MAIL();
+		Costanti.SMTP_AUTH=parametri.getSMTP_AUTH();
+		Costanti.PORT_MAIL=parametri.getPORT_MAIL();
+		Costanti.SSL=parametri.getSSL();
+		Costanti.DEST_MAIL=parametri.getDEST_MAIL();
 
 	}
 
