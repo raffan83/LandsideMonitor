@@ -172,7 +172,7 @@ public class MainDAO {
 		    SimpleDateFormat format = new SimpleDateFormat("dd-M-yyyy HH:mm:ss.SSS");
 		    String DateToStr = format.format(new Date());
 		        
-			pst=con.prepareStatement("INSERT INTO tbl_eventi(id_sonda,date,stato,asse_x,asse_y,asse_z) VALUES(?,?,?,?,?,?)");
+			pst=con.prepareStatement("INSERT INTO tbl_eventi(id_sonda,date,stato,asse_x,asse_y,asse_z,abilitato) VALUES(?,?,?,?,?,?,?)");
 			pst.setString(1, identifier);
 			pst.setString(2,DateToStr);
 			pst.setInt(3,stato);
