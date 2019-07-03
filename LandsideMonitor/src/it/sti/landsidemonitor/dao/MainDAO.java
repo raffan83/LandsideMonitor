@@ -179,6 +179,7 @@ public class MainDAO {
 			pst.setDouble(4, acc_X);
 			pst.setDouble(5, acc_Y);
 			pst.setDouble(6, acc_Z);
+			pst.setInt(7,1 );
 			
 			pst.execute();
 			
@@ -204,7 +205,7 @@ public class MainDAO {
 		try {
 			
 			con=getConnection();		        
-			pst=con.prepareStatement("SELECT * FROM tbl_eventi WHERE id_sonda=? ORDER BY id ASC");
+			pst=con.prepareStatement("SELECT * FROM tbl_eventi WHERE id_sonda=? AND abilitato=1 ORDER BY id ASC");
 			
 			pst.setString(1, identifier);
 			
@@ -385,7 +386,7 @@ public class MainDAO {
 		try {
 			
 			con=getConnection();
-			pst=con.prepareStatement("DELETE  FROM tbl_eventi WHERE id_sonda=? ");
+			pst=con.prepareStatement("UPDATE tbl_eventi  SET abilitato=0 WHERE id_sonda=? ");
 			pst.setString(1, identifier);
 
 			
