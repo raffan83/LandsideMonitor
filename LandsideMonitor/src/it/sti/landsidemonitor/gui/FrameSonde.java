@@ -81,7 +81,7 @@ public class FrameSonde extends JFrame implements ActionListener{
 	JButton btnAggiungiSonda = new JButton("Aggiungi Sonda");
 	btnAggiungiSonda.setIcon(new ImageIcon(FrameSonde.class.getResource("/image/add.png")));
 	btnAggiungiSonda.setFont(new Font("Arial",Font.BOLD,14));
-	mainPanel.add(btnAggiungiSonda, "cell 0 0");
+	mainPanel.add(btnAggiungiSonda, "flowx,cell 0 0");
 	
 
 	btnAggiungiSonda.addActionListener(new ActionListener() {
@@ -153,6 +153,8 @@ public class FrameSonde extends JFrame implements ActionListener{
 			TableColumn column = tabellaSonde.getColumnModel().getColumn(tabellaSonde.getColumnModel().getColumnIndex("id"));
 			tabellaSonde.removeColumn(column);
 		
+			column = tabellaSonde.getColumnModel().getColumn(tabellaSonde.getColumnModel().getColumnIndex("Reset"));
+			tabellaSonde.removeColumn(column);
 			//tabellaSonde.setDefaultRenderer(Object.class, new MyCellRenderer());
 			
 			TableCellRenderer buttonRenderer = new JTableButtonRenderer(1); 
@@ -164,8 +166,8 @@ public class FrameSonde extends JFrame implements ActionListener{
 			buttonRenderer = new JTableButtonRenderer(3); 
 			tabellaSonde.getColumn("Log Eventi").setCellRenderer(buttonRenderer);
 			
-			buttonRenderer = new JTableButtonRenderer(4); 
-			tabellaSonde.getColumn("Reset").setCellRenderer(buttonRenderer);
+		//	buttonRenderer = new JTableButtonRenderer(4); 
+		//	tabellaSonde.getColumn("Reset").setCellRenderer(buttonRenderer);
 			
 			tabellaSonde.addMouseMotionListener(new MouseMotionListener() {
 				
@@ -191,6 +193,40 @@ public class FrameSonde extends JFrame implements ActionListener{
 			
 			JScrollPane scrollTab = new JScrollPane(tabellaSonde);
 			panel.add(scrollTab, "grow");
+			
+			JButton btnNewButton = new JButton("Reset");
+			btnNewButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					
+               
+			for (int i=0;i<modelSonde.getRowCount();i++) 
+			{		
+				String idSonda = modelSonde.getValueAt(i, 6).toString();
+            	 
+               	 mainP.cambiaStato(Integer.parseInt(idSonda), 0);
+               	 mainP.cambiaStatoOriginale(Integer.parseInt(idSonda), 0);
+               	 
+               	 modelSonde.setValueAt("ATTIVA", i, 2);
+               	 
+               	 tabellaSonde.repaint();
+               	 try {
+               		SensorDTO sensor=mainP.getSonda(idSonda);                		 
+               		Core.cambiaStato(sensor.getId(), 0); 
+						pr.write("R");
+						
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+               	 
+					
+				}
+			dispose();
+			}
+			});
+			btnNewButton.setIcon(new ImageIcon(FrameSonde.class.getResource("/image/update.png")));
+			btnNewButton.setFont(new Font("Arial", Font.BOLD, 14));
+			mainPanel.add(btnNewButton, "cell 0 0");
 			
 			
 			

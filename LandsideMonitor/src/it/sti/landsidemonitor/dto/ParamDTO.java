@@ -30,9 +30,22 @@ public class ParamDTO {
 	private  String SMTP_AUTH;
 	private  String PORT_MAIL;
 	private  String SSL;
-	private  String DEST_MAIL;
+	private  String DEST_MAIL_PRE;
+	private  String DEST_MAIL_ALARM;
 	
 	
+	public String getDEST_MAIL_PRE() {
+		return DEST_MAIL_PRE;
+	}
+	public void setDEST_MAIL_PRE(String dEST_MAIL_PRE) {
+		DEST_MAIL_PRE = dEST_MAIL_PRE;
+	}
+	public String getDEST_MAIL_ALARM() {
+		return DEST_MAIL_ALARM;
+	}
+	public void setDEST_MAIL_ALARM(String dEST_MAIL_ALARM) {
+		DEST_MAIL_ALARM = dEST_MAIL_ALARM;
+	}
 	public String getPORT() {
 		return PORT;
 	}
@@ -175,12 +188,7 @@ public class ParamDTO {
 	public void setSSL(String sSL) {
 		SSL = sSL;
 	}
-	public String getDEST_MAIL() {
-		return DEST_MAIL;
-	}
-	public void setDEST_MAIL(String dEST_MAIL) {
-		DEST_MAIL = dEST_MAIL;
-	}
+	
 	
 	
 

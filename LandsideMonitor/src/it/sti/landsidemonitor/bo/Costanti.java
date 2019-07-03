@@ -36,7 +36,8 @@ public class Costanti {
 	public static String SMTP_AUTH="true";
 	public static String PORT_MAIL="465";
 	public static String SSL="true";
-	public static String DEST_MAIL="";
+	public static String DEST_MAIL_PRE="";
+	public static String DEST_MAIL_ALARM="";
 	
 	
 	

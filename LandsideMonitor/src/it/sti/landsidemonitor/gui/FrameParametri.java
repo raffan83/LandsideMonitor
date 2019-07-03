@@ -23,6 +23,7 @@ import it.sti.landsidemonitor.bo.Costanti;
 import it.sti.landsidemonitor.dto.ParamDTO;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.SwingConstants;
 
 public class FrameParametri extends JFrame {
 	
@@ -37,21 +38,29 @@ public class FrameParametri extends JFrame {
 	private JTextField textField_4;
 	private JTextField textField_5;
 	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField textField_8;
+	private JTextField textField_min_p1;
 	private JTextField textField_hostname;
 	private JTextField textField_username;
 	private JTextField textField_password;
 	private JTextField textField_smtp_port;
-	private JTextField textField_destinatari;
+	private JTextField textField_destinatari_pre;
+	private JTextField textField_max_p1;
+	private JTextField textField_iter_p1;
+	private JTextField textField_min_p2;
+	private JTextField textField_min_p3;
+	private JTextField textField_max_p2;
+	private JTextField textField_max_p3;
+	private JTextField textField_iter_p2;
+	private JTextField textField_iter_p3;
+	private JTextField textField_destinatari_alarm;
 
 	public FrameParametri() throws SQLException 
 	{
 		setTitle("Impostazioni Sistema");
-		setSize(600, 600);
+		setSize(650, 600);
 		
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		int x = (dim.width - 300) / 2;
+		int x = (dim.width - 650) / 2;
 		int y = (dim.height - 600) / 2;
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -65,7 +74,7 @@ public class FrameParametri extends JFrame {
 		tabbedPane.addTab("Parametri Mail",panelMail);
 		
 		setLocation(x, y);
-		panelMainParam.setLayout(new MigLayout("", "[pref!,grow][pref!][grow]", "[][][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][][grow][]"));
+		panelMainParam.setLayout(new MigLayout("", "[pref!,grow][pref!][grow][grow]", "[][9.00][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][]"));
 		
 		panelMail.setLayout(new MigLayout("", "[pref!,grow][pref!,grow][grow]", "[][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][][grow][]"));
 		
@@ -121,14 +130,14 @@ public class FrameParametri extends JFrame {
 		comboBox_ssl.setModel(new DefaultComboBoxModel(new String[] {"true", "false"}));
 		panelMail.add(comboBox_ssl, "cell 1 6,width :75:");
 		
-		JLabel lblDestinatari = new JLabel("DESTINATARI");
+		JLabel lblDestinatari = new JLabel("DESTINATARI PREALLARME");
 		lblDestinatari.setFont(new Font("Arial", Font.BOLD, 14));
 		panelMail.add(lblDestinatari, "cell 0 7,alignx trailing");
 		
-		textField_destinatari = new JTextField();
-		textField_destinatari.setText("");
-		textField_destinatari.setColumns(10);
-		panelMail.add(textField_destinatari, "cell 1 7 2 1,growx");
+		textField_destinatari_pre = new JTextField();
+		textField_destinatari_pre.setText("");
+		textField_destinatari_pre.setColumns(10);
+		panelMail.add(textField_destinatari_pre, "cell 1 7 2 1,growx");
 		
 		JLabel lblParametriSistema = new JLabel("PARAMETRI SISTEMA");
 		lblParametriSistema.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 16));
@@ -156,7 +165,7 @@ public class FrameParametri extends JFrame {
 		
 		textField_2 = new JTextField();
 		textField_2.setColumns(10);
-		panelMainParam.add(textField_2, "cell 1 4,alignx left");
+		panelMainParam.add(textField_2, "flowx,cell 1 4,alignx left");
 		
 		JLabel lblLimiteRumoreAsse = new JLabel("LIMITE RUMORE ASSE Y");
 		lblLimiteRumoreAsse.setFont(new Font("Arial", Font.BOLD, 14));
@@ -164,7 +173,7 @@ public class FrameParametri extends JFrame {
 		
 		textField_3 = new JTextField();
 		textField_3.setColumns(10);
-		panelMainParam.add(textField_3, "cell 1 5,alignx left");
+		panelMainParam.add(textField_3, "flowx,cell 1 5,alignx left");
 		
 		JLabel lblLimiteRumoreAsse_1 = new JLabel("LIMITE RUMORE ASSE Z");
 		lblLimiteRumoreAsse_1.setFont(new Font("Arial", Font.BOLD, 14));
@@ -172,9 +181,9 @@ public class FrameParametri extends JFrame {
 		
 		textField_4 = new JTextField();
 		textField_4.setColumns(10);
-		panelMainParam.add(textField_4, "cell 1 6,alignx left");
+		panelMainParam.add(textField_4, "flowx,cell 1 6,alignx left");
 		
-		JLabel lblVelocitaLetturaSonde = new JLabel("VELOCITA LETTURA SONDE");
+		JLabel lblVelocitaLetturaSonde = new JLabel("VELOCITA LETTURA GRAFICO*");
 		lblVelocitaLetturaSonde.setFont(new Font("Arial", Font.BOLD, 14));
 		panelMainParam.add(lblVelocitaLetturaSonde, "cell 0 7,alignx trailing");
 		
@@ -197,37 +206,68 @@ public class FrameParametri extends JFrame {
 		textField_6.setColumns(10);
 		panelMainParam.add(textField_6, "cell 1 9,alignx left");
 		
-		JLabel lblLimiteAllarme = new JLabel("LIMITE ALLARME");
+		JLabel lblLimiteAllarme = new JLabel("RANGE PREALLARME 1*");
 		lblLimiteAllarme.setFont(new Font("Arial", Font.BOLD, 14));
 		panelMainParam.add(lblLimiteAllarme, "cell 0 10,alignx trailing");
 		
-		textField_7 = new JTextField();
-		textField_7.setColumns(10);
-		panelMainParam.add(textField_7, "cell 1 10,alignx left");
+		JLabel lblMin = new JLabel("MIN");
+		lblMin.setFont(new Font("Arial", Font.BOLD, 12));
+		panelMainParam.add(lblMin, "flowx,cell 1 10,alignx trailing");
 		
-		JLabel lblLimitePreallarme = new JLabel("LIMITE PRE-ALLARME");
-		lblLimitePreallarme.setFont(new Font("Arial", Font.BOLD, 14));
-		panelMainParam.add(lblLimitePreallarme, "cell 0 11,alignx trailing");
+		textField_min_p1 = new JTextField();
+		textField_min_p1.setHorizontalAlignment(SwingConstants.RIGHT);
+		textField_min_p1.setColumns(10);
+		panelMainParam.add(textField_min_p1, "cell 1 10,width 75:75:75,alignx left");
 		
-		textField_8 = new JTextField();
-		textField_8.setColumns(10);
-		panelMainParam.add(textField_8, "cell 1 11,alignx left");
+		JLabel lblRangePreallarme = new JLabel("RANGE PREALLARME 2*");
+		lblRangePreallarme.setFont(new Font("Arial", Font.BOLD, 14));
+		panelMainParam.add(lblRangePreallarme, "cell 0 11,alignx trailing");
+		
+		JLabel label = new JLabel("MIN");
+		label.setFont(new Font("Arial", Font.BOLD, 12));
+		panelMainParam.add(label, "flowx,cell 1 11,alignx trailing");
+		
+		JLabel label_2 = new JLabel("MAX");
+		label_2.setFont(new Font("Arial", Font.BOLD, 12));
+		panelMainParam.add(label_2, "flowx,cell 2 11,alignx trailing");
+		
+		JLabel label_4 = new JLabel("SENS");
+		label_4.setFont(new Font("Arial", Font.BOLD, 12));
+		panelMainParam.add(label_4, "flowx,cell 3 11,alignx trailing");
+		
+		JLabel lblRangePreallarme_1 = new JLabel("RANGE PREALLARME 3*");
+		lblRangePreallarme_1.setFont(new Font("Arial", Font.BOLD, 14));
+		panelMainParam.add(lblRangePreallarme_1, "cell 0 12,alignx trailing");
+		
+		JLabel label_1 = new JLabel("MIN");
+		label_1.setFont(new Font("Arial", Font.BOLD, 12));
+		panelMainParam.add(label_1, "flowx,cell 1 12,alignx trailing");
+		
+		JLabel label_3 = new JLabel("MAX");
+		label_3.setFont(new Font("Arial", Font.BOLD, 12));
+		panelMainParam.add(label_3, "flowx,cell 2 12,alignx trailing");
+		
+		JLabel label_5 = new JLabel("SENS");
+		label_5.setFont(new Font("Arial", Font.BOLD, 12));
+		panelMainParam.add(label_5, "flowx,cell 3 12,alignx trailing");
 		
 		JLabel lblIParametri = new JLabel("* I parametri verranno applicati solo al prossimo riavvio");
 		lblIParametri.setFont(new Font("Arial", Font.BOLD, 12));
-		panelMainParam.add(lblIParametri, "cell 0 13 3 1");
-		
-		JButton btnAnnulla = new JButton("ANNULLA");
-		btnAnnulla.setIcon(new ImageIcon(FrameParametri.class.getResource("/image/abort.png")));
-		btnAnnulla.setFont(new Font("Arial", Font.BOLD, 14));
-		panelMainParam.add(btnAnnulla, "flowx,cell 1 14,alignx center");
+		panelMainParam.add(lblIParametri, "flowx,cell 0 13 3 1");
 		
 		JButton btnSalva = new JButton("SALVA");
 		btnSalva.setIcon(new ImageIcon(FrameParametri.class.getResource("/image/save.png")));
 		btnSalva.setFont(new Font("Arial", Font.BOLD, 14));
-		panelMainParam.add(btnSalva, "cell 0 14,alignx center");
+		panelMainParam.add(btnSalva, "cell 0 14 4 1,alignx center");
 	
-	
+		JLabel lblDestinatariAllarme = new JLabel("DESTINATARI ALLARME");
+		lblDestinatariAllarme.setFont(new Font("Arial", Font.BOLD, 14));
+		panelMail.add(lblDestinatariAllarme, "cell 0 8,alignx trailing");
+		
+		textField_destinatari_alarm = new JTextField();
+		textField_destinatari_alarm.setText("");
+		textField_destinatari_alarm.setColumns(10);
+		panelMail.add(textField_destinatari_alarm, "cell 1 8 2 1,growx");
 		
 		textField.setText(Costanti.PORT);
 		textField_1.setText(""+Costanti.FRAMERATE);
@@ -244,8 +284,117 @@ public class FrameParametri extends JFrame {
 			comboBox.setSelectedIndex(1);
 		}
 		textField_6.setText(""+Costanti.VALORE_MANCATA_RICEZIONE_SONDA);
-//		textField_7.setText(""+Costanti.LIMITE_ALLARME);
-//		textField_8.setText(""+Costanti.LIMITE_PREALLARME);
+		
+		JLabel lblMax = new JLabel("MAX");
+		lblMax.setFont(new Font("Arial", Font.BOLD, 12));
+		panelMainParam.add(lblMax, "flowx,cell 2 10,alignx trailing");
+		
+		textField_max_p1 = new JTextField();
+		textField_max_p1.setHorizontalAlignment(SwingConstants.RIGHT);
+		panelMainParam.add(textField_max_p1, "cell 2 10,width 75:75:75");
+		textField_max_p1.setColumns(10);
+		
+		JLabel lblSensibilita = new JLabel("SENS");
+		lblSensibilita.setFont(new Font("Arial", Font.BOLD, 12));
+		panelMainParam.add(lblSensibilita, "flowx,cell 3 10,alignx trailing");
+		
+		textField_iter_p1 = new JTextField();
+		textField_iter_p1.setHorizontalAlignment(SwingConstants.RIGHT);
+		panelMainParam.add(textField_iter_p1, "cell 3 10,width 75:75:75");
+		textField_iter_p1.setColumns(10);
+		
+		textField_min_p2 = new JTextField();
+		textField_min_p2.setHorizontalAlignment(SwingConstants.RIGHT);
+		textField_min_p2.setColumns(10);
+		panelMainParam.add(textField_min_p2, "cell 1 11,width 75:75:75,alignx left");
+		
+		textField_min_p3 = new JTextField();
+		textField_min_p3.setHorizontalAlignment(SwingConstants.RIGHT);
+		textField_min_p3.setColumns(10);
+		panelMainParam.add(textField_min_p3, "cell 1 12,width 75:75:75,alignx left");
+		
+		textField_max_p2 = new JTextField();
+		textField_max_p2.setHorizontalAlignment(SwingConstants.RIGHT);
+		textField_max_p2.setColumns(10);
+		panelMainParam.add(textField_max_p2, "cell 2 11,width 75:75:75,alignx left");
+		
+		textField_max_p3 = new JTextField();
+		textField_max_p3.setHorizontalAlignment(SwingConstants.RIGHT);
+		textField_max_p3.setColumns(10);
+		panelMainParam.add(textField_max_p3, "cell 2 12,width 75:75:75,alignx left");
+		
+		textField_iter_p2 = new JTextField();
+		textField_iter_p2.setHorizontalAlignment(SwingConstants.RIGHT);
+		textField_iter_p2.setColumns(10);
+		panelMainParam.add(textField_iter_p2, "cell 3 11,width 75:75:75,alignx left");
+		
+		textField_iter_p3 = new JTextField();
+		textField_iter_p3.setHorizontalAlignment(SwingConstants.RIGHT);
+		textField_iter_p3.setColumns(10);
+		panelMainParam.add(textField_iter_p3, "cell 3 12,width 75:75:75,alignx left");
+		
+		textField_min_p1.setText(""+Costanti.LIMITE_MIN_P1);
+		textField_max_p1.setText(""+Costanti.LIMITE_MAX_P1);
+		textField_iter_p1.setText(""+Costanti.ITERAZIONI_P1);
+		
+		textField_min_p2.setText(""+Costanti.LIMITE_MIN_P2);
+		textField_max_p2.setText(""+Costanti.LIMITE_MAX_P2);
+		textField_iter_p2.setText(""+Costanti.ITERAZIONI_P2);
+		
+		textField_min_p3.setText(""+Costanti.LIMITE_MIN_P3);
+		textField_max_p3.setText(""+Costanti.LIMITE_MAX_P3);
+		textField_iter_p3.setText(""+Costanti.ITERAZIONI_P3);
+		
+		JButton btnAnnulla = new JButton("ANNULLA");
+		btnAnnulla.setIcon(new ImageIcon(FrameParametri.class.getResource("/image/abort.png")));
+		btnAnnulla.setFont(new Font("Arial", Font.BOLD, 14));
+		panelMainParam.add(btnAnnulla, "cell 0 14 4 1");
+		
+		JLabel label_6 = new JLabel("m/s\u00B2");
+		label_6.setFont(new Font("Arial", Font.PLAIN, 11));
+		panelMainParam.add(label_6, "cell 1 4");
+		
+		JLabel label_7 = new JLabel("m/s\u00B2");
+		label_7.setFont(new Font("Arial", Font.PLAIN, 11));
+		panelMainParam.add(label_7, "cell 1 5");
+		
+		JLabel label_8 = new JLabel("m/s\u00B2");
+		label_8.setFont(new Font("Arial", Font.PLAIN, 11));
+		panelMainParam.add(label_8, "cell 1 6");
+		
+		JLabel label_10 = new JLabel("m/s\u00B2");
+		label_10.setFont(new Font("Arial", Font.PLAIN, 11));
+		panelMainParam.add(label_10, "cell 1 11");
+		
+		JLabel label_11 = new JLabel("m/s\u00B2");
+		label_11.setFont(new Font("Arial", Font.PLAIN, 11));
+		panelMainParam.add(label_11, "cell 1 12");
+		
+		JLabel label_12 = new JLabel("m/s\u00B2");
+		label_12.setFont(new Font("Arial", Font.PLAIN, 11));
+		panelMainParam.add(label_12, "cell 2 10");
+		
+		JLabel label_13 = new JLabel("m/s\u00B2");
+		label_13.setFont(new Font("Arial", Font.PLAIN, 11));
+		panelMainParam.add(label_13, "cell 2 11");
+		
+		JLabel label_14 = new JLabel("m/s\u00B2");
+		label_14.setFont(new Font("Arial", Font.PLAIN, 11));
+		panelMainParam.add(label_14, "cell 2 12");
+		
+		JLabel label_9 = new JLabel("m/s\u00B2");
+		label_9.setFont(new Font("Arial", Font.PLAIN, 11));
+		panelMainParam.add(label_9, "cell 1 10");
+		btnAnnulla.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				dispose();
+				
+			}
+		});
+		
 		
 		textField_hostname.setText(Costanti.HOST_NAME_MAIL);
 		textField_username.setText(Costanti.USERNAME_MAIL);
@@ -269,18 +418,12 @@ public class FrameParametri extends JFrame {
 			comboBox_ssl.setSelectedIndex(1);
 		}
 		
-		textField_destinatari.setText(Costanti.DEST_MAIL);
+		textField_destinatari_pre.setText(Costanti.DEST_MAIL_PRE);
+		textField_destinatari_alarm.setText(Costanti.DEST_MAIL_ALARM);
+		
+		
 		
 		getContentPane().add(tabbedPane);
-		btnAnnulla.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				dispose();
-				
-			}
-		});
 		
 		btnSalva.addActionListener(new ActionListener() {
 			
@@ -357,25 +500,135 @@ public class FrameParametri extends JFrame {
 					textField_6.setBackground(Color.white);
 				}
 				
-				if(textField_7.getText().length()==0 || controllaNumero(textField_7.getText())==false) 
+				
+				/*Soglia pre allarme 1*/
+				if(textField_min_p1.getText().length()==0 || controllaNumero(textField_min_p1.getText())==false) 
 				{
-					textField_7.setBackground(Color.red);
+					textField_min_p1.setBackground(Color.red);
 					save =false;
 				}
 				else 
 				{
-					textField_7.setBackground(Color.white);
+					textField_min_p1.setBackground(Color.white);
 				}
 				
-				if(textField_8.getText().length()==0 || controllaNumero(textField_8.getText())==false) 
+				if(textField_min_p1.getText().length()==0 || controllaNumero(textField_min_p1.getText())==false) 
 				{
-					textField_8.setBackground(Color.red);
+					textField_min_p1.setBackground(Color.red);
 					save =false;
 				}
 				else 
 				{
-					textField_8.setBackground(Color.white);
+					textField_min_p1.setBackground(Color.white);
 				}
+				
+				if(textField_max_p1.getText().length()==0 || controllaNumero(textField_max_p1.getText())==false) 
+				{
+					textField_max_p1.setBackground(Color.red);
+					save =false;
+				}
+				else 
+				{
+					textField_max_p1.setBackground(Color.white);
+				}
+				
+				if(textField_iter_p1.getText().length()==0 || controllaNumero(textField_iter_p1.getText())==false) 
+				{
+					textField_iter_p1.setBackground(Color.red);
+					save =false;
+				}
+				else 
+				{
+					textField_iter_p1.setBackground(Color.white);
+				}
+				
+				
+				/*
+				 * Soglia Preallarme 2
+				 */
+				if(textField_min_p2.getText().length()==0 || controllaNumero(textField_min_p2.getText())==false) 
+				{
+					textField_min_p2.setBackground(Color.red);
+					save =false;
+				}
+				else 
+				{
+					textField_min_p2.setBackground(Color.white);
+				}
+				
+				if(textField_min_p2.getText().length()==0 || controllaNumero(textField_min_p2.getText())==false) 
+				{
+					textField_min_p2.setBackground(Color.red);
+					save =false;
+				}
+				else 
+				{
+					textField_min_p2.setBackground(Color.white);
+				}
+				
+				if(textField_max_p2.getText().length()==0 || controllaNumero(textField_max_p2.getText())==false) 
+				{
+					textField_max_p2.setBackground(Color.red);
+					save =false;
+				}
+				else 
+				{
+					textField_max_p2.setBackground(Color.white);
+				}
+				
+				if(textField_iter_p2.getText().length()==0 || controllaNumero(textField_iter_p2.getText())==false) 
+				{
+					textField_iter_p2.setBackground(Color.red);
+					save =false;
+				}
+				else 
+				{
+					textField_iter_p2.setBackground(Color.white);
+				}
+				
+				/*
+				 * Soglia Preallarme 3
+				 */
+				if(textField_min_p3.getText().length()==0 || controllaNumero(textField_min_p3.getText())==false) 
+				{
+					textField_min_p3.setBackground(Color.red);
+					save =false;
+				}
+				else 
+				{
+					textField_min_p3.setBackground(Color.white);
+				}
+				
+				if(textField_min_p3.getText().length()==0 || controllaNumero(textField_min_p3.getText())==false) 
+				{
+					textField_min_p3.setBackground(Color.red);
+					save =false;
+				}
+				else 
+				{
+					textField_min_p3.setBackground(Color.white);
+				}
+				
+				if(textField_max_p3.getText().length()==0 || controllaNumero(textField_max_p3.getText())==false) 
+				{
+					textField_max_p3.setBackground(Color.red);
+					save =false;
+				}
+				else 
+				{
+					textField_max_p3.setBackground(Color.white);
+				}
+				
+				if(textField_iter_p3.getText().length()==0 || controllaNumero(textField_iter_p2.getText())==false) 
+				{
+					textField_iter_p3.setBackground(Color.red);
+					save =false;
+				}
+				else 
+				{
+					textField_iter_p3.setBackground(Color.white);
+				}
+				
 				
 				if(save) 
 				{
@@ -395,8 +648,18 @@ public class FrameParametri extends JFrame {
 						param.setDEBUG("0");
 					}
 					param.setVALORE_MANCATA_RICEZIONE_SONDA(Integer.parseInt(textField_6.getText()));
-			//		param.setLIMITE_ALLARME(Double.parseDouble(textField_7.getText()));
-			//		param.setLIMITE_PREALLARME(Double.parseDouble(textField_8.getText()));
+					
+					param.setLIMITE_MIN_P1(Double.parseDouble(textField_min_p1.getText()));
+					param.setLIMITE_MAX_P1(Double.parseDouble(textField_max_p1.getText()));
+					param.setITERAZIONI_P1(Integer.parseInt(textField_iter_p1.getText()));
+					
+					param.setLIMITE_MIN_P2(Double.parseDouble(textField_min_p2.getText()));
+					param.setLIMITE_MAX_P2(Double.parseDouble(textField_max_p2.getText()));
+					param.setITERAZIONI_P2(Integer.parseInt(textField_iter_p2.getText()));
+					
+					param.setLIMITE_MIN_P3(Double.parseDouble(textField_min_p3.getText()));
+					param.setLIMITE_MAX_P3(Double.parseDouble(textField_max_p3.getText()));
+					param.setITERAZIONI_P3(Integer.parseInt(textField_iter_p3.getText()));
 					
 					param.setHOST_NAME_MAIL(textField_hostname.getText());
 					param.setUSERNAME_MAIL(textField_username.getText());
@@ -404,7 +667,8 @@ public class FrameParametri extends JFrame {
 					param.setSMTP_AUTH(comboBox_smtp_auth.getSelectedItem().toString());
 					param.setPORT_MAIL(textField_smtp_port.getText());
 					param.setSSL(comboBox_ssl.getSelectedItem().toString());
-					param.setDEST_MAIL(textField_destinatari.getText());
+					param.setDEST_MAIL_PRE(textField_destinatari_pre.getText());
+					param.setDEST_MAIL_ALARM(textField_destinatari_alarm.getText());
 					
 					Costanti.PORT=param.getPORT();
 					Costanti.FRAMERATE=param.getFRAMERATE();
@@ -420,8 +684,18 @@ public class FrameParametri extends JFrame {
 						Costanti.DEBUG=false;
 					}
 					Costanti.VALORE_MANCATA_RICEZIONE_SONDA=param.getVALORE_MANCATA_RICEZIONE_SONDA();
-			//		Costanti.LIMITE_ALLARME=param.getLIMITE_ALLARME();
-			//		Costanti.LIMITE_PREALLARME=param.getLIMITE_PREALLARME();
+					
+					Costanti.LIMITE_MIN_P1=param.getLIMITE_MIN_P1();
+					Costanti.LIMITE_MAX_P1=param.getLIMITE_MAX_P1();
+					Costanti.ITERAZIONI_P1=param.getITERAZIONI_P1();
+					
+					Costanti.LIMITE_MIN_P2=param.getLIMITE_MIN_P2();
+					Costanti.LIMITE_MAX_P2=param.getLIMITE_MAX_P2();
+					Costanti.ITERAZIONI_P2=param.getITERAZIONI_P2();
+					
+					Costanti.LIMITE_MIN_P3=param.getLIMITE_MIN_P3();
+					Costanti.LIMITE_MAX_P3=param.getLIMITE_MAX_P3();
+					Costanti.ITERAZIONI_P3=param.getITERAZIONI_P3();
 					
 					Costanti.HOST_NAME_MAIL=param.getHOST_NAME_MAIL();
 					Costanti.USERNAME_MAIL=param.getUSERNAME_MAIL();
@@ -429,7 +703,8 @@ public class FrameParametri extends JFrame {
 					Costanti.SMTP_AUTH=param.getSMTP_AUTH();
 					Costanti.PORT_MAIL=param.getPORT_MAIL();
 					Costanti.SSL=param.getSSL();
-					Costanti.DEST_MAIL=param.getDEST_MAIL();
+					Costanti.DEST_MAIL_PRE=param.getDEST_MAIL_PRE();
+					Costanti.DEST_MAIL_ALARM=param.getDEST_MAIL_ALARM();
 					
 					
 					try {
