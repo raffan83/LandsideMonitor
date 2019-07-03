@@ -375,4 +375,30 @@ public class MainDAO {
 		
 	}
 
+	public static void cancellaLog(String identifier) throws SQLException {
+		
+
+		Connection con=null;
+		PreparedStatement pst=null;
+	
+		
+		try {
+			
+			con=getConnection();
+			pst=con.prepareStatement("DELETE  FROM tbl_eventi WHERE id_sonda=? ");
+			pst.setString(1, identifier);
+
+			
+			pst.execute();
+		}catch (Exception e) {
+			e.printStackTrace();
+		} 
+		finally 
+		{
+			pst.close();
+			con.close();
+		}
+		
+	}
+
 }

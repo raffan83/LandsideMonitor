@@ -5,9 +5,12 @@ import java.util.Date;
 
 import javax.swing.SwingWorker;
 
+import org.apache.commons.mail.EmailException;
+
 import it.sti.landsidemonitor.bo.Core;
 import it.sti.landsidemonitor.bo.Costanti;
 import it.sti.landsidemonitor.bo.PortReader;
+import it.sti.landsidemonitor.bo.SendEmailBO;
 import it.sti.landsidemonitor.dto.SensorDTO;
 
 public class MainSensor extends SwingWorker<Integer, Integer>{
@@ -152,6 +155,16 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 								iterazioni_preallarme_2=0;
 								iterazioni_preallarme_3=0;
 
+								/*Blocco mail*/
+								if(Costanti.DEST_MAIL_ALARM!=null && Costanti.DEST_MAIL_ALARM.length()>0) 
+								{
+									String[] destinatati=Costanti.DEST_MAIL_ALARM.split(";");
+									for (String dest : destinatati) 
+									{
+										inviaMail(dest,sensor.getIdentifier(),4,acc_X,acc_Y,acc_Z);
+									}
+								}
+								
 							}
 
 
@@ -170,6 +183,17 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 									Core.cambiaStato(sensor.getId() ,2);
 									portReader.write("B");
 									statoPreallarme_1=false;
+									
+									
+									/*Blocco mail*/
+									if(Costanti.DEST_MAIL_PRE!=null && Costanti.DEST_MAIL_PRE.length()>0) 
+									{
+										String[] destinatati=Costanti.DEST_MAIL_PRE.split(";");
+										for (String dest : destinatati) 
+										{
+											inviaMail(dest,sensor.getIdentifier(),1,acc_X,acc_Y,acc_Z);
+										}
+									}
 								}
 							}
 							if(iterazioni_preallarme_2>=Costanti.ITERAZIONI_P2 && iterazioni_preallarme_3<Costanti.ITERAZIONI_P3) 
@@ -184,6 +208,17 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 									Core.cambiaStato(sensor.getId() ,3);
 									portReader.write("B");
 									statoPreallarme_2=false;
+									
+									/*Blocco mail*/
+									if(Costanti.DEST_MAIL_PRE!=null && Costanti.DEST_MAIL_PRE.length()>0) 
+									{
+										String[] destinatati=Costanti.DEST_MAIL_PRE.split(";");
+										for (String dest : destinatati) 
+										{
+											inviaMail(dest,sensor.getIdentifier(),2,acc_X,acc_Y,acc_Z);
+										}
+									}
+									
 								}
 							}
 							if(iterazioni_preallarme_3>=Costanti.ITERAZIONI_P3) 
@@ -197,6 +232,17 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 									Core.cambiaStato(sensor.getId() ,4);
 									portReader.write("B");
 									statoPreallarme_3=false;
+									
+									/*Blocco mail*/
+									if(Costanti.DEST_MAIL_PRE!=null && Costanti.DEST_MAIL_PRE.length()>0) 
+									{
+										String[] destinatati=Costanti.DEST_MAIL_PRE.split(";");
+										for (String dest : destinatati) 
+										{
+											inviaMail(dest,sensor.getIdentifier(),3,acc_X,acc_Y,acc_Z);
+										}
+									}
+									
 								}
 							}
 						}
@@ -225,4 +271,27 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 		return 0;	
 
 	}
+
+	private void inviaMail(String destinataro,String idSonda, int tipoAllarme, double acc_X, double acc_Y, double acc_Z) {
+
+		
+			Thread t = new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+				try {
+					SendEmailBO.sendEmailAlarm(destinataro, idSonda,tipoAllarme, acc_X, acc_Y, acc_Z);
+				} catch (EmailException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+					
+				}
+			});
+			t.start();
+		}
+	
+	
+		
+	
 }

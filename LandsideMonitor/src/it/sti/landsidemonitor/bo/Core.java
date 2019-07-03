@@ -114,4 +114,10 @@ public class Core {
 		MainDAO.saveParam(param);
 		
 	}
+
+	public static void cancellaLog(String identifier) throws SQLException {
+		
+		MainDAO.cancellaLog(identifier);
+		
+	}
 }

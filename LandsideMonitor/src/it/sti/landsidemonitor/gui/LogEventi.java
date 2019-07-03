@@ -16,6 +16,11 @@ import javax.swing.table.DefaultTableModel;
 import it.sti.landsidemonitor.bo.Core;
 import it.sti.landsidemonitor.bo.Utility;
 import it.sti.landsidemonitor.dto.SensorDTO;
+import net.miginfocom.swing.MigLayout;
+import javax.swing.JButton;
+import javax.swing.ImageIcon;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class LogEventi extends JFrame{
 
@@ -58,10 +63,29 @@ public class LogEventi extends JFrame{
 		tabellaEventi.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
 		tabellaEventi.setRowHeight(35);
 		tabellaEventi.getColumnModel().getColumn(0).setPreferredWidth(200);
+		getContentPane().setLayout(new MigLayout("", "[784px]", "[47.00][561px]"));
+		
+		JButton btnCancellaLog = new JButton("Cancella Log");
+		btnCancellaLog.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				try {
+					Core.cancellaLog(sensor.getIdentifier());
+					dispose();
+					
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		btnCancellaLog.setIcon(new ImageIcon(LogEventi.class.getResource("/image/error.png")));
+		btnCancellaLog.setFont(new Font("Arial", Font.BOLD, 14));
+		getContentPane().add(btnCancellaLog, "cell 0 0");
 		
 		JScrollPane scroll = new JScrollPane(tabellaEventi);
 		
-		add(scroll);
+		getContentPane().add(scroll, "cell 0 1,grow");
 	}
 
 	class ModelTabella extends DefaultTableModel {
