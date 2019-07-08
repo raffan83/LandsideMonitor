@@ -73,7 +73,9 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 					double acc_Y=0.0;
 					double acc_Z=0.0;
 
-
+					double acc_X_sign=0.0;
+					double acc_Y_sign=0.0;
+					double acc_Z_sign=0.0;
 
 					if(value.split(",")[1].length()>0) 
 					{
@@ -90,10 +92,18 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 						acc_Z=Double.parseDouble(value.split(",")[3]);
 					}
 
+					 acc_X_sign=acc_X;
+					 acc_Y_sign=acc_Y;
+					 acc_Z_sign=acc_Z;
+					 
 					acc_X=Math.abs(acc_X);
 					acc_Y=Math.abs(acc_Y);
 					acc_Z=Math.abs(acc_Z);
 
+					
+					
+					
+					
 					/*ASSE X*/
 
 					if( (acc_X>=Costanti.LIMITE_MIN_P1 && acc_X<=Costanti.LIMITE_MAX_P1)|| 
@@ -103,6 +113,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 					{
 						if(sensor.getStato()!=1) 
 						{
+							Core.registraEvento(sensor.getIdentifier(),2,acc_X_sign,acc_Y_sign,acc_Z_sign);
 							iterazioni_preallarme_1++;
 						}
 						System.out.println("++ ITERAZIONE P1 "+acc_X+" "+acc_Y+" "+acc_Z +" ["+iterazioni_preallarme_1+"]");
@@ -115,6 +126,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 					{
 						if(sensor.getStato()!=1) 
 						{
+							Core.registraEvento(sensor.getIdentifier(),3,acc_X_sign,acc_Y_sign,acc_Z_sign);
 							iterazioni_preallarme_2++;
 						}
 
@@ -129,6 +141,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 					{
 						if(sensor.getStato()!=1) 
 						{
+							Core.registraEvento(sensor.getIdentifier(),4,acc_X_sign,acc_Y_sign,acc_Z_sign);
 							iterazioni_preallarme_3++;
 						}
 						System.out.println("++ ITERAZIONE P3 "+acc_X+" "+acc_Y+" "+acc_Z +" ["+iterazioni_preallarme_3+"]");

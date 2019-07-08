@@ -159,7 +159,7 @@ public class FrameParametri extends JFrame {
 		textField_1.setColumns(10);
 		panelMainParam.add(textField_1, "cell 1 3,alignx left");
 		
-		JLabel lblLimiteRumeroAsse = new JLabel("LIMITE RUMERO ASSE X");
+		JLabel lblLimiteRumeroAsse = new JLabel("LIMITE RUMORE ASSE X");
 		lblLimiteRumeroAsse.setFont(new Font("Arial", Font.BOLD, 14));
 		panelMainParam.add(lblLimiteRumeroAsse, "cell 0 4,alignx trailing");
 		
@@ -183,7 +183,7 @@ public class FrameParametri extends JFrame {
 		textField_4.setColumns(10);
 		panelMainParam.add(textField_4, "flowx,cell 1 6,alignx left");
 		
-		JLabel lblVelocitaLetturaSonde = new JLabel("VELOCITA LETTURA GRAFICO*");
+		JLabel lblVelocitaLetturaSonde = new JLabel("VELOCITA' LETTURA GRAFICO*");
 		lblVelocitaLetturaSonde.setFont(new Font("Arial", Font.BOLD, 14));
 		panelMainParam.add(lblVelocitaLetturaSonde, "cell 0 7,alignx trailing");
 		
