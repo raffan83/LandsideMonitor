@@ -210,9 +210,14 @@ public class FrameSonde extends JFrame implements ActionListener{
                	 
                	 tabellaSonde.repaint();
                	 try {
-               		SensorDTO sensor=mainP.getSonda(idSonda);                		 
+               		SensorDTO sensor=mainP.getSonda(idSonda);
+               		sensor.getSensor().setIterazioni_preallarme_1(0);
+               		sensor.getSensor().setIterazioni_preallarme_2(0);
+               		sensor.getSensor().setIterazioni_preallarme_3(0);
                		Core.cambiaStato(sensor.getId(), 0); 
 						pr.write("R");
+						
+						
 						
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
@@ -221,7 +226,7 @@ public class FrameSonde extends JFrame implements ActionListener{
                	 
 					
 				}
-			dispose();
+		//	dispose();
 			}
 			});
 			btnNewButton.setIcon(new ImageIcon(FrameSonde.class.getResource("/image/update.png")));

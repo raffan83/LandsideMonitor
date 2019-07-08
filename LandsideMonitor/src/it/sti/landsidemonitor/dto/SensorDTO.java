@@ -2,6 +2,8 @@ package it.sti.landsidemonitor.dto;
 
 import java.awt.Point;
 
+import it.sti.landsidemonitor.gui.MainSensor;
+
 public class SensorDTO {
 	
 	private int id;
@@ -9,7 +11,7 @@ public class SensorDTO {
 	private int statoOriginale;
 	private String identifier;
 	private Point point;
-	
+	private MainSensor sensor;
 	
 	
 	public SensorDTO(String _id, int x, int y) {
@@ -52,6 +54,12 @@ public class SensorDTO {
 	}
 	public void setStatoOriginale(int statoOriginale) {
 		this.statoOriginale = statoOriginale;
+	}
+	public MainSensor getSensor() {
+		return sensor;
+	}
+	public void setSensor(MainSensor sensor) {
+		this.sensor = sensor;
 	}
 
 

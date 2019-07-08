@@ -28,9 +28,33 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 
 	boolean statoAllarme=true;
 
-	int iterazioni_preallarme_1=0;
-	int iterazioni_preallarme_2=0;
-	int iterazioni_preallarme_3=0;
+	public int getIterazioni_preallarme_1() {
+		return iterazioni_preallarme_1;
+	}
+
+	public void setIterazioni_preallarme_1(int iterazioni_preallarme_1) {
+		this.iterazioni_preallarme_1 = iterazioni_preallarme_1;
+	}
+
+	public int getIterazioni_preallarme_2() {
+		return iterazioni_preallarme_2;
+	}
+
+	public void setIterazioni_preallarme_2(int iterazioni_preallarme_2) {
+		this.iterazioni_preallarme_2 = iterazioni_preallarme_2;
+	}
+
+	public int getIterazioni_preallarme_3() {
+		return iterazioni_preallarme_3;
+	}
+
+	public void setIterazioni_preallarme_3(int iterazioni_preallarme_3) {
+		this.iterazioni_preallarme_3 = iterazioni_preallarme_3;
+	}
+
+	public int iterazioni_preallarme_1=0;
+	public int iterazioni_preallarme_2=0;
+	public int iterazioni_preallarme_3=0;
 
 	public MainSensor(RasterPanel mainPanel, PortReader pr, SensorDTO _sensor) {
 		mainP=mainPanel;
@@ -113,9 +137,32 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 					{
 						if(sensor.getStato()!=1) 
 						{
-							Core.registraEvento(sensor.getIdentifier(),2,acc_X_sign,acc_Y_sign,acc_Z_sign);
+							if(statoPreallarme_1==true) 
+							{
+								portReader.write("B");
+								statoPreallarme_1=false;
+								
+								
+								/*Blocco mail*/
+								if(Costanti.DEST_MAIL_PRE!=null && Costanti.DEST_MAIL_PRE.length()>0) 
+								{
+									String[] destinatati=Costanti.DEST_MAIL_PRE.split(";");
+									for (String dest : destinatati) 
+									{
+										inviaMail(dest,sensor.getIdentifier(),2,acc_X,acc_Y,acc_Z);
+									}
+								}
+							}
+							
+							mainP.cambiaStato(sensor.getId(), 2);
+							sensor.setStatoOriginale(2);
+							Core.cambiaStato(sensor.getId() ,2);
 							iterazioni_preallarme_1++;
+							
+							
+							
 						}
+						Core.registraEvento(sensor.getIdentifier(),2,acc_X_sign,acc_Y_sign,acc_Z_sign);
 						System.out.println("++ ITERAZIONE P1 "+acc_X+" "+acc_Y+" "+acc_Z +" ["+iterazioni_preallarme_1+"]");
 					}
 
@@ -126,10 +173,30 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 					{
 						if(sensor.getStato()!=1) 
 						{
-							Core.registraEvento(sensor.getIdentifier(),3,acc_X_sign,acc_Y_sign,acc_Z_sign);
+							
+							if(statoPreallarme_2==true) 
+							{
+								portReader.write("B");
+								statoPreallarme_2=false;
+								
+								
+								/*Blocco mail*/
+								if(Costanti.DEST_MAIL_PRE!=null && Costanti.DEST_MAIL_PRE.length()>0) 
+								{
+									String[] destinatati=Costanti.DEST_MAIL_PRE.split(";");
+									for (String dest : destinatati) 
+									{
+										inviaMail(dest,sensor.getIdentifier(),3,acc_X,acc_Y,acc_Z);
+									}
+								}
+							}
+							
+							mainP.cambiaStato(sensor.getId(), 3);
+							sensor.setStatoOriginale(3);
+							Core.cambiaStato(sensor.getId() ,3);
 							iterazioni_preallarme_2++;
 						}
-
+						Core.registraEvento(sensor.getIdentifier(),3,acc_X_sign,acc_Y_sign,acc_Z_sign);
 						System.out.println("++ ITERAZIONE P2 "+acc_X+" "+acc_Y+" "+acc_Z +" ["+iterazioni_preallarme_2+"]");
 
 					}
@@ -141,9 +208,31 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 					{
 						if(sensor.getStato()!=1) 
 						{
-							Core.registraEvento(sensor.getIdentifier(),4,acc_X_sign,acc_Y_sign,acc_Z_sign);
+							
+							if(statoPreallarme_3==true) 
+							{
+								portReader.write("B");
+								statoPreallarme_3=false;
+								
+								
+								/*Blocco mail*/
+								if(Costanti.DEST_MAIL_PRE!=null && Costanti.DEST_MAIL_PRE.length()>0) 
+								{
+									String[] destinatati=Costanti.DEST_MAIL_PRE.split(";");
+									for (String dest : destinatati) 
+									{
+										inviaMail(dest,sensor.getIdentifier(),4,acc_X,acc_Y,acc_Z);
+									}
+								}
+							}
+							
+							
+							mainP.cambiaStato(sensor.getId(), 4);
+							sensor.setStatoOriginale(4);
+							Core.cambiaStato(sensor.getId() ,4);
 							iterazioni_preallarme_3++;
 						}
+						Core.registraEvento(sensor.getIdentifier(),4,acc_X_sign,acc_Y_sign,acc_Z_sign);
 						System.out.println("++ ITERAZIONE P3 "+acc_X+" "+acc_Y+" "+acc_Z +" ["+iterazioni_preallarme_3+"]");
 
 					}
@@ -188,75 +277,38 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 							{
 								System.out.println("INSIDE P1");
 
-								if(statoPreallarme_1==true) 
-								{
-									Core.registraEvento(sensor.getIdentifier(),2,acc_X,acc_Y,acc_Z);
-									mainP.cambiaStato(sensor.getId(), 2);
-									sensor.setStatoOriginale(2);
-									Core.cambiaStato(sensor.getId() ,2);
-									portReader.write("B");
-									statoPreallarme_1=false;
-									
-									
-									/*Blocco mail*/
-									if(Costanti.DEST_MAIL_PRE!=null && Costanti.DEST_MAIL_PRE.length()>0) 
-									{
-										String[] destinatati=Costanti.DEST_MAIL_PRE.split(";");
-										for (String dest : destinatati) 
-										{
-											inviaMail(dest,sensor.getIdentifier(),1,acc_X,acc_Y,acc_Z);
-										}
-									}
-								}
+					
+									Core.registraEvento(sensor.getIdentifier(),1,acc_X,acc_Y,acc_Z);
+									mainP.cambiaStato(sensor.getId(), 1);
+									sensor.setStatoOriginale(1);	
+									Core.cambiaStato(sensor.getId() ,1);
+									portReader.write("A");
+						
+								
 							}
 							if(iterazioni_preallarme_2>=Costanti.ITERAZIONI_P2 && iterazioni_preallarme_3<Costanti.ITERAZIONI_P3) 
 							{
 								System.out.println("INSIDE P2");
 
-								if(statoPreallarme_2==true) 
-								{
-									Core.registraEvento(sensor.getIdentifier(),3,acc_X,acc_Y,acc_Z);
-									mainP.cambiaStato(sensor.getId(), 3);
-									sensor.setStatoOriginale(3);
-									Core.cambiaStato(sensor.getId() ,3);
-									portReader.write("B");
-									statoPreallarme_2=false;
-									
-									/*Blocco mail*/
-									if(Costanti.DEST_MAIL_PRE!=null && Costanti.DEST_MAIL_PRE.length()>0) 
-									{
-										String[] destinatati=Costanti.DEST_MAIL_PRE.split(";");
-										for (String dest : destinatati) 
-										{
-											inviaMail(dest,sensor.getIdentifier(),2,acc_X,acc_Y,acc_Z);
-										}
-									}
-									
-								}
+							
+									Core.registraEvento(sensor.getIdentifier(),1,acc_X,acc_Y,acc_Z);
+									mainP.cambiaStato(sensor.getId(), 1);
+									sensor.setStatoOriginale(1);
+									Core.cambiaStato(sensor.getId() ,1);
+									portReader.write("A");
+							
+								
 							}
 							if(iterazioni_preallarme_3>=Costanti.ITERAZIONI_P3) 
 							{
 								System.out.println("INSIDE P3");
-								if(statoPreallarme_3==true) 
-								{
-									Core.registraEvento(sensor.getIdentifier(),4,acc_X,acc_Y,acc_Z);
-									mainP.cambiaStato(sensor.getId(), 4);
-									sensor.setStatoOriginale(4);
-									Core.cambiaStato(sensor.getId() ,4);
-									portReader.write("B");
+								
+									Core.registraEvento(sensor.getIdentifier(),1,acc_X,acc_Y,acc_Z);
+									mainP.cambiaStato(sensor.getId(), 1);
+									sensor.setStatoOriginale(1);
+									Core.cambiaStato(sensor.getId() ,1);
+									portReader.write("A");
 									statoPreallarme_3=false;
-									
-									/*Blocco mail*/
-									if(Costanti.DEST_MAIL_PRE!=null && Costanti.DEST_MAIL_PRE.length()>0) 
-									{
-										String[] destinatati=Costanti.DEST_MAIL_PRE.split(";");
-										for (String dest : destinatati) 
-										{
-											inviaMail(dest,sensor.getIdentifier(),3,acc_X,acc_Y,acc_Z);
-										}
-									}
-									
-								}
 							}
 						}
 

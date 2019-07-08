@@ -196,6 +196,7 @@ public class MainFrame extends JFrame {
 						for (SensorDTO sensor : listaSensori) 
 						{
 							MainSensor d =	 new MainSensor(mainPanel,pr,sensor);
+							sensor.setSensor(d);
 							d.execute();
 						}
 						
