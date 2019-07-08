@@ -67,6 +67,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 	protected Integer doInBackground() throws Exception {
 
 		try{
+
 			while(true)
 			{
 				Thread.sleep(200);
@@ -142,6 +143,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 								portReader.write("B");
 								statoPreallarme_1=false;
 								
+								timer1();
 								
 								/*Blocco mail*/
 								if(Costanti.DEST_MAIL_PRE!=null && Costanti.DEST_MAIL_PRE.length()>0) 
@@ -178,7 +180,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 							{
 								portReader.write("B");
 								statoPreallarme_2=false;
-								
+								 timer2();
 								
 								/*Blocco mail*/
 								if(Costanti.DEST_MAIL_PRE!=null && Costanti.DEST_MAIL_PRE.length()>0) 
@@ -213,7 +215,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 							{
 								portReader.write("B");
 								statoPreallarme_3=false;
-								
+								timer3();
 								
 								/*Blocco mail*/
 								if(Costanti.DEST_MAIL_PRE!=null && Costanti.DEST_MAIL_PRE.length()>0) 
@@ -356,7 +358,80 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 			t.start();
 		}
 	
+	private void timer1() {
+
+		
+		Thread t = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+			try {
+				System.out.println("Timer 1 "+new Date());
+				Thread.sleep(Costanti.TIMER_ITERAZIONI*1000);
+				iterazioni_preallarme_1=0;
+				statoPreallarme_1=true;
+				System.out.println("Timer 1 FINE "+new Date());
+			
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			
+			}
+			}
+		});
+		t.start();
+	}
 	
+private void timer2() {
+
+		
+		Thread t = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+			try {
+				
+				System.out.println("Timer 2 "+new Date());
+				Thread.sleep(Costanti.TIMER_ITERAZIONI*1000);
+				iterazioni_preallarme_2=0;
+				statoPreallarme_2=true;
+				System.out.println("Timer 2 FINE "+new Date());
+				
+			
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			
+			}
+			}
+		});
+		t.start();
+	}
+
+private void timer3() {
+
+	
+	Thread t = new Thread(new Runnable() {
+		
+		@Override
+		public void run() {
+		try {
+			
+			System.out.println("Timer 3 "+new Date());
+			Thread.sleep(Costanti.TIMER_ITERAZIONI*1000);
+			iterazioni_preallarme_3=0;
+			statoPreallarme_3=true;
+			System.out.println("Timer 3 FINE "+new Date());
+		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		
+		}
+		}
+	});
+	t.start();
+}
 		
 	
 }
