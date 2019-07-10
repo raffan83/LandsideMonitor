@@ -214,6 +214,7 @@ public class FrameSonde extends JFrame implements ActionListener{
                		sensor.getSensor().setIterazioni_preallarme_1(0);
                		sensor.getSensor().setIterazioni_preallarme_2(0);
                		sensor.getSensor().setIterazioni_preallarme_3(0);
+               		sensor.getSensor().setVALORE_MANCATA_RICEZIONE_SONDA(0);
                		Core.cambiaStato(sensor.getId(), 0); 
 						pr.write("R");
 						

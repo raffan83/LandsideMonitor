@@ -15,6 +15,7 @@ import it.sti.landsidemonitor.dto.SensorDTO;
 
 public class MainSensor extends SwingWorker<Integer, Integer>{
 
+
 	RasterPanel mainP=null;
 	PortReader portReader;
 	ArrayList<String> msgs=null;
@@ -27,6 +28,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 	boolean statoPreallarme_3=true;
 
 	boolean statoAllarme=true;
+	boolean statoMancataRicezione=true;
 
 	public int getIterazioni_preallarme_1() {
 		return iterazioni_preallarme_1;
@@ -52,6 +54,15 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 		this.iterazioni_preallarme_3 = iterazioni_preallarme_3;
 	}
 
+
+	public int getVALORE_MANCATA_RICEZIONE_SONDA() {
+		return VALORE_MANCATA_RICEZIONE_SONDA;
+	}
+
+	public void setVALORE_MANCATA_RICEZIONE_SONDA(int vALORE_MANCATA_RICEZIONE_SONDA) {
+		VALORE_MANCATA_RICEZIONE_SONDA = vALORE_MANCATA_RICEZIONE_SONDA;
+	}
+	
 	public int iterazioni_preallarme_1=0;
 	public int iterazioni_preallarme_2=0;
 	public int iterazioni_preallarme_3=0;
@@ -84,6 +95,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 					statoPreallarme_2=true;
 					statoPreallarme_3=true;
 					statoAllarme=true;
+					statoMancataRicezione=true;
 				}
 
 				String pivot=value.split(",")[0];/*Recupero l'ID del sensore dalla stringa di lettura*/
@@ -117,18 +129,18 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 						acc_Z=Double.parseDouble(value.split(",")[3]);
 					}
 
-					 acc_X_sign=acc_X;
-					 acc_Y_sign=acc_Y;
-					 acc_Z_sign=acc_Z;
-					 
+					acc_X_sign=acc_X;
+					acc_Y_sign=acc_Y;
+					acc_Z_sign=acc_Z;
+
 					acc_X=Math.abs(acc_X);
 					acc_Y=Math.abs(acc_Y);
 					acc_Z=Math.abs(acc_Z);
 
-					
-					
-					
-					
+
+
+
+
 					/*ASSE X*/
 
 					if( (acc_X>=Costanti.LIMITE_MIN_P1 && acc_X<=Costanti.LIMITE_MAX_P1)|| 
@@ -142,9 +154,9 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 							{
 								portReader.write("B");
 								statoPreallarme_1=false;
-								
+
 								timer1();
-								
+
 								/*Blocco mail*/
 								if(Costanti.DEST_MAIL_PRE!=null && Costanti.DEST_MAIL_PRE.length()>0) 
 								{
@@ -155,14 +167,14 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 									}
 								}
 							}
-							
+
 							mainP.cambiaStato(sensor.getId(), 2);
 							sensor.setStatoOriginale(2);
 							Core.cambiaStato(sensor.getId() ,2);
 							iterazioni_preallarme_1++;
-							
-							
-							
+
+
+
 						}
 						Core.registraEvento(sensor.getIdentifier(),2,acc_X_sign,acc_Y_sign,acc_Z_sign);
 						System.out.println("++ ITERAZIONE P1 "+acc_X+" "+acc_Y+" "+acc_Z +" ["+iterazioni_preallarme_1+"]");
@@ -175,13 +187,13 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 					{
 						if(sensor.getStato()!=1) 
 						{
-							
+
 							if(statoPreallarme_2==true) 
 							{
 								portReader.write("B");
 								statoPreallarme_2=false;
-								 timer2();
-								
+								timer2();
+
 								/*Blocco mail*/
 								if(Costanti.DEST_MAIL_PRE!=null && Costanti.DEST_MAIL_PRE.length()>0) 
 								{
@@ -192,7 +204,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 									}
 								}
 							}
-							
+
 							mainP.cambiaStato(sensor.getId(), 3);
 							sensor.setStatoOriginale(3);
 							Core.cambiaStato(sensor.getId() ,3);
@@ -210,13 +222,13 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 					{
 						if(sensor.getStato()!=1) 
 						{
-							
+
 							if(statoPreallarme_3==true) 
 							{
 								portReader.write("B");
 								statoPreallarme_3=false;
 								timer3();
-								
+
 								/*Blocco mail*/
 								if(Costanti.DEST_MAIL_PRE!=null && Costanti.DEST_MAIL_PRE.length()>0) 
 								{
@@ -227,8 +239,8 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 									}
 								}
 							}
-							
-							
+
+
 							mainP.cambiaStato(sensor.getId(), 4);
 							sensor.setStatoOriginale(4);
 							Core.cambiaStato(sensor.getId() ,4);
@@ -268,7 +280,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 										inviaMail(dest,sensor.getIdentifier(),4,acc_X,acc_Y,acc_Z);
 									}
 								}
-								
+
 							}
 
 
@@ -279,38 +291,38 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 							{
 								System.out.println("INSIDE P1");
 
-					
-									Core.registraEvento(sensor.getIdentifier(),1,acc_X,acc_Y,acc_Z);
-									mainP.cambiaStato(sensor.getId(), 1);
-									sensor.setStatoOriginale(1);	
-									Core.cambiaStato(sensor.getId() ,1);
-									portReader.write("A");
-						
-								
+
+								Core.registraEvento(sensor.getIdentifier(),1,acc_X,acc_Y,acc_Z);
+								mainP.cambiaStato(sensor.getId(), 1);
+								sensor.setStatoOriginale(1);	
+								Core.cambiaStato(sensor.getId() ,1);
+								portReader.write("A");
+
+
 							}
 							if(iterazioni_preallarme_2>=Costanti.ITERAZIONI_P2 && iterazioni_preallarme_3<Costanti.ITERAZIONI_P3) 
 							{
 								System.out.println("INSIDE P2");
 
-							
-									Core.registraEvento(sensor.getIdentifier(),1,acc_X,acc_Y,acc_Z);
-									mainP.cambiaStato(sensor.getId(), 1);
-									sensor.setStatoOriginale(1);
-									Core.cambiaStato(sensor.getId() ,1);
-									portReader.write("A");
-							
-								
+
+								Core.registraEvento(sensor.getIdentifier(),1,acc_X,acc_Y,acc_Z);
+								mainP.cambiaStato(sensor.getId(), 1);
+								sensor.setStatoOriginale(1);
+								Core.cambiaStato(sensor.getId() ,1);
+								portReader.write("A");
+
+
 							}
 							if(iterazioni_preallarme_3>=Costanti.ITERAZIONI_P3) 
 							{
 								System.out.println("INSIDE P3");
-								
-									Core.registraEvento(sensor.getIdentifier(),1,acc_X,acc_Y,acc_Z);
-									mainP.cambiaStato(sensor.getId(), 1);
-									sensor.setStatoOriginale(1);
-									Core.cambiaStato(sensor.getId() ,1);
-									portReader.write("A");
-									statoPreallarme_3=false;
+
+								Core.registraEvento(sensor.getIdentifier(),1,acc_X,acc_Y,acc_Z);
+								mainP.cambiaStato(sensor.getId(), 1);
+								sensor.setStatoOriginale(1);
+								Core.cambiaStato(sensor.getId() ,1);
+								portReader.write("A");
+								statoPreallarme_3=false;
 							}
 						}
 
@@ -326,6 +338,11 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 					{
 						mainP.cambiaStato(sensor.getId(),5);
 						Core.cambiaStato(sensor.getId() ,5);
+						if(statoMancataRicezione==true) 
+						{
+							Core.registraEvento(sensor.getIdentifier(),5,0,0,0);
+							statoMancataRicezione=false;
+						}
 					}
 				}
 
@@ -341,97 +358,97 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 
 	private void inviaMail(String destinataro,String idSonda, int tipoAllarme, double acc_X, double acc_Y, double acc_Z) {
 
-		
-			Thread t = new Thread(new Runnable() {
-				
-				@Override
-				public void run() {
+
+		Thread t = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
 				try {
 					SendEmailBO.sendEmailAlarm(destinataro, idSonda,tipoAllarme, acc_X, acc_Y, acc_Z);
 				} catch (EmailException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-					
-				}
-			});
-			t.start();
-		}
-	
+
+			}
+		});
+		t.start();
+	}
+
 	private void timer1() {
 
-		
-		Thread t = new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-			try {
-				System.out.println("Timer 1 "+new Date());
-				Thread.sleep(Costanti.TIMER_ITERAZIONI*1000);
-				iterazioni_preallarme_1=0;
-				statoPreallarme_1=true;
-				System.out.println("Timer 1 FINE "+new Date());
-			
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			
-			}
-			}
-		});
-		t.start();
-	}
-	
-private void timer2() {
 
-		
 		Thread t = new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
-			try {
-				
-				System.out.println("Timer 2 "+new Date());
-				Thread.sleep(Costanti.TIMER_ITERAZIONI*1000);
-				iterazioni_preallarme_2=0;
-				statoPreallarme_2=true;
-				System.out.println("Timer 2 FINE "+new Date());
-				
-			
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			
-			}
+				try {
+					System.out.println("Timer 1 "+new Date());
+					Thread.sleep(Costanti.TIMER_ITERAZIONI*1000);
+					iterazioni_preallarme_1=0;
+					statoPreallarme_1=true;
+					System.out.println("Timer 1 FINE "+new Date());
+
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+
+				}
 			}
 		});
 		t.start();
 	}
 
-private void timer3() {
+	private void timer2() {
 
-	
-	Thread t = new Thread(new Runnable() {
-		
-		@Override
-		public void run() {
-		try {
-			
-			System.out.println("Timer 3 "+new Date());
-			Thread.sleep(Costanti.TIMER_ITERAZIONI*1000);
-			iterazioni_preallarme_3=0;
-			statoPreallarme_3=true;
-			System.out.println("Timer 3 FINE "+new Date());
-		
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		
-		}
-		}
-	});
-	t.start();
-}
-		
-	
+
+		Thread t = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+
+					System.out.println("Timer 2 "+new Date());
+					Thread.sleep(Costanti.TIMER_ITERAZIONI*1000);
+					iterazioni_preallarme_2=0;
+					statoPreallarme_2=true;
+					System.out.println("Timer 2 FINE "+new Date());
+
+
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+
+				}
+			}
+		});
+		t.start();
+	}
+
+	private void timer3() {
+
+
+		Thread t = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+
+					System.out.println("Timer 3 "+new Date());
+					Thread.sleep(Costanti.TIMER_ITERAZIONI*1000);
+					iterazioni_preallarme_3=0;
+					statoPreallarme_3=true;
+					System.out.println("Timer 3 FINE "+new Date());
+
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+
+				}
+			}
+		});
+		t.start();
+	}
+
+
 }
