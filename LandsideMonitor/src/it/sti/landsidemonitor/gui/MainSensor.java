@@ -1,8 +1,10 @@
 package it.sti.landsidemonitor.gui;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.naming.LimitExceededException;
 import javax.swing.SwingWorker;
 
 import org.apache.commons.mail.EmailException;
@@ -84,6 +86,8 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 				Thread.sleep(200);
 
 				String value=portReader.getValue();
+					
+			     
 
 				if(Costanti.DEBUG) {System.out.println("val "+value);}
 
@@ -97,7 +101,9 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 					statoAllarme=true;
 					statoMancataRicezione=true;
 				}
-
+				
+			
+				
 				String pivot=value.split(",")[0];/*Recupero l'ID del sensore dalla stringa di lettura*/
 
 				if(pivot.equals(sensor.getIdentifier())) 
@@ -143,10 +149,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 
 					/*ASSE X*/
 
-					if( (acc_X>=Costanti.LIMITE_MIN_P1 && acc_X<=Costanti.LIMITE_MAX_P1)|| 
-							(acc_Y>=Costanti.LIMITE_MIN_P1 && acc_Y<=Costanti.LIMITE_MAX_P1)||
-							(acc_Z>=Costanti.LIMITE_MIN_P1 && acc_Z<=Costanti.LIMITE_MAX_P1)
-							) 
+					if( controllaEvento(acc_X,acc_Y,acc_Z,1)) 
 					{
 						if(sensor.getStato()!=1) 
 						{
@@ -163,7 +166,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 									String[] destinatati=Costanti.DEST_MAIL_PRE.split(";");
 									for (String dest : destinatati) 
 									{
-										inviaMail(dest,sensor.getIdentifier(),2,acc_X,acc_Y,acc_Z);
+										inviaMail(dest,sensor.getIdentifier(),2,acc_X_sign,acc_Y_sign,acc_Z_sign);
 									}
 								}
 							}
@@ -180,10 +183,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 						System.out.println("++ ITERAZIONE P1 "+acc_X+" "+acc_Y+" "+acc_Z +" ["+iterazioni_preallarme_1+"]");
 					}
 
-					if(     (acc_X>=Costanti.LIMITE_MIN_P2 && acc_X<=Costanti.LIMITE_MAX_P2)|| 
-							(acc_Y>=Costanti.LIMITE_MIN_P2 && acc_Y<=Costanti.LIMITE_MAX_P2)||
-							(acc_Z>=Costanti.LIMITE_MIN_P2 && acc_Z<=Costanti.LIMITE_MAX_P2)
-							) 
+					if(controllaEvento(acc_X,acc_Y,acc_Z,2))
 					{
 						if(sensor.getStato()!=1) 
 						{
@@ -200,7 +200,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 									String[] destinatati=Costanti.DEST_MAIL_PRE.split(";");
 									for (String dest : destinatati) 
 									{
-										inviaMail(dest,sensor.getIdentifier(),3,acc_X,acc_Y,acc_Z);
+										inviaMail(dest,sensor.getIdentifier(),3,acc_X_sign,acc_Y_sign,acc_Z_sign);
 									}
 								}
 							}
@@ -215,10 +215,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 
 					}
 
-					if(     (acc_X>=Costanti.LIMITE_MIN_P3 && acc_X<=Costanti.LIMITE_MAX_P3)|| 
-							(acc_Y>=Costanti.LIMITE_MIN_P3 && acc_Y<=Costanti.LIMITE_MAX_P3)||
-							(acc_Z>=Costanti.LIMITE_MIN_P3 && acc_Z<=Costanti.LIMITE_MAX_P3)
-							) 
+					if(controllaEvento(acc_X,acc_Y,acc_Z,3))
 					{
 						if(sensor.getStato()!=1) 
 						{
@@ -235,7 +232,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 									String[] destinatati=Costanti.DEST_MAIL_PRE.split(";");
 									for (String dest : destinatati) 
 									{
-										inviaMail(dest,sensor.getIdentifier(),4,acc_X,acc_Y,acc_Z);
+										inviaMail(dest,sensor.getIdentifier(),4,acc_X_sign,acc_Y_sign,acc_Z_sign);
 									}
 								}
 							}
@@ -277,7 +274,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 									String[] destinatati=Costanti.DEST_MAIL_ALARM.split(";");
 									for (String dest : destinatati) 
 									{
-										inviaMail(dest,sensor.getIdentifier(),4,acc_X,acc_Y,acc_Z);
+										inviaMail(dest,sensor.getIdentifier(),4,acc_X_sign,acc_Y_sign,acc_Z_sign);
 									}
 								}
 
@@ -354,6 +351,61 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 
 		return 0;	
 
+	}
+
+	private boolean controllaEvento(double acc_X, double acc_Y, double acc_Z, int i) throws SQLException {
+		
+		double min=0;
+		double max=0;
+	
+		
+		if(i==1) 
+		{
+			min=Costanti.LIMITE_MIN_P1;
+			max=Costanti.LIMITE_MAX_P1;
+		}
+		if(i==2) 
+		{
+			min=Costanti.LIMITE_MIN_P2;
+			max=Costanti.LIMITE_MAX_P2;
+		}
+		if(i==3) 
+		{
+			min=Costanti.LIMITE_MIN_P3;
+			max=Costanti.LIMITE_MAX_P3;
+		}
+		
+		
+		if((acc_X>=min && acc_X<=max)|| 
+		(acc_Y>=min && acc_Y<=max)||
+		(acc_Z>=min && acc_Z<=max))
+		{
+			System.out.println("EVENTO");
+			if((acc_X>=2.4 && acc_X<=2.6) && acc_Y<=Costanti.LIMITE_MIN_P1 && acc_Z<=Costanti.LIMITE_MIN_P1 ) 
+			{
+				Core.registraEvento("S1",5,acc_X,acc_Y,acc_Z);
+				return false;
+			}
+			else if((acc_Y>=2.4 && acc_Y<=2.6) && acc_X<=Costanti.LIMITE_MIN_P1 && acc_Z<=Costanti.LIMITE_MIN_P1 ) 
+			{
+				Core.registraEvento("S1",5,acc_X,acc_Y,acc_Z);
+				return false;
+			}
+			else if((acc_Z>=2.4 && acc_Z<=2.6) && acc_Y<=Costanti.LIMITE_MIN_P1 && acc_X<=Costanti.LIMITE_MIN_P1 ) 
+			{
+				Core.registraEvento("S1",5,acc_X,acc_Y,acc_Z);
+				return false;
+			}
+			else 
+			{
+				System.out.println("TRUE");
+				return true;
+			}
+			
+			
+		}
+		
+		return false;
 	}
 
 	private void inviaMail(String destinataro,String idSonda, int tipoAllarme, double acc_X, double acc_Y, double acc_Z) {
