@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 
 import it.sti.landsidemonitor.bo.Core;
 import it.sti.landsidemonitor.bo.Costanti;
+import it.sti.landsidemonitor.dao.MainDAO;
 import it.sti.landsidemonitor.dto.SensorDTO;
 
 
@@ -80,21 +81,21 @@ public class RasterPanel extends JPanel{
 	    	{
 	    		 g.fillOval(point.x, point.y,20, 20);
 	    		 g.setFont(new Font("Arial", Font.BOLD, 16)); 
-	    		 g.drawString("PRE ALLARME 3 "+listaSensori.get(i).getIdentifier(), point.x,point.y);
+	    		 g.drawString("NON DEFINITO "+listaSensori.get(i).getIdentifier(), point.x,point.y);
 	    		
 	    	}
 	    	else if(stato==3)
 	    	{
 	    		 g.fillOval(point.x, point.y,20, 20);
 	    		 g.setFont(new Font("Arial", Font.BOLD, 16)); 
-	    		 g.drawString("PRE ALLARME 2 "+listaSensori.get(i).getIdentifier(), point.x,point.y);
+	    		 g.drawString("PRE ALLARME "+listaSensori.get(i).getIdentifier(), point.x,point.y);
 	    		
 	    	}
 	    	else if(stato==2)
 	    	{
 	    		 g.fillOval(point.x, point.y,20, 20);
 	    		 g.setFont(new Font("Arial", Font.BOLD, 16)); 
-	    		 g.drawString("PRE ALLARME 1 "+listaSensori.get(i).getIdentifier(), point.x,point.y);
+	    		 g.drawString("ALLERTA "+listaSensori.get(i).getIdentifier(), point.x,point.y);
 	    		
 	    	}
 	    	else if(stato==1)
@@ -132,18 +133,19 @@ public class RasterPanel extends JPanel{
 		  
 		  if(stato==2)
 		  {
-			return Color.YELLOW;  
+			return Color.ORANGE;  
 		  }
 		  if(stato==3)
 		  {
-			return Color.MAGENTA;  
+			return Color.YELLOW;  
 		  }
 		  if(stato==4)
 		  {
-			return Color.ORANGE;  
+			return Color.MAGENTA;  
 		  } 
 		  if(stato==5)
 		  {
+			 /*Cambiare in nero*/ 
 			return Color.BLACK;  
 		  }
 		  
@@ -244,7 +246,9 @@ public class RasterPanel extends JPanel{
 			  if(listaSensori.get(i).getId()==idSonda) 
 			  {  
 				  listaSensori.get(i).setStato(stato);
-				  try {
+				  try 
+				  {
+					MainDAO.cambiaStato(idSonda, stato);  
 				
 				} catch (Exception e) {
 					// TODO Auto-generated catch block

@@ -51,6 +51,7 @@ public class MainDAO {
 				sensor.setPoint(p);
 				sensor.setStato(stato);
 				sensor.setStatoOriginale(stato);
+				sensor.setType(rs.getString("tipo"));
 				
 				listaSensori.add(sensor);
 			}
@@ -94,18 +95,19 @@ public class MainDAO {
 		
 	}
 
-	public static int inserisciSonda(String id, int posX, int posY) throws Exception {
+	public static int inserisciSonda(String id, int posX, int posY, String type) throws Exception {
 		Connection con =null;
 		PreparedStatement pst= null;
 
 		try{
 			con=getConnection();
-			pst=con.prepareStatement("INSERT INTO tbl_sonde(identifier,pos_X,pos_Y,stato) VALUES(?,?,?,?)",pst.RETURN_GENERATED_KEYS);
+			pst=con.prepareStatement("INSERT INTO tbl_sonde(identifier,pos_X,pos_Y,stato,tipo) VALUES(?,?,?,?,?)",pst.RETURN_GENERATED_KEYS);
 			
 			pst.setString(1,id);
 			pst.setInt(2,posX);
 			pst.setInt(3,posY);
 			pst.setInt(4, 0);
+			pst.setString(5, type);
 			pst.execute();
 		
 		    ResultSet generatedKeys = pst.getGeneratedKeys(); 

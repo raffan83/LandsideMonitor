@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -37,7 +38,6 @@ import it.sti.landsidemonitor.bo.Costanti;
 import it.sti.landsidemonitor.bo.PortReader;
 import it.sti.landsidemonitor.bo.Utility;
 import it.sti.landsidemonitor.dto.SensorDTO;
-import jssc.SerialPortException;
 import net.miginfocom.swing.MigLayout;
 
 public class FrameSonde extends JFrame implements ActionListener{
@@ -210,16 +210,10 @@ public class FrameSonde extends JFrame implements ActionListener{
                	 
                	 tabellaSonde.repaint();
                	 try {
-               		SensorDTO sensor=mainP.getSonda(idSonda);
-               		sensor.getSensor().setIterazioni_preallarme_1(0);
-               		sensor.getSensor().setIterazioni_preallarme_2(0);
-               		sensor.getSensor().setIterazioni_preallarme_3(0);
-               		sensor.getSensor().setVALORE_MANCATA_RICEZIONE_SONDA(0);
+               		SensorDTO sensor=mainP.getSonda(idSonda);     
                		Core.cambiaStato(sensor.getId(), 0); 
-						pr.write("R");
-						
-						
-						
+					pr.write("Z");
+					
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -578,7 +572,18 @@ public class FrameSonde extends JFrame implements ActionListener{
 			tf_position_y.setFont(new Font("Arial", Font.PLAIN, 14));
 			panel.add(tf_position_y, "cell 1 3,wmax 100");
 			tf_position_y.setColumns(10);
-					
+			
+			JLabel lblType = new JLabel("Tipo");
+			lblType.setFont(new Font("Arial", Font.BOLD, 14));
+			panel.add(lblType, "cell 0 4,alignx trailing");
+			
+			JComboBox<String> tf_type = new JComboBox<String>();
+			tf_type.addItem("R");
+			tf_type.addItem("D");
+			tf_type.setFont(new Font("Arial", Font.PLAIN, 14));
+			panel.add(tf_type, "cell 1 4,wmax 100");
+			
+		
 			JButton btnInserisci = new JButton("Inserisci");
 			btnInserisci.setFont(new Font("Arial", Font.BOLD, 14));
 			
@@ -646,7 +651,7 @@ public class FrameSonde extends JFrame implements ActionListener{
 								{
 								SensorDTO s = new SensorDTO();
 								
-								int id =Core.aggiungiSensore(tf_id_sonda.getText(),x,y);
+								int id =Core.aggiungiSensore(tf_id_sonda.getText(),x,y,tf_type.getSelectedItem().toString());
 								
 								s.setId(id);
 								s.setIdentifier(tf_id_sonda.getText());

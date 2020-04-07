@@ -25,9 +25,9 @@ public class Core {
 		
 	}
 
-	public static int aggiungiSensore(String id, int posX, int posY) throws Exception {
+	public static int aggiungiSensore(String id, int posX, int posY, String type) throws Exception {
 		
-		return MainDAO.inserisciSonda(id,posX,posY);
+		return MainDAO.inserisciSonda(id,posX,posY,type);
 		
 	}
 

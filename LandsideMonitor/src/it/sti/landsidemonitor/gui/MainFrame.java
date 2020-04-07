@@ -58,40 +58,28 @@ public class MainFrame extends JFrame {
 
 	setSize(w,h);
 
-	//itMis.setAccelerator(KeyStroke.getKeyStroke('M', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
-	  	
-	//setUndecorated(true);
-	UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
-	listaSensori=Core.getListaSensori();
+	try 
+	 
+	{
+		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 	
-	jssc.SerialPort serialPort =Serial.getConnection(Costanti.PORT, Costanti.FRAMERATE);
-	  
-	 pr = new PortReader(serialPort);
+		listaSensori=Core.getListaSensori();
+		
+		jssc.SerialPort serialPort =Serial.getConnection(Costanti.PORT, Costanti.FRAMERATE);
+		
+		costruisciFrame(listaSensori);
+		
+		pr = new PortReader(mainPanel,serialPort,listaSensori);
 
-	 try 
-	 {
-			serialPort.addEventListener(pr, SerialPort.MASK_RXCHAR);
+		serialPort.addEventListener(pr, SerialPort.MASK_RXCHAR);
 			
-			costruisciFrame(listaSensori);
-			
-			Thread thread = new Thread(new PointSensor());
-			thread.start();
-			
+	
 	} catch (jssc.SerialPortException e) {
 		
 		JOptionPane.showMessageDialog(null, "Porta "+Costanti.PORT+ " non trovata, configurare correttamente nome porta dal pannello Impostazioni","Porta non trovata",JOptionPane.INFORMATION_MESSAGE,new ImageIcon(MainFrame.class.getResource("/image/error.png")));
-	//	listaSensori=new ArrayList<SensorDTO>();
 		costruisciFrame( listaSensori);
 		
-	}
-	 
-	
-	
-//	Core.setRatio();
-	 
-
-	
+	 }
 	}
 
 	private void costruisciFrame(ArrayList<SensorDTO> listaSensori) {
@@ -179,38 +167,5 @@ public class MainFrame extends JFrame {
 			e.printStackTrace();
 		}	
 	}
-	
-	
-	
-	
-	class PointSensor implements Runnable {
 
-
-
-		@Override
-		public void run() 
-		{
-			try
-			{
-
-						for (SensorDTO sensor : listaSensori) 
-						{
-							MainSensor d =	 new MainSensor(mainPanel,pr,sensor);
-							sensor.setSensor(d);
-							d.execute();
-						}
-						
-						
-					}
-				
-
-			
-		
-			catch(Exception ex)
-			{
-				
-				ex.printStackTrace();
-			}
-		}
-	}
 }

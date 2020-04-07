@@ -257,7 +257,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 							if(statoAllarme==true) 
 							{
 
-								Core.registraEvento(sensor.getIdentifier(),1,acc_X,acc_Y,acc_Z);
+								Core.registraEvento(sensor.getIdentifier(),1,acc_X_sign,acc_Y_sign,acc_Z_sign);
 								mainP.cambiaStato(sensor.getId(), 1);
 								sensor.setStatoOriginale(1);
 								Core.cambiaStato(sensor.getId() ,1);
@@ -289,7 +289,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 								System.out.println("INSIDE P1");
 
 
-								Core.registraEvento(sensor.getIdentifier(),1,acc_X,acc_Y,acc_Z);
+								Core.registraEvento(sensor.getIdentifier(),1,acc_X_sign,acc_Y_sign,acc_Z_sign);
 								mainP.cambiaStato(sensor.getId(), 1);
 								sensor.setStatoOriginale(1);	
 								Core.cambiaStato(sensor.getId() ,1);
@@ -302,7 +302,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 								System.out.println("INSIDE P2");
 
 
-								Core.registraEvento(sensor.getIdentifier(),1,acc_X,acc_Y,acc_Z);
+								Core.registraEvento(sensor.getIdentifier(),1,acc_X_sign,acc_Y_sign,acc_Z_sign);
 								mainP.cambiaStato(sensor.getId(), 1);
 								sensor.setStatoOriginale(1);
 								Core.cambiaStato(sensor.getId() ,1);
@@ -314,7 +314,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 							{
 								System.out.println("INSIDE P3");
 
-								Core.registraEvento(sensor.getIdentifier(),1,acc_X,acc_Y,acc_Z);
+								Core.registraEvento(sensor.getIdentifier(),1,acc_X_sign,acc_Y_sign,acc_Z_sign);
 								mainP.cambiaStato(sensor.getId(), 1);
 								sensor.setStatoOriginale(1);
 								Core.cambiaStato(sensor.getId() ,1);
@@ -383,17 +383,17 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 			System.out.println("EVENTO");
 			if((acc_X>=2.4 && acc_X<=2.6) && acc_Y<=Costanti.LIMITE_MIN_P1 && acc_Z<=Costanti.LIMITE_MIN_P1 ) 
 			{
-				Core.registraEvento("S1",5,acc_X,acc_Y,acc_Z);
+			//	Core.registraEvento("S1",5,acc_X,acc_Y,acc_Z);
 				return false;
 			}
 			else if((acc_Y>=2.4 && acc_Y<=2.6) && acc_X<=Costanti.LIMITE_MIN_P1 && acc_Z<=Costanti.LIMITE_MIN_P1 ) 
 			{
-				Core.registraEvento("S1",5,acc_X,acc_Y,acc_Z);
+		//		Core.registraEvento("S1",5,acc_X,acc_Y,acc_Z);
 				return false;
 			}
 			else if((acc_Z>=2.4 && acc_Z<=2.6) && acc_Y<=Costanti.LIMITE_MIN_P1 && acc_X<=Costanti.LIMITE_MIN_P1 ) 
 			{
-				Core.registraEvento("S1",5,acc_X,acc_Y,acc_Z);
+		//		Core.registraEvento("S1",5,acc_X,acc_Y,acc_Z);
 				return false;
 			}
 			else 
