@@ -4,19 +4,22 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import it.sti.landsidemonitor.bo.Core;
-import it.sti.landsidemonitor.bo.Costanti;
+import it.sti.landsidemonitor.bo.PortReader;
 import it.sti.landsidemonitor.dao.MainDAO;
 import it.sti.landsidemonitor.dto.SensorDTO;
 
@@ -36,7 +39,6 @@ public class RasterPanel extends JPanel{
 	  private boolean drawing;
 	  private ArrayList<SensorDTO> listaSensori;
 	  
-	  
 	  public RasterPanel(URL imageURL, JFrame g, ArrayList<SensorDTO> _listaSensori){
 	    super(true); //crea un JPanel con doubleBuffered true
 	   
@@ -44,9 +46,44 @@ public class RasterPanel extends JPanel{
 	    try{
 	      listaSensori=_listaSensori;	
 	      myFrame=g; 	
+	      setLayout(null);
 	      ImageIO.setUseCache(false);
 	      setImage(ImageIO.read(imageURL));
 	      
+	      JButton reset = new JButton("RESET");
+	      reset.setIcon(new ImageIcon(FrameSonde.class.getResource("/image/update.png")));
+	      reset.setFont(new Font("Arial", Font.BOLD, 14));
+	      reset.setBounds(10, 800, 120, 30);
+	      
+	      this.add(reset);
+	      
+	      reset.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					
+               
+			for (int i=0;i<listaSensori.size();i++) 
+			{		
+				String idSonda = ""+listaSensori.get(i).getId();
+                 	 
+				 cambiaStato(Integer.parseInt(idSonda), 0);
+              	 cambiaStatoOriginale(Integer.parseInt(idSonda), 0);
+
+               	 try {
+             
+               		Core.cambiaStato(Integer.parseInt(idSonda), 0); 
+					MainFrame.pr.write("Z");
+					
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+               	 
+					
+				}
+		//	dispose();
+			}
+			});
+			
 	      this.addMouseListener(mouseHandler);
 	      this.addMouseMotionListener(mouseHandler);
 	        

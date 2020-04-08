@@ -2,8 +2,9 @@ package it.sti.landsidemonitor.bo;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import it.sti.landsidemonitor.dto.SensorDTO;
 import it.sti.landsidemonitor.gui.RasterPanel;
@@ -76,13 +77,13 @@ public class PortReader implements SerialPortEventListener {
 		for (SensorDTO sensor : listaSensori) {
 			
 			
-			if(value.startsWith("<HT-"+sensor.getIdentifier()))
+			if(value.startsWith("<HT-"+sensor.getIdentifier()) && sensor.getStato()!=1)
 			{
 				System.out.println("HEALTH ["+sensor.getIdentifier()+"]");
 				sensor.setTempo_periodo_5_sec(0);
 				sensor.setTempo_periodo_3_sec(0);
 				sensor.setTempo_periodo_2_sec(0);
-				sogliaAllerta.remove(sensor.getIdentifier());
+		
 			}
 			
 			
@@ -117,7 +118,7 @@ public class PortReader implements SerialPortEventListener {
 			//	acc_Z=1.25;
 				
 				/*SONDE APPARTENENTE AL GRUPPO A*/
-				if(sensor.getType().equals("R"))
+				if(sensor.getType().equals("R") && sensor.getStato()!=1 )
 				{
 
 					if(sensor.getStato()!=1 && sensor.getStato()!=2) 
@@ -132,13 +133,15 @@ public class PortReader implements SerialPortEventListener {
 					/*ALLARME*/
 					if(statoAllarme(acc_X,acc_Y,acc_Z)==1) 
 					{
-						mainP.cambiaStato(sensor.getId(), 1);
-						sensor.setStato(1);
+						System.out.println("ALLARME ISTANTANEO > 5 m/s");
+						sogliaAllerta.put(sensor.getIdentifier(), sensor.getIdentifier());
+						mainP.cambiaStato(sensor.getId(), 2);
+						sensor.setStato(2);
 					//	serialPort.writeString("Y");
 					}
 					
 					/*Pre-Allerta 5 sec*/
-					if(statoAllarme(acc_X,acc_Y,acc_Z)==2) 
+					if(statoAllarme(acc_X,acc_Y,acc_Z)==2 ) 
 					{
 						if(valutaTempo(sensor,2,System.currentTimeMillis())) 
 						{
@@ -153,7 +156,7 @@ public class PortReader implements SerialPortEventListener {
 					}
 					
 					/*Pre-Allerta 3 sec*/
-					if(statoAllarme(acc_X,acc_Y,acc_Z)==3) 
+					if(statoAllarme(acc_X,acc_Y,acc_Z)==3 ) 
 					{
 						if(valutaTempo(sensor,3,System.currentTimeMillis())) 
 						{
@@ -183,11 +186,27 @@ public class PortReader implements SerialPortEventListener {
 					
 					/*Due o più sonde in Allerta --> Allarme*/
 					
-					if(sogliaAllerta.size()>=2)
+					if(sogliaAllerta.size()>=2 )
 					{
 						System.out.println("ALLARME 2 o PIU' SONDE IN ALLERTA");
-						mainP.cambiaStato(sensor.getId(), 1);
-						sensor.setStato(1);
+						
+						 Iterator it = sogliaAllerta.entrySet().iterator();
+						 while(it.hasNext()){
+						       Map.Entry me = (Map.Entry)it.next();
+						       System.out.println("\t SONDA: "+me.getKey());
+						 }
+						 
+					
+						for (SensorDTO sens : listaSensori) {
+							if(sens.getType().equals("R")) 
+							{
+								mainP.cambiaStato(sens.getId(), 1);
+								sens.setStato(1);
+							}
+						} 
+			
+						
+						sogliaAllerta= new HashMap<String,String>();
 					//	serialPort.writeString("Y");
 					}
 				}

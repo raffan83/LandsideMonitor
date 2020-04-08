@@ -206,7 +206,7 @@ public class FrameParametri extends JFrame {
 		textField_6.setColumns(10);
 		panelMainParam.add(textField_6, "cell 1 9,alignx left");
 		
-		JLabel lblLimiteAllarme = new JLabel("RANGE PREALLARME 1*");
+		JLabel lblLimiteAllarme = new JLabel("RANGE ALLERTA 1*");
 		lblLimiteAllarme.setFont(new Font("Arial", Font.BOLD, 14));
 		panelMainParam.add(lblLimiteAllarme, "cell 0 10,alignx trailing");
 		
@@ -219,7 +219,7 @@ public class FrameParametri extends JFrame {
 		textField_min_p1.setColumns(10);
 		panelMainParam.add(textField_min_p1, "cell 1 10,width 75:75:75,alignx left");
 		
-		JLabel lblRangePreallarme = new JLabel("RANGE PREALLARME 2*");
+		JLabel lblRangePreallarme = new JLabel("RANGE ALLERTA 2*");
 		lblRangePreallarme.setFont(new Font("Arial", Font.BOLD, 14));
 		panelMainParam.add(lblRangePreallarme, "cell 0 11,alignx trailing");
 		
@@ -231,11 +231,11 @@ public class FrameParametri extends JFrame {
 		label_2.setFont(new Font("Arial", Font.BOLD, 12));
 		panelMainParam.add(label_2, "flowx,cell 2 11,alignx trailing");
 		
-		JLabel label_4 = new JLabel("SENS");
-		label_4.setFont(new Font("Arial", Font.BOLD, 12));
-		panelMainParam.add(label_4, "flowx,cell 3 11,alignx trailing");
+		JLabel lblSec = new JLabel("SEC");
+		lblSec.setFont(new Font("Arial", Font.BOLD, 12));
+		panelMainParam.add(lblSec, "flowx,cell 3 11,alignx trailing");
 		
-		JLabel lblRangePreallarme_1 = new JLabel("RANGE PREALLARME 3*");
+		JLabel lblRangePreallarme_1 = new JLabel("RANGE ALLERTA 3*");
 		lblRangePreallarme_1.setFont(new Font("Arial", Font.BOLD, 14));
 		panelMainParam.add(lblRangePreallarme_1, "cell 0 12,alignx trailing");
 		
@@ -247,9 +247,9 @@ public class FrameParametri extends JFrame {
 		label_3.setFont(new Font("Arial", Font.BOLD, 12));
 		panelMainParam.add(label_3, "flowx,cell 2 12,alignx trailing");
 		
-		JLabel label_5 = new JLabel("SENS");
-		label_5.setFont(new Font("Arial", Font.BOLD, 12));
-		panelMainParam.add(label_5, "flowx,cell 3 12,alignx trailing");
+		JLabel lblSec_1 = new JLabel("SEC\r\n");
+		lblSec_1.setFont(new Font("Arial", Font.BOLD, 12));
+		panelMainParam.add(lblSec_1, "flowx,cell 3 12,alignx trailing");
 		
 		JLabel lblIParametri = new JLabel("* I parametri verranno applicati solo al prossimo riavvio");
 		lblIParametri.setFont(new Font("Arial", Font.BOLD, 12));
@@ -294,7 +294,7 @@ public class FrameParametri extends JFrame {
 		panelMainParam.add(textField_max_p1, "cell 2 10,width 75:75:75");
 		textField_max_p1.setColumns(10);
 		
-		JLabel lblSensibilita = new JLabel("SENS");
+		JLabel lblSensibilita = new JLabel("SEC");
 		lblSensibilita.setFont(new Font("Arial", Font.BOLD, 12));
 		panelMainParam.add(lblSensibilita, "flowx,cell 3 10,alignx trailing");
 		
@@ -335,15 +335,15 @@ public class FrameParametri extends JFrame {
 		
 		textField_min_p1.setText(""+Costanti.LIMITE_MIN_P1);
 		textField_max_p1.setText(""+Costanti.LIMITE_MAX_P1);
-		textField_iter_p1.setText(""+Costanti.ITERAZIONI_P1);
+		textField_iter_p1.setText(""+Costanti.TEMPO_ALLERTA_1/1000);
 		
 		textField_min_p2.setText(""+Costanti.LIMITE_MIN_P2);
 		textField_max_p2.setText(""+Costanti.LIMITE_MAX_P2);
-		textField_iter_p2.setText(""+Costanti.ITERAZIONI_P2);
+		textField_iter_p2.setText(""+Costanti.TEMPO_ALLERTA_2/1000);
 		
 		textField_min_p3.setText(""+Costanti.LIMITE_MIN_P3);
 		textField_max_p3.setText(""+Costanti.LIMITE_MAX_P3);
-		textField_iter_p3.setText(""+Costanti.ITERAZIONI_P3);
+		textField_iter_p3.setText(""+Costanti.TEMPO_ALLERTA_3/1000);
 		
 		JButton btnAnnulla = new JButton("ANNULLA");
 		btnAnnulla.setIcon(new ImageIcon(FrameParametri.class.getResource("/image/abort.png")));
@@ -687,15 +687,15 @@ public class FrameParametri extends JFrame {
 					
 					Costanti.LIMITE_MIN_P1=param.getLIMITE_MIN_P1();
 					Costanti.LIMITE_MAX_P1=param.getLIMITE_MAX_P1();
-					Costanti.ITERAZIONI_P1=param.getITERAZIONI_P1();
+					Costanti.TEMPO_ALLERTA_1=param.getITERAZIONI_P1();
 					
 					Costanti.LIMITE_MIN_P2=param.getLIMITE_MIN_P2();
 					Costanti.LIMITE_MAX_P2=param.getLIMITE_MAX_P2();
-					Costanti.ITERAZIONI_P2=param.getITERAZIONI_P2();
+					Costanti.TEMPO_ALLERTA_2=param.getITERAZIONI_P2();
 					
 					Costanti.LIMITE_MIN_P3=param.getLIMITE_MIN_P3();
 					Costanti.LIMITE_MAX_P3=param.getLIMITE_MAX_P3();
-					Costanti.ITERAZIONI_P3=param.getITERAZIONI_P3();
+					Costanti.TEMPO_ALLERTA_3=param.getITERAZIONI_P3();
 					
 					Costanti.HOST_NAME_MAIL=param.getHOST_NAME_MAIL();
 					Costanti.USERNAME_MAIL=param.getUSERNAME_MAIL();

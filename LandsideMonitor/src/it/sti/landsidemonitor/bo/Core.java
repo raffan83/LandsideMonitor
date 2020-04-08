@@ -88,15 +88,15 @@ public class Core {
 		
 		Costanti.LIMITE_MIN_P1=parametri.getLIMITE_MIN_P1();
 		Costanti.LIMITE_MAX_P1=parametri.getLIMITE_MAX_P1();
-		Costanti.ITERAZIONI_P1=parametri.getITERAZIONI_P1();
+		Costanti.TEMPO_ALLERTA_1=parametri.getITERAZIONI_P1()*1000;
 		
 		Costanti.LIMITE_MIN_P2=parametri.getLIMITE_MIN_P2();
 		Costanti.LIMITE_MAX_P2=parametri.getLIMITE_MAX_P2();
-		Costanti.ITERAZIONI_P2=parametri.getITERAZIONI_P2();
+		Costanti.TEMPO_ALLERTA_2=parametri.getITERAZIONI_P2()*1000;
 		
 		Costanti.LIMITE_MIN_P3=parametri.getLIMITE_MIN_P3();
 		Costanti.LIMITE_MAX_P3=parametri.getLIMITE_MAX_P3();
-		Costanti.ITERAZIONI_P3=parametri.getITERAZIONI_P3();
+		Costanti.TEMPO_ALLERTA_3=parametri.getITERAZIONI_P3()*1000;
 		
 		
 		Costanti.HOST_NAME_MAIL=parametri.getHOST_NAME_MAIL();

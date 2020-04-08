@@ -284,7 +284,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 						}
 						else 
 						{
-							if(iterazioni_preallarme_1>=Costanti.ITERAZIONI_P1 && iterazioni_preallarme_2<Costanti.ITERAZIONI_P2 && iterazioni_preallarme_3<Costanti.ITERAZIONI_P3) 
+							if(iterazioni_preallarme_1>=Costanti.TEMPO_ALLERTA_1 && iterazioni_preallarme_2<Costanti.TEMPO_ALLERTA_2 && iterazioni_preallarme_3<Costanti.TEMPO_ALLERTA_3) 
 							{
 								System.out.println("INSIDE P1");
 
@@ -297,7 +297,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 
 
 							}
-							if(iterazioni_preallarme_2>=Costanti.ITERAZIONI_P2 && iterazioni_preallarme_3<Costanti.ITERAZIONI_P3) 
+							if(iterazioni_preallarme_2>=Costanti.TEMPO_ALLERTA_2 && iterazioni_preallarme_3<Costanti.TEMPO_ALLERTA_3) 
 							{
 								System.out.println("INSIDE P2");
 
@@ -310,7 +310,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 
 
 							}
-							if(iterazioni_preallarme_3>=Costanti.ITERAZIONI_P3) 
+							if(iterazioni_preallarme_3>=Costanti.TEMPO_ALLERTA_3) 
 							{
 								System.out.println("INSIDE P3");
 

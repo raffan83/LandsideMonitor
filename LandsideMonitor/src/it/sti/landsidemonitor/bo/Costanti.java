@@ -14,15 +14,15 @@ public class Costanti {
 	
 	public static  double LIMITE_MIN_P1 = 0;
 	public static  double LIMITE_MAX_P1 = 0;
-	public static int ITERAZIONI_P1=0;
+	public static int TEMPO_ALLERTA_1=0;
 	
 	public static  double LIMITE_MIN_P2 = 0;
 	public static  double LIMITE_MAX_P2 = 0;
-	public static int ITERAZIONI_P2=0;
+	public static int TEMPO_ALLERTA_2=0;
 	
 	public static  double LIMITE_MIN_P3 = 0;
 	public static  double LIMITE_MAX_P3 = 0;
-	public static int ITERAZIONI_P3=0;
+	public static int TEMPO_ALLERTA_3=0;
 	
 	public static  double SENSIBILITA_PREALLARME = 10;
 	
@@ -40,11 +40,5 @@ public class Costanti {
 	public static String DEST_MAIL_PRE="";
 	public static String DEST_MAIL_ALARM="";
 	public static long TIMER_ITERAZIONI=15;
-	
-	public static double TEMPO_ALLERTA_1 = 5000;
-	public static double TEMPO_ALLERTA_2 = 3000;
-	public static double TEMPO_ALLERTA_3 = 2000;
-	
-	
 	
 }
