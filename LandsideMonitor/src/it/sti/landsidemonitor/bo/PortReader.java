@@ -65,14 +65,14 @@ public class PortReader implements SerialPortEventListener {
 							
 						}
 				}
-			}catch (SerialPortException ex) {
+			}catch (Exception ex) {
 				System.out.println(ex);
 			}                           
 		}
 
 	}
 	
-	private void valutaSegnale(String value) throws SerialPortException {
+	private void valutaSegnale(String value) throws Exception {
 		
 		for (SensorDTO sensor : listaSensori) {
 			
@@ -130,10 +130,11 @@ public class PortReader implements SerialPortEventListener {
 					
 				//	System.out.println("Movimento sonda: "+sensor.getIdentifier()+" Evento:["+data[0].split("_")[1]+ "] [X]:"+acc_X+" [Y]:"+acc_Y+" [Z]:"+acc_Z + " Time: "+sdf.format(new Date()));
 				
-					/*ALLARME*/
+					/*ALLERTA*/
 					if(statoAllarme(acc_X,acc_Y,acc_Z)==1) 
 					{
-						System.out.println("ALLARME ISTANTANEO > 5 m/s");
+						Core.registraEvento(sensor.getIdentifier(),"001",2,acc_X,acc_Y,acc_Z);
+						System.out.println("ALLERTA ISTANTANEA > "+Costanti.LIMITE_MAX_P3+" m/s SONDA: "+ sensor.getIdentifier());
 						sogliaAllerta.put(sensor.getIdentifier(), sensor.getIdentifier());
 						mainP.cambiaStato(sensor.getId(), 2);
 						sensor.setStato(2);
@@ -150,6 +151,7 @@ public class PortReader implements SerialPortEventListener {
 							sogliaAllerta.put(sensor.getIdentifier(), sensor.getIdentifier());
 							//serialPort.writeString("X");
 							
+							Core.registraEvento(sensor.getIdentifier(),"002",2,acc_X,acc_Y,acc_Z);
 							System.out.println("ALLERTA 5 SEC");
 						}
 
@@ -165,6 +167,7 @@ public class PortReader implements SerialPortEventListener {
 							sogliaAllerta.put(sensor.getIdentifier(), sensor.getIdentifier());
 //							serialPort.writeString("X");
 							
+							Core.registraEvento(sensor.getIdentifier(),"003",2,acc_X,acc_Y,acc_Z);
 							System.out.println("ALLERTA 3 SEC");
 						}
 
@@ -179,6 +182,7 @@ public class PortReader implements SerialPortEventListener {
 							sogliaAllerta.put(sensor.getIdentifier(), sensor.getIdentifier());
 //							serialPort.writeString("X");
 							
+							Core.registraEvento(sensor.getIdentifier(),"004",2,acc_X,acc_Y,acc_Z);
 							System.out.println("ALLERTA 2 SEC");
 						}
 
@@ -202,6 +206,7 @@ public class PortReader implements SerialPortEventListener {
 							{
 								mainP.cambiaStato(sens.getId(), 1);
 								sens.setStato(1);
+								Core.registraEvento(sens.getIdentifier(),"005",1,acc_X,acc_Y,acc_Z);
 							}
 						} 
 			

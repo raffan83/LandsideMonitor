@@ -179,7 +179,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 
 
 						}
-						Core.registraEvento(sensor.getIdentifier(),2,acc_X_sign,acc_Y_sign,acc_Z_sign);
+						Core.registraEvento(sensor.getIdentifier(),"001",2,acc_X_sign,acc_Y_sign,acc_Z_sign);
 						System.out.println("++ ITERAZIONE P1 "+acc_X+" "+acc_Y+" "+acc_Z +" ["+iterazioni_preallarme_1+"]");
 					}
 
@@ -210,7 +210,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 							Core.cambiaStato(sensor.getId() ,3);
 							iterazioni_preallarme_2++;
 						}
-						Core.registraEvento(sensor.getIdentifier(),3,acc_X_sign,acc_Y_sign,acc_Z_sign);
+						Core.registraEvento(sensor.getIdentifier(),"001",3,acc_X_sign,acc_Y_sign,acc_Z_sign);
 						System.out.println("++ ITERAZIONE P2 "+acc_X+" "+acc_Y+" "+acc_Z +" ["+iterazioni_preallarme_2+"]");
 
 					}
@@ -243,7 +243,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 							Core.cambiaStato(sensor.getId() ,4);
 							iterazioni_preallarme_3++;
 						}
-						Core.registraEvento(sensor.getIdentifier(),4,acc_X_sign,acc_Y_sign,acc_Z_sign);
+						Core.registraEvento(sensor.getIdentifier(),"001",4,acc_X_sign,acc_Y_sign,acc_Z_sign);
 						System.out.println("++ ITERAZIONE P3 "+acc_X+" "+acc_Y+" "+acc_Z +" ["+iterazioni_preallarme_3+"]");
 
 					}
@@ -257,7 +257,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 							if(statoAllarme==true) 
 							{
 
-								Core.registraEvento(sensor.getIdentifier(),1,acc_X_sign,acc_Y_sign,acc_Z_sign);
+								Core.registraEvento(sensor.getIdentifier(),"001",1,acc_X_sign,acc_Y_sign,acc_Z_sign);
 								mainP.cambiaStato(sensor.getId(), 1);
 								sensor.setStatoOriginale(1);
 								Core.cambiaStato(sensor.getId() ,1);
@@ -289,7 +289,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 								System.out.println("INSIDE P1");
 
 
-								Core.registraEvento(sensor.getIdentifier(),1,acc_X_sign,acc_Y_sign,acc_Z_sign);
+								Core.registraEvento(sensor.getIdentifier(),"001",1,acc_X_sign,acc_Y_sign,acc_Z_sign);
 								mainP.cambiaStato(sensor.getId(), 1);
 								sensor.setStatoOriginale(1);	
 								Core.cambiaStato(sensor.getId() ,1);
@@ -302,7 +302,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 								System.out.println("INSIDE P2");
 
 
-								Core.registraEvento(sensor.getIdentifier(),1,acc_X_sign,acc_Y_sign,acc_Z_sign);
+								Core.registraEvento(sensor.getIdentifier(),"001",1,acc_X_sign,acc_Y_sign,acc_Z_sign);
 								mainP.cambiaStato(sensor.getId(), 1);
 								sensor.setStatoOriginale(1);
 								Core.cambiaStato(sensor.getId() ,1);
@@ -314,7 +314,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 							{
 								System.out.println("INSIDE P3");
 
-								Core.registraEvento(sensor.getIdentifier(),1,acc_X_sign,acc_Y_sign,acc_Z_sign);
+								Core.registraEvento(sensor.getIdentifier(),"001",1,acc_X_sign,acc_Y_sign,acc_Z_sign);
 								mainP.cambiaStato(sensor.getId(), 1);
 								sensor.setStatoOriginale(1);
 								Core.cambiaStato(sensor.getId() ,1);
@@ -337,7 +337,7 @@ public class MainSensor extends SwingWorker<Integer, Integer>{
 						Core.cambiaStato(sensor.getId() ,5);
 						if(statoMancataRicezione==true) 
 						{
-							Core.registraEvento(sensor.getIdentifier(),5,0,0,0);
+							Core.registraEvento(sensor.getIdentifier(),"001",5,0,0,0);
 							statoMancataRicezione=false;
 						}
 					}

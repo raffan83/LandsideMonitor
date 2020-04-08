@@ -3,6 +3,15 @@ package it.sti.landsidemonitor.bo;
 public class Costanti {
 	
 	
+	
+	public static final String COD_EVE_001 = "ALLERTA SUPERAMENTO SOGLIA MASSIMA ";
+	public static final String COD_EVE_002 = "ALLERTA PERIODO 1";
+	public static final String COD_EVE_003 = "ALLERTA PERIODO 2";
+	public static final String COD_EVE_004 = "ALLERTA PERIODO 3";
+	public static final String COD_EVE_005 = "ALLARME 2 o PIU' SONDE IN ALLERTA ";
+	
+	
+	
 	public static String PORT="";
 	public static int FRAMERATE=0;
 	public static  double LIMIT_GRAPH_X_AXIS = 0;

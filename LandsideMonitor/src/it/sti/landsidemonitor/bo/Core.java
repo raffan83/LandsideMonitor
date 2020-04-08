@@ -37,11 +37,13 @@ public class Core {
 		
 	}
 
-	public synchronized static void registraEvento(String identifier, int i, double acc_X, double acc_Y, double acc_Z) throws SQLException {
+	public synchronized static void registraEvento(String identifier,String codice, int i, double acc_X, double acc_Y, double acc_Z) throws SQLException {
+		
+		String descrizione =Utility.getDescrizioneEvento(codice);
 		
 		synchronized (identifier) 
 		{
-			MainDAO.registraEvento(identifier,i,acc_X,acc_Y,acc_Z);
+			MainDAO.registraEvento(identifier,i,codice,descrizione,acc_X,acc_Y,acc_Z);
 		}
 		
 	}

@@ -14,7 +14,7 @@ public class Utility {
 		}
 		else if (stato == 2) 
 		{
-			return "PRE ALLARME 1 ";
+			return "ALLERTA";
 		}
 		else if (stato==3)
 		{
@@ -33,6 +33,31 @@ public class Utility {
 		{
 			return "";
 		}
+	}
+
+	public static String getDescrizioneEvento(String codice) {
+		
+		if(codice.equals("001")) 
+		{
+			return Costanti.COD_EVE_001+""+Costanti.LIMITE_MAX_P3+" m/s";
+		}
+		if(codice.equals("002")) 
+		{
+			return Costanti.COD_EVE_002;
+		}
+		if(codice.equals("003")) 
+		{
+			return Costanti.COD_EVE_003;
+		}
+		if(codice.equals("004")) 
+		{
+			return Costanti.COD_EVE_004;
+		}
+		if(codice.equals("005")) 
+		{
+			return Costanti.COD_EVE_005;
+		}
+		return "";
 	}
 
 }

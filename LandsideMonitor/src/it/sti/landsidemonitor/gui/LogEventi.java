@@ -29,11 +29,11 @@ public class LogEventi extends JFrame{
 	
 	public LogEventi(SensorDTO sensor, RasterPanel mainP) throws SQLException {
 	
-		setSize(800,600);
+		setSize(1200,600);
 		setTitle("Log eventi sonda "+sensor.getIdentifier());
 		
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		int x = (dim.width - 800) / 2;
+		int x = (dim.width - 1200) / 2;
 		int y = (dim.height - 600) / 2;
 		
 		setLocation(x, y);
@@ -45,14 +45,16 @@ public class LogEventi extends JFrame{
 		for (int i=0;i<listaEventi.size();i++) 
 		{
 			
-			String[]eventi=listaEventi.get(i).split(";");
+			String[]evento=listaEventi.get(i).split(";");
 			
 			model.addRow(new Object[0]);
-			model.setValueAt(eventi[0],i,0);
-			model.setValueAt(Utility.getLabelStato(Integer.parseInt(eventi[1])),i,1);
-			model.setValueAt(eventi[2],i,2);
-			model.setValueAt(eventi[3],i,3);
-			model.setValueAt(eventi[4],i,4);
+			model.setValueAt(evento[0],i,0);
+			model.setValueAt(Utility.getLabelStato(Integer.parseInt(evento[1])),i,1);
+			model.setValueAt(evento[2],i,2);
+			model.setValueAt(evento[3],i,3);
+			model.setValueAt(evento[4],i,4);
+			model.setValueAt(evento[5],i,5);
+			model.setValueAt(evento[6],i,6);
 		}
 		
 		tabellaEventi= new JTable(model);
@@ -63,7 +65,7 @@ public class LogEventi extends JFrame{
 		tabellaEventi.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
 		tabellaEventi.setRowHeight(35);
 		tabellaEventi.getColumnModel().getColumn(0).setPreferredWidth(200);
-		getContentPane().setLayout(new MigLayout("", "[784px]", "[47.00][561px]"));
+		getContentPane().setLayout(new MigLayout("", "grow", "[47.00][561px]"));
 		
 		JButton btnCancellaLog = new JButton("Cancella Log");
 		btnCancellaLog.addActionListener(new ActionListener() {
@@ -96,6 +98,8 @@ public class LogEventi extends JFrame{
 			
 			addColumn("Data");
 			addColumn("Stato");
+			addColumn("Codice");
+			addColumn("Descrizione");
 			addColumn("Asse X");
 			addColumn("Asse Y");
 			addColumn("Asse Z");
@@ -115,6 +119,10 @@ public class LogEventi extends JFrame{
 				return String.class;
 			case 4:
 				return String.class;
+			case 5:
+				return String.class;
+			case 6:
+				return String.class;
 				
 			default:
 				return String.class;
@@ -122,7 +130,7 @@ public class LogEventi extends JFrame{
 		}
 
 		public int getColumnCount() {
-			return 5;
+			return 7;
 		}
 		
 		@Override
@@ -153,34 +161,24 @@ public class LogEventi extends JFrame{
                 cellComponent.setBackground(new Color(224,224,224));
                 
             }
+            
+            int code=Integer.parseInt(table.getValueAt(row, 2).toString());
+            
+            if(code>=1 && code <=4 ) 
+            {
+         	   cellComponent.setForeground(Color.black);
+                cellComponent.setBackground(Color.ORANGE);
+            }
+            
+           if(code==5) 
+           {
+        	   cellComponent.setForeground(Color.black);
+               cellComponent.setBackground(Color.RED);
+           }
    
         return cellComponent;
 
         }
-
-		private ArrayList<Boolean> getListaControlloRipetibilita(int punti, int ripetizioni) {
-			
-			boolean flag=false;
-			ArrayList<Boolean> lista=new ArrayList<Boolean>();
-
-			for (int i = 1; i <= ripetizioni; i++) {
-				
-				if(i % 2 == 0)
-				{
-					flag=false;
-				}
-				else
-				{
-					flag=true;
-				}
-				for (int j = 1; j <= punti; j++) 
-				{
-					lista.add(flag);
-				}
-			
-			}
-			return lista;
-		}
 
     }
 }

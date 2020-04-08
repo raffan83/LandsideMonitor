@@ -135,12 +135,13 @@ public class FrameSonde extends JFrame implements ActionListener{
 				sensor= listaSonde.get(i);
 				modelSonde.addRow(new Object[0]);
 				modelSonde.setValueAt(sensor.getIdentifier(), i, 0);
-				modelSonde.setValueAt(Utility.getLabelStato(sensor.getStato()), i, 1);
-				modelSonde.setValueAt(new JButton(), i, 2);
+				modelSonde.setValueAt(sensor.getType(), i, 1);
+				modelSonde.setValueAt(Utility.getLabelStato(sensor.getStato()), i, 2);
 				modelSonde.setValueAt(new JButton(), i, 3);
 				modelSonde.setValueAt(new JButton(), i, 4);
 				modelSonde.setValueAt(new JButton(), i, 5);
-				modelSonde.setValueAt(sensor.getId(), i, 6);
+				modelSonde.setValueAt(new JButton(), i, 6);
+				modelSonde.setValueAt(sensor.getId(), i, 7);
 				
 			}
 
@@ -206,7 +207,7 @@ public class FrameSonde extends JFrame implements ActionListener{
                	 mainP.cambiaStato(Integer.parseInt(idSonda), 0);
                	 mainP.cambiaStatoOriginale(Integer.parseInt(idSonda), 0);
                	 
-               	 modelSonde.setValueAt("ATTIVA", i, 2);
+               	 modelSonde.setValueAt("ATTIVA", i, 3);
                	 
                	 tabellaSonde.repaint();
                	 try {
@@ -253,6 +254,7 @@ public class FrameSonde extends JFrame implements ActionListener{
 			
 			listaSnd=_listaSnd;
 			addColumn("Identificativo");
+			addColumn("Tipo");
 			addColumn("Stato");
 			addColumn("Posizione");
 			addColumn("Grafico");
@@ -269,7 +271,7 @@ public class FrameSonde extends JFrame implements ActionListener{
 			case 1:
 				return String.class;
 			case 2:
-				return JButton.class;
+				return String.class;
 			case 3:
 				return JButton.class;
 			case 4:
@@ -277,6 +279,8 @@ public class FrameSonde extends JFrame implements ActionListener{
 			case 5:
 				return JButton.class;
 			case 6:
+				return JButton.class;
+			case 7:
 				return String.class;
 			default:
 				return String.class;
@@ -284,7 +288,7 @@ public class FrameSonde extends JFrame implements ActionListener{
 		}
 
 		public int getColumnCount() {
-			return 7;
+			return 8;
 		}
 		
 		@Override
@@ -299,15 +303,17 @@ public class FrameSonde extends JFrame implements ActionListener{
 			 
 			 
          switch (columnIndex) {
-             case 0: return listaSnd.get(rowIndex).getIdentifier();         
+             case 0: return listaSnd.get(rowIndex).getIdentifier();  
              
-             case 1: return Utility.getLabelStato(listaSnd.get(rowIndex).getStato());
+             case 1: return listaSnd.get(rowIndex).getType();
              
-             case 2:  final JButton button = new JButton("Posizione");
+             case 2: return Utility.getLabelStato(listaSnd.get(rowIndex).getStato());
+             
+             case 3:  final JButton button = new JButton("Posizione");
              button.addActionListener(new ActionListener() {
                  public void actionPerformed(ActionEvent arg0) {
                      
-                	 String idSonda = modelSonde.getValueAt(rowIndex, 6).toString();
+                	 String idSonda = modelSonde.getValueAt(rowIndex, 7).toString();
                 	 
                 	 SwingUtilities.invokeLater(new Runnable(){
          	            public void run() 
@@ -336,11 +342,11 @@ public class FrameSonde extends JFrame implements ActionListener{
              });
              return button;
             /*Adding button and creating click listener*/
-             case 3: final JButton button1 = new JButton("Grafico");
+             case 4: final JButton button1 = new JButton("Grafico");
                      button1.addActionListener(new ActionListener() {
                          public void actionPerformed(ActionEvent arg0) {
                            
-                        	 String idSonda = modelSonde.getValueAt(rowIndex, 6).toString();
+                        	 String idSonda = modelSonde.getValueAt(rowIndex, 7).toString();
                         	 
                         	 SwingUtilities.invokeLater(new Runnable(){
                  	            public void run() 
@@ -368,11 +374,11 @@ public class FrameSonde extends JFrame implements ActionListener{
                          }
                      });
                      return button1;
-             case 4: final JButton button2 = new JButton("Log Eventi");
+             case 5: final JButton button2 = new JButton("Log Eventi");
              button2.addActionListener(new ActionListener() {
                  public void actionPerformed(ActionEvent arg0) {
                 	 
-                   	 String idSonda = modelSonde.getValueAt(rowIndex, 6).toString();
+                   	 String idSonda = modelSonde.getValueAt(rowIndex, 7).toString();
                 	 
                 	 SwingUtilities.invokeLater(new Runnable(){
          	            public void run() 
@@ -399,11 +405,11 @@ public class FrameSonde extends JFrame implements ActionListener{
                  }
              });
              return button2;
-             case 5: final JButton button3 = new JButton("Reset Stato");
+             case 6: final JButton button3 = new JButton("Reset Stato");
              button3.addActionListener(new ActionListener() {
                  public void actionPerformed(ActionEvent arg0) {
                     
-                	 String idSonda = modelSonde.getValueAt(rowIndex, 6).toString();
+                	 String idSonda = modelSonde.getValueAt(rowIndex, 7).toString();
                 	 
                 	 mainP.cambiaStato(Integer.parseInt(idSonda), 0);
                 	 mainP.cambiaStatoOriginale(Integer.parseInt(idSonda), 0);
@@ -423,7 +429,7 @@ public class FrameSonde extends JFrame implements ActionListener{
              });
              return button3;
              
-             case 6: return ""+listaSnd.get(rowIndex).getId();
+             case 7: return ""+listaSnd.get(rowIndex).getId();
              
                      
              default: return "Error";
@@ -502,7 +508,7 @@ public class FrameSonde extends JFrame implements ActionListener{
 			int selectedRow = tabellaSonde.getSelectedRow();
 			if(selectedRow!=-1)
 			{
-				String idSonda=""+modelSonde.getValueAt(selectedRow, 6);
+				String idSonda=""+modelSonde.getValueAt(selectedRow, 7);
 				
 				Core.removeSensor(idSonda);
 				
@@ -658,17 +664,19 @@ public class FrameSonde extends JFrame implements ActionListener{
 								Point p = new Point(x,y);
 								s.setPoint(p);
 								s.setStato(0);
+								s.setType(tf_type.getSelectedItem().toString());
 								
 								listaSonde.add(s);
 								int i=modelSonde.getRowCount();
 								modelSonde.addRow(new Object[0]);
 								modelSonde.setValueAt(s.getIdentifier(), i, 0);
-								modelSonde.setValueAt(s.getStato(), i, 1);
-								modelSonde.setValueAt(new JButton(), i, 2);
+								modelSonde.setValueAt(s.getType(), i, 1);
+								modelSonde.setValueAt(s.getStato(), i, 2);
 								modelSonde.setValueAt(new JButton(), i, 3);
 								modelSonde.setValueAt(new JButton(), i, 4);
 								modelSonde.setValueAt(new JButton(), i, 5);
-								modelSonde.setValueAt(s.getId(), i, 6);
+								modelSonde.setValueAt(new JButton(), i, 6);
+								modelSonde.setValueAt(s.getId(), i, 7);
 								dispose();
 								
 		
@@ -716,7 +724,7 @@ public class FrameSonde extends JFrame implements ActionListener{
 			{
 
 
-				if(column==1)
+				if(column==2)
 				{
 
 					String stato=table.getValueAt(row, 1).toString();

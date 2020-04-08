@@ -159,7 +159,7 @@ public class MainDAO {
 		
 	}
 
-	public static void registraEvento(String identifier, int stato, double acc_X, double acc_Y, double acc_Z) throws SQLException {
+	public static void registraEvento(String identifier, int stato, String codice, String descrizione, double acc_X, double acc_Y, double acc_Z) throws SQLException {
 	
 		
 		Connection con=null;
@@ -174,14 +174,16 @@ public class MainDAO {
 		    SimpleDateFormat format = new SimpleDateFormat("dd-M-yyyy HH:mm:ss.SSS");
 		    String DateToStr = format.format(new Date());
 		        
-			pst=con.prepareStatement("INSERT INTO tbl_eventi(id_sonda,date,stato,asse_x,asse_y,asse_z,abilitato) VALUES(?,?,?,?,?,?,?)");
+			pst=con.prepareStatement("INSERT INTO tbl_eventi(id_sonda,date,stato,codice,descrizione,asse_x,asse_y,asse_z,abilitato) VALUES(?,?,?,?,?,?,?,?,?)");
 			pst.setString(1, identifier);
 			pst.setString(2,DateToStr);
 			pst.setInt(3,stato);
-			pst.setDouble(4, acc_X);
-			pst.setDouble(5, acc_Y);
-			pst.setDouble(6, acc_Z);
-			pst.setInt(7,1 );
+			pst.setString(4,codice);
+			pst.setString(5,descrizione);
+			pst.setDouble(6, acc_X);
+			pst.setDouble(7, acc_Y);
+			pst.setDouble(8, acc_Z);
+			pst.setInt(9,1 );
 			
 			pst.execute();
 			
@@ -217,6 +219,8 @@ public class MainDAO {
 				
 				listaEventi.add(rs.getString("date")+";"+
 								rs.getString("stato")+";"+
+								rs.getString("codice")+";"+
+								rs.getString("descrizione")+";"+
 								rs.getString("asse_x")+";"+
 								rs.getString("asse_y")+";"+
 								rs.getString("asse_z"));
