@@ -64,15 +64,42 @@ public class RasterPanel extends JPanel{
 			for (int i=0;i<listaSensori.size();i++) 
 			{		
 				String idSonda = ""+listaSensori.get(i).getId();
-                 	 
-				 cambiaStato(Integer.parseInt(idSonda), 0);
-              	 cambiaStatoOriginale(Integer.parseInt(idSonda), 0);
-
                	 try {
              
-               		Core.cambiaStato(Integer.parseInt(idSonda), 0); 
-					MainFrame.pr.write("Z");
+               		cambiaStato(Integer.parseInt(idSonda), 0);
+                 	cambiaStatoOriginale(Integer.parseInt(idSonda), 0);
+                 	
+               		PortReader.write("Z");
+               		
+               	PortReader.write(_listaSensori.get(i).getIdentifier());
+               	
+               	double tempoStart=System.currentTimeMillis();
+				
+        		String msgCalibration="";
+        		
+               	while(true)
+				{
+					double tempoTrascorso=System.currentTimeMillis()-tempoStart;
 					
+					String message=PortReader.getMessage();
+				
+					if(message.startsWith("<CL-"+_listaSensori.get(i).getIdentifier()))
+						{
+							System.out.println("MGR RESET "+message);
+							msgCalibration=message;
+						}
+					
+					if(tempoTrascorso>1000) 
+					{
+						if(msgCalibration.equals(""))
+						{
+							cambiaStato(Integer.parseInt(idSonda), 5);
+		                 	cambiaStatoOriginale(Integer.parseInt(idSonda), 5);
+						}
+						break;
+					}
+				}	
+               	
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -84,8 +111,8 @@ public class RasterPanel extends JPanel{
 			}
 			});
 			
-	      this.addMouseListener(mouseHandler);
-	      this.addMouseMotionListener(mouseHandler);
+	 //     this.addMouseListener(mouseHandler);
+	  //    this.addMouseMotionListener(mouseHandler);
 	        
 	    } catch(Exception e)
 	    {
@@ -107,7 +134,8 @@ public class RasterPanel extends JPanel{
 
 	    this.setBounds(0, 0, myFrame.getWidth(), myFrame.getHeight()-40);
 	    g.drawImage(img, 0, 0, myFrame.getWidth(), myFrame.getHeight()-40,this);
-	   
+	  
+	//   System.out.println(System.currentTimeMillis());
 	    for (int i=0;i<listaSensori.size();i++) {
 	    	
 	    	int stato =listaSensori.get(i).getStato();
@@ -233,24 +261,7 @@ public class RasterPanel extends JPanel{
 //	            repaint();
 	        }
 
-	        @Override
-	        public void mouseReleased(MouseEvent e) {
-
-	            drawing = false;
-	     
-	           repaint();
-	        }
-
-	        @Override
-	        public void mouseDragged(MouseEvent e) {
-	        	
-	        	System.out.println("Mouse drag");
-	        	
-	            if (drawing && p1!=null) {
-	       
-	                repaint();
-	            }
-	        }
+	    
 	    }
 
 	public void removePoint(String idSonda) {

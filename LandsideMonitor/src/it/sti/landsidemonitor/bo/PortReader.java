@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.swing.plaf.BorderUIResource.BevelBorderUIResource;
+
 import it.sti.landsidemonitor.dto.SensorDTO;
 import it.sti.landsidemonitor.gui.RasterPanel;
 import jssc.SerialPort;
@@ -15,31 +17,111 @@ import jssc.SerialPortException;
 
 public class PortReader implements SerialPortEventListener {
 
-	SerialPort serialPort;
+	static SerialPort serialPort;
 	String canale;
-	private  String msg;
-	private  ArrayList<SensorDTO> listaSensori;
-	private RasterPanel mainP;
-	HashMap<String, String> sogliaAllerta;
+	public static  String msg;
+	private static  ArrayList<SensorDTO> listaSensori;
+	private static RasterPanel mainP;
+	HashMap<String, SensorDTO> sogliaAllerta;
 
 	SimpleDateFormat sdf = new SimpleDateFormat("ss.SSS");
 	
-	public PortReader(RasterPanel _mainP,SerialPort serialPort, ArrayList<SensorDTO> _listaSensori) 
+	public PortReader(RasterPanel _mainP,SerialPort serialPort, ArrayList<SensorDTO> _listaSensori) throws Exception 
 	{
 		this.serialPort = serialPort;
 		listaSensori=_listaSensori;
 		msg = "";
-		sogliaAllerta=new HashMap<String,String>();
+		sogliaAllerta=new HashMap<String,SensorDTO>();
 		mainP=_mainP;
 	
-
+		for (SensorDTO sensorDTO : _listaSensori) 
+		{
+			checkHealthSensor(sensorDTO);
+		}
+		
+		
 	}
 
+	public static void checkHealthSensor(SensorDTO sensorDTO) throws SerialPortException {
+		
+		System.out.println("Check sensor: "+sensorDTO.getIdentifier());
+		write(sensorDTO.getIdentifier());
+		
+		String playload="";
+		boolean read=false;
+		byte[] by= new byte[1];
+		ArrayList<String> listaMessaggi= new ArrayList<>();
+		
+		double tempoStart=System.currentTimeMillis();
+
+		while(true){
+			try {             
+				by = serialPort.readBytes(1);
+				
+				
+				double tempoTrascorso=System.currentTimeMillis()-tempoStart;
+						
+				if(by[0]!=0 )
+				{                         
+						if(by[0]==60)
+						{
+							read=true;
+						}
+						if(read) 
+						{
+							playload+=(char)by[0];
+						}
+						if(by[0]==62)
+						{
+							read=false;
+							msg=playload;
+							playload="";
+							listaMessaggi.add(msg);
+						}
+				}
+				
+				if(tempoTrascorso>1000) 
+				{
+					boolean alive=false;
+					for (String msg : listaMessaggi) 
+					{
+						if(msg.startsWith("<CL-"+sensorDTO.getIdentifier()) && sensorDTO.getStato()!=1)
+						{
+							System.out.println("CALIBRATION ["+sensorDTO.getIdentifier()+"]");
+							alive=true;
+							
+							if(sensorDTO.getStato()!=1 || sensorDTO.getStato()!=2) 
+							{
+								mainP.cambiaStato(sensorDTO.getId(), 0);
+								sensorDTO.setStato(0);
+							}
+						}
+						
+					}
+					if(alive==false) 
+					{
+						mainP.cambiaStato(sensorDTO.getId(), 5);
+						sensorDTO.setStato(5);
+					}
+					break;
+				}
+				
+			}catch (Exception ex) {
+				System.out.println(ex);
+			}                           
+		}
+	}
+
+	public static String getMessage() 
+	{
+		return msg;
+	}
+	
 	@Override
 	public void serialEvent(SerialPortEvent event) { 
 		String playload="";
 		boolean read=false;
-		byte[] by= new byte[1];                       
+		byte[] by= new byte[1];
 		while(true){
 			try {             
 				by = serialPort.readBytes(1);
@@ -59,8 +141,7 @@ public class PortReader implements SerialPortEventListener {
 							msg=playload;
 							playload="";
 							
-							
-							//System.out.println("Lettura: "+ msg+" "+sdf.format(new Date()));
+						//	System.out.println("Lettura: "+ msg);
 							valutaSegnale(msg);
 							
 						}
@@ -76,6 +157,31 @@ public class PortReader implements SerialPortEventListener {
 		
 		for (SensorDTO sensor : listaSensori) {
 			
+			
+			if(value.startsWith("<CL-"+sensor.getIdentifier()))
+			{
+				
+				String levBatt=value.split(",")[0];
+				
+				String bering=value.split(",")[1];
+				
+				String pitch=value.split(",")[2];
+				
+				String roll=value.split(",")[3].substring(0,value.split(",")[3].length()-1);
+				
+				System.out.println("Calibration  "+sensor.getIdentifier()+" ["+bering+"]["+pitch+"]["+roll+"]");
+				
+				sensor.setBattLevel(levBatt);
+				
+				sensor.setBering(bering);
+				
+				sensor.setPitch(pitch);
+				
+				sensor.setRoll(roll);
+				
+				
+				
+			}
 			
 			if(value.startsWith("<HT-"+sensor.getIdentifier()) && sensor.getStato()!=1)
 			{
@@ -112,6 +218,12 @@ public class PortReader implements SerialPortEventListener {
 					acc_Z=Math.abs(Double.parseDouble(data[3].substring(0,data[3].length()-1)));
 				}
 				
+				sensor.setBering(""+acc_X);
+				
+				sensor.setPitch(""+acc_Y);
+				
+				sensor.setRoll(""+acc_Z);
+				
 				/*Dati test accelerazione */
 			//	acc_X=1.25;
 			//	acc_Y=1.25;
@@ -135,7 +247,7 @@ public class PortReader implements SerialPortEventListener {
 					{
 						Core.registraEvento(sensor.getIdentifier(),"001",2,acc_X,acc_Y,acc_Z);
 						System.out.println("ALLERTA ISTANTANEA > "+Costanti.LIMITE_MAX_P3+" m/s SONDA: "+ sensor.getIdentifier());
-						sogliaAllerta.put(sensor.getIdentifier(), sensor.getIdentifier());
+						sogliaAllerta.put(sensor.getIdentifier(), sensor);
 						mainP.cambiaStato(sensor.getId(), 2);
 						sensor.setStato(2);
 					//	serialPort.writeString("Y");
@@ -148,7 +260,7 @@ public class PortReader implements SerialPortEventListener {
 						{
 							mainP.cambiaStato(sensor.getId(), 2);
 							sensor.setStato(2);
-							sogliaAllerta.put(sensor.getIdentifier(), sensor.getIdentifier());
+							sogliaAllerta.put(sensor.getIdentifier(),sensor);
 							//serialPort.writeString("X");
 							
 							Core.registraEvento(sensor.getIdentifier(),"002",2,acc_X,acc_Y,acc_Z);
@@ -164,7 +276,7 @@ public class PortReader implements SerialPortEventListener {
 						{
 							mainP.cambiaStato(sensor.getId(), 2);
 							sensor.setStato(2);
-							sogliaAllerta.put(sensor.getIdentifier(), sensor.getIdentifier());
+							sogliaAllerta.put(sensor.getIdentifier(), sensor);
 //							serialPort.writeString("X");
 							
 							Core.registraEvento(sensor.getIdentifier(),"003",2,acc_X,acc_Y,acc_Z);
@@ -179,7 +291,7 @@ public class PortReader implements SerialPortEventListener {
 						{
 							mainP.cambiaStato(sensor.getId(), 2);
 							sensor.setStato(2);
-							sogliaAllerta.put(sensor.getIdentifier(), sensor.getIdentifier());
+							sogliaAllerta.put(sensor.getIdentifier(), sensor);
 //							serialPort.writeString("X");
 							
 							Core.registraEvento(sensor.getIdentifier(),"004",2,acc_X,acc_Y,acc_Z);
@@ -198,20 +310,14 @@ public class PortReader implements SerialPortEventListener {
 						 while(it.hasNext()){
 						       Map.Entry me = (Map.Entry)it.next();
 						       System.out.println("\t SONDA: "+me.getKey());
+						       
+						       SensorDTO s=(SensorDTO)me.getValue();
+						       mainP.cambiaStato(s.getId(), 1);
+							   s.setStato(1);
+							   Core.registraEvento(s.getIdentifier(),"005",1,acc_X,acc_Y,acc_Z);
 						 }
-						 
-					
-						for (SensorDTO sens : listaSensori) {
-							if(sens.getType().equals("R")) 
-							{
-								mainP.cambiaStato(sens.getId(), 1);
-								sens.setStato(1);
-								Core.registraEvento(sens.getIdentifier(),"005",1,acc_X,acc_Y,acc_Z);
-							}
-						} 
-			
-						
-						sogliaAllerta= new HashMap<String,String>();
+
+						sogliaAllerta= new HashMap<String,SensorDTO>();
 					//	serialPort.writeString("Y");
 					}
 				}
@@ -347,9 +453,25 @@ public class PortReader implements SerialPortEventListener {
 		}
 	}
 	
-	public  void write(String string) throws SerialPortException 
+	public static  void write(String string) throws SerialPortException 
 	{
-		serialPort.writeString(string);
+		byte[] b = new byte[string.getBytes().length+1];
+		
+		byte[] original= string.getBytes();
+		
+		for (int i = 0; i < original.length; i++) 
+		{
+			b[i]=original[i];
+		}
+		b[b.length-1]= 0x0A;
+		
+		serialPort.writeBytes(b);
+		
+	}
+
+	public static ArrayList<SensorDTO> getListaSonde() {
+		
+		return listaSensori;
 	}
 	
 }

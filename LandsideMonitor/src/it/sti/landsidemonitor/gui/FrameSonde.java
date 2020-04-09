@@ -202,7 +202,7 @@ public class FrameSonde extends JFrame implements ActionListener{
                
 			for (int i=0;i<modelSonde.getRowCount();i++) 
 			{		
-				String idSonda = modelSonde.getValueAt(i, 6).toString();
+				String idSonda = modelSonde.getValueAt(i, 7).toString();
             	 
                	 mainP.cambiaStato(Integer.parseInt(idSonda), 0);
                	 mainP.cambiaStatoOriginale(Integer.parseInt(idSonda), 0);
@@ -213,7 +213,7 @@ public class FrameSonde extends JFrame implements ActionListener{
                	 try {
                		SensorDTO sensor=mainP.getSonda(idSonda);     
                		Core.cambiaStato(sensor.getId(), 0); 
-					pr.write("Z");
+					PortReader.write("Z");
 					
 					} catch (Exception e) {
 						// TODO Auto-generated catch block

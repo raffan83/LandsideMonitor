@@ -47,6 +47,10 @@ public static SerialPort getConnection (String port ,int frameRate) {
 		serialPort.writeString(string);
 	}
 
+	public static void close() throws SerialPortException 
+	{
+		serialPort.closePort();
+	}
  }
 
 

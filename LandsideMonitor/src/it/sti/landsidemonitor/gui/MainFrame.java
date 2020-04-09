@@ -24,6 +24,7 @@ import it.sti.landsidemonitor.bo.Costanti;
 import it.sti.landsidemonitor.bo.PortReader;
 import it.sti.landsidemonitor.bo.Serial;
 import it.sti.landsidemonitor.dto.SensorDTO;
+import it.sti.landsidemonitor.executor.Temp;
 import jssc.SerialPort;
 import jssc.SerialPortException;
 
@@ -35,13 +36,13 @@ public class MainFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JFrame g;
 	public RasterPanel mainPanel=null;
+	public static jssc.SerialPort serialPort;
 	static ArrayList<SensorDTO> listaSensori=null;
 	JMenuBar menuBar;
 	static PortReader pr=null;
 	JMenu menu;
-	JMenuItem it1;
-	JMenuItem it2;
-	JMenuItem it3;
+	JMenuItem it1,it2,it3,it4;
+	
 	
 	
 	public MainFrame() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, SerialPortException, SQLException 
@@ -65,7 +66,7 @@ public class MainFrame extends JFrame {
 	
 		listaSensori=Core.getListaSensori();
 		
-		jssc.SerialPort serialPort =Serial.getConnection(Costanti.PORT, Costanti.FRAMERATE);
+		serialPort =Serial.getConnection(Costanti.PORT, Costanti.FRAMERATE);
 		
 		costruisciFrame(listaSensori);
 		
@@ -73,13 +74,19 @@ public class MainFrame extends JFrame {
 
 		serialPort.addEventListener(pr, SerialPort.MASK_RXCHAR);
 			
-	
+		
 	} catch (jssc.SerialPortException e) {
 		
 		JOptionPane.showMessageDialog(null, "Porta "+Costanti.PORT+ " non trovata, configurare correttamente nome porta dal pannello Impostazioni","Porta non trovata",JOptionPane.INFORMATION_MESSAGE,new ImageIcon(MainFrame.class.getResource("/image/error.png")));
 		costruisciFrame( listaSensori);
 		
 	 }
+	 catch (Exception e) 
+	{
+		 e.printStackTrace();
+		 costruisciFrame( listaSensori);
+	}
+	
 	}
 
 	private void costruisciFrame(ArrayList<SensorDTO> listaSensori) {
@@ -90,7 +97,8 @@ public class MainFrame extends JFrame {
 		 JMenuBar menuBar = new JMenuBar();
 		    it1= new JMenuItem("Parametri");
 		  	it2= new JMenuItem("Sonde");
-		  	it3= new JMenuItem("Console");
+		  	it3= new JMenuItem("Console");		  	
+		  	it4= new JMenuItem("Installazione");
 		  	
 		  
 		  	
@@ -100,6 +108,7 @@ public class MainFrame extends JFrame {
 		  	menu.add(it1);
 		  	menu.add(it2);
 		  	menu.add(it3);
+		  	menu.add(it4);
 		  	
 		  	setJMenuBar(menuBar);
 		  	
@@ -161,6 +170,23 @@ public class MainFrame extends JFrame {
 	      	        f.setVisible(true);
 				}
 			});
+			
+			it4.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+				
+					try 
+					{
+					JFrame f=new FrameInstallazione(mainPanel,pr,listaSensori);
+	            	f.setDefaultCloseOperation(1);
+	      	        f.setVisible(true);
+					}catch (Exception ex2) {
+						ex2.printStackTrace();
+					}
+				}
+			});
+	
 			
 			
 		}catch (Exception e) {

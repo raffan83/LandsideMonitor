@@ -64,18 +64,17 @@ public class GraphSensor extends JFrame {
 								try {
 									Thread.sleep(Costanti.FRAMERATE_READ_GRAPH);
 									String value=MainFrame.pr.getValue();
-									
-									
+
 									if(value.split(",").length==4) 
 										{
-											String pivot=value.split(",")[0];
-								
+											String pivot=value.split(",")[0].substring(1,2);
+		
 											if(pivot.equals(sonda.getIdentifier()))
 													{
 										
-													double numberX = Double.parseDouble(value.split(",")[1]);
-													double numberY = Double.parseDouble(value.split(",")[2]);
-													double numberZ = Double.parseDouble(value.split(",")[3]);
+													double numberX = Double.parseDouble(value.split(",")[1].trim());
+													double numberY = Double.parseDouble(value.split(",")[2].trim());
+													double numberZ = Double.parseDouble(value.split(",")[3].substring(0,value.split(",")[3].length()-1).trim());
 													
 													if(numberX >= Costanti.LIMIT_GRAPH_X_AXIS || numberX <= -Costanti.LIMIT_GRAPH_X_AXIS )
 													{

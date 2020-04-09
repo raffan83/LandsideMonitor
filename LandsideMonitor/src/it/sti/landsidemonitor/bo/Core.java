@@ -109,6 +109,8 @@ public class Core {
 		Costanti.SSL=parametri.getSSL();
 		Costanti.DEST_MAIL_PRE=parametri.getDEST_MAIL_PRE();
 		Costanti.DEST_MAIL_ALARM=parametri.getDEST_MAIL_ALARM();
+		
+		
 	}
 
 	public static void saveParam(ParamDTO param) throws SQLException {
@@ -122,4 +124,6 @@ public class Core {
 		MainDAO.cancellaLog(identifier);
 		
 	}
+	
+	
 }

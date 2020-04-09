@@ -13,6 +13,11 @@ public class SensorDTO {
 	private String type;
 	private Point point;
 	
+	private String bering="N/D";
+	private String pitch="N/D";
+	private String roll="N/D";
+	private String battLevel="N/D";
+	
 	private double tempo_periodo_5_sec=0;
 	private double tempo_periodo_3_sec=0;
 	private double tempo_periodo_2_sec=0;
@@ -85,6 +90,31 @@ public class SensorDTO {
 	public void setTempo_periodo_2_sec(double tempo_periodo_2_sec) {
 		this.tempo_periodo_2_sec = tempo_periodo_2_sec;
 	}
+	public String getBering() {
+		return bering;
+	}
+	public void setBering(String bering) {
+		this.bering = bering;
+	}
+	public String getPitch() {
+		return pitch;
+	}
+	public void setPitch(String pitch) {
+		this.pitch = pitch;
+	}
+	public String getRoll() {
+		return roll;
+	}
+	public void setRoll(String roll) {
+		this.roll = roll;
+	}
+	public String getBattLevel() {
+		return battLevel;
+	}
+	public void setBattLevel(String battLevel) {
+		this.battLevel = battLevel;
+	}
+
 
 
 }
