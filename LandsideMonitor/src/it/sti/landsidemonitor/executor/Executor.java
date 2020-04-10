@@ -7,7 +7,6 @@ package it.sti.landsidemonitor.executor;
 import javax.swing.SwingUtilities;
 
 import it.sti.landsidemonitor.bo.Core;
-import it.sti.landsidemonitor.bo.SendEmailBO;
 import it.sti.landsidemonitor.gui.MainFrame;
 
 

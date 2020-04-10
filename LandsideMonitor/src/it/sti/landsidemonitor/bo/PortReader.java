@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.swing.plaf.BorderUIResource.BevelBorderUIResource;
-
 import it.sti.landsidemonitor.dto.SensorDTO;
 import it.sti.landsidemonitor.gui.RasterPanel;
 import jssc.SerialPort;
@@ -217,13 +215,7 @@ public class PortReader implements SerialPortEventListener {
 				{ 
 					acc_Z=Math.abs(Double.parseDouble(data[3].substring(0,data[3].length()-1)));
 				}
-				
-				sensor.setBering(""+acc_X);
-				
-				sensor.setPitch(""+acc_Y);
-				
-				sensor.setRoll(""+acc_Z);
-				
+						
 				/*Dati test accelerazione */
 			//	acc_X=1.25;
 			//	acc_Y=1.25;

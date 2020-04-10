@@ -1,10 +1,6 @@
 package it.sti.landsidemonitor.gui;
 
-import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -22,7 +18,6 @@ import org.quartz.impl.StdSchedulerFactory;
 import it.sti.landsidemonitor.bo.PortReader;
 import it.sti.landsidemonitor.bo.Write;
 import it.sti.landsidemonitor.dto.SensorDTO;
-import jssc.SerialPortException;
 
 
 public class PanelInstallazione extends JPanel {

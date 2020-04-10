@@ -1,11 +1,5 @@
 package it.sti.landsidemonitor.gui;
 
-import javax.swing.JFrame;
-
-import it.sti.landsidemonitor.bo.Costanti;
-import it.sti.landsidemonitor.bo.PortReader;
-import net.miginfocom.swing.MigLayout;
-
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,8 +7,13 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
+import it.sti.landsidemonitor.bo.Costanti;
+import it.sti.landsidemonitor.bo.PortReader;
+import net.miginfocom.swing.MigLayout;
 
 public class FrameConsole extends JFrame {
 

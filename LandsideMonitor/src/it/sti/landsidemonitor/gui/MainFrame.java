@@ -15,7 +15,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
-import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -24,7 +23,6 @@ import it.sti.landsidemonitor.bo.Costanti;
 import it.sti.landsidemonitor.bo.PortReader;
 import it.sti.landsidemonitor.bo.Serial;
 import it.sti.landsidemonitor.dto.SensorDTO;
-import it.sti.landsidemonitor.executor.Temp;
 import jssc.SerialPort;
 import jssc.SerialPortException;
 
@@ -178,7 +176,7 @@ public class MainFrame extends JFrame {
 				
 					try 
 					{
-					JFrame f=new FrameInstallazione(mainPanel,pr,listaSensori);
+					JFrame f=new FrameInstallazione(listaSensori);
 	            	f.setDefaultCloseOperation(1);
 	      	        f.setVisible(true);
 					}catch (Exception ex2) {

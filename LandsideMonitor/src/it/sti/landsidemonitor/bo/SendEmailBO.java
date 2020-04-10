@@ -2,11 +2,6 @@ package it.sti.landsidemonitor.bo;
 
 
 
-import java.io.File;
-
-import javax.mail.Authenticator;
-
-import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 

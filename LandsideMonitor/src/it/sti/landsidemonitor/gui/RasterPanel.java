@@ -6,8 +6,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.ArrayList;
@@ -18,7 +16,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import it.sti.landsidemonitor.bo.Core;
 import it.sti.landsidemonitor.bo.PortReader;
 import it.sti.landsidemonitor.dao.MainDAO;
 import it.sti.landsidemonitor.dto.SensorDTO;
@@ -33,10 +30,6 @@ public class RasterPanel extends JPanel{
 	  int width;
 	  int height;
 	  static JFrame myFrame=null;
-	  private Point p = null;
-	  private Point p1  = null;
-	  private MouseHandler mouseHandler = new MouseHandler();
-	  private boolean drawing;
 	  private ArrayList<SensorDTO> listaSensori;
 	  
 	  public RasterPanel(URL imageURL, JFrame g, ArrayList<SensorDTO> _listaSensori){
@@ -49,8 +42,21 @@ public class RasterPanel extends JPanel{
 	      setLayout(null);
 	      ImageIO.setUseCache(false);
 	      setImage(ImageIO.read(imageURL));
-	      
-	      JButton reset = new JButton("RESET");
+	      aggiungiTasti();
+
+	 //     this.addMouseListener(mouseHandler);
+	  //    this.addMouseMotionListener(mouseHandler);
+	        
+	    } catch(Exception e)
+	    {
+	    	e.printStackTrace();
+	    }
+	  }
+	  
+	  
+	  private void aggiungiTasti() {
+		
+		  JButton reset = new JButton("RESET");
 	      reset.setIcon(new ImageIcon(FrameSonde.class.getResource("/image/update.png")));
 	      reset.setFont(new Font("Arial", Font.BOLD, 14));
 	      reset.setBounds(10, 800, 120, 30);
@@ -71,7 +77,7 @@ public class RasterPanel extends JPanel{
                  	
                		PortReader.write("Z");
                		
-               	PortReader.write(_listaSensori.get(i).getIdentifier());
+               	PortReader.write(listaSensori.get(i).getIdentifier());
                	
                	double tempoStart=System.currentTimeMillis();
 				
@@ -83,7 +89,7 @@ public class RasterPanel extends JPanel{
 					
 					String message=PortReader.getMessage();
 				
-					if(message.startsWith("<CL-"+_listaSensori.get(i).getIdentifier()))
+					if(message.startsWith("<CL-"+listaSensori.get(i).getIdentifier()))
 						{
 							System.out.println("MGR RESET "+message);
 							msgCalibration=message;
@@ -110,18 +116,11 @@ public class RasterPanel extends JPanel{
 		//	dispose();
 			}
 			});
-			
-	 //     this.addMouseListener(mouseHandler);
-	  //    this.addMouseMotionListener(mouseHandler);
-	        
-	    } catch(Exception e)
-	    {
-	    	e.printStackTrace();
-	    }
-	  }
-	  
-	  
-	  public void setImage(BufferedImage img){
+		
+	}
+
+
+	public void setImage(BufferedImage img){
 	   
 		/*Calcolo Ratio immagine/schermo*/  
 		this.img = img;
@@ -132,10 +131,9 @@ public class RasterPanel extends JPanel{
 	  public void paintComponent(Graphics g){
 	    super.paintComponent(g);
 
-	    this.setBounds(0, 0, myFrame.getWidth(), myFrame.getHeight()-40);
+	 //   this.setBounds(0, 0, myFrame.getWidth(), myFrame.getHeight()-40);
 	    g.drawImage(img, 0, 0, myFrame.getWidth(), myFrame.getHeight()-40,this);
 	  
-	//   System.out.println(System.currentTimeMillis());
 	    for (int i=0;i<listaSensori.size();i++) {
 	    	
 	    	int stato =listaSensori.get(i).getStato();
@@ -232,37 +230,37 @@ public class RasterPanel extends JPanel{
 		
 	  }
 	  
-	   private class MouseHandler extends MouseAdapter {
-
-	        @Override
-	        public void mousePressed(MouseEvent e) {
-	            
-//	        	drawing = true;
-//	        	
-//	        	p1=null;
-//	        	
-//	        	double posMouseX=e.getPoint().getX();
-//	        	double posMouseY=e.getPoint().getY();
-//	        	
-//	        	for (int i=0 ;i<listaPoint.size();i++) {
-//					
-//	        		Point point=listaPoint.get(i);
-//	        		
-//	        		if(((point.getX()>=(posMouseX-20) && point.getX()<=(posMouseX+20)) &&
-//	        				point.getY()>=(posMouseY-20) && point.getY()<=(posMouseY+20))) 
-//	        		{
-//	        			p1=point;
-//	        		}
-//	        	}
-//	        	System.out.println(listaPoint.get(0).getX()+"  -  "+listaPoint.get(0).getY());
-//	        	System.out.println(e.getPoint().getX()+"  -  "+e.getPoint().getY());
-//	        //    p1 = e.getPoint();
-//	          
-//	            repaint();
-	        }
-
-	    
-	    }
+//	   private class MouseHandler extends MouseAdapter {
+//
+//	        @Override
+//	        public void mousePressed(MouseEvent e) {
+//	            
+////	        	drawing = true;
+////	        	
+////	        	p1=null;
+////	        	
+////	        	double posMouseX=e.getPoint().getX();
+////	        	double posMouseY=e.getPoint().getY();
+////	        	
+////	        	for (int i=0 ;i<listaPoint.size();i++) {
+////					
+////	        		Point point=listaPoint.get(i);
+////	        		
+////	        		if(((point.getX()>=(posMouseX-20) && point.getX()<=(posMouseX+20)) &&
+////	        				point.getY()>=(posMouseY-20) && point.getY()<=(posMouseY+20))) 
+////	        		{
+////	        			p1=point;
+////	        		}
+////	        	}
+////	        	System.out.println(listaPoint.get(0).getX()+"  -  "+listaPoint.get(0).getY());
+////	        	System.out.println(e.getPoint().getX()+"  -  "+e.getPoint().getY());
+////	        //    p1 = e.getPoint();
+////	          
+////	            repaint();
+//	        }
+//
+//	    
+//	    }
 
 	public void removePoint(String idSonda) {
 

@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -17,13 +18,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import it.sti.landsidemonitor.bo.Core;
 import it.sti.landsidemonitor.bo.Costanti;
 import it.sti.landsidemonitor.dto.ParamDTO;
 import net.miginfocom.swing.MigLayout;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.SwingConstants;
 
 public class FrameParametri extends JFrame {
 	

@@ -2,8 +2,6 @@ package it.sti.landsidemonitor.dto;
 
 import java.awt.Point;
 
-import it.sti.landsidemonitor.gui.MainSensor;
-
 public class SensorDTO {
 	
 	private int id;

@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.naming.LimitExceededException;
 import javax.swing.SwingWorker;
 
 import org.apache.commons.mail.EmailException;
