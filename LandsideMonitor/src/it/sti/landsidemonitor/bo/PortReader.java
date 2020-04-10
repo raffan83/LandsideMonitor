@@ -18,10 +18,7 @@ import org.quartz.impl.StdSchedulerFactory;
 import it.sti.landsidemonitor.dto.SensorDTO;
 import it.sti.landsidemonitor.gui.RasterPanel;
 import it.sti.landsidemonitor.scheduler.JobSchedulerAtTime;
-import it.sti.landsidemonitor.scheduler.JobSchedulerDet12Sec;
-import it.sti.landsidemonitor.scheduler.JobSchedulerDet15Sec;
-import it.sti.landsidemonitor.scheduler.JobSchedulerDet5Sec;
-import it.sti.landsidemonitor.scheduler.JobSchedulerDet9Sec;
+import it.sti.landsidemonitor.scheduler.JobSchedulerAtTimeRead;
 import jssc.SerialPort;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
@@ -35,7 +32,7 @@ public class PortReader implements SerialPortEventListener {
 	private static  ArrayList<SensorDTO> listaSensori;
 	private static RasterPanel mainP;
 	HashMap<String, SensorDTO> sogliaAllerta;
-	public static HashMap<String, SensorDTO> puntiAttiviB;
+	public static HashMap<SensorDTO, Long> puntiAttiviB;
 
 	SimpleDateFormat sdf = new SimpleDateFormat("ss.SSS");
 	
@@ -47,7 +44,7 @@ public class PortReader implements SerialPortEventListener {
 		listaSensori=_listaSensori;
 		msg = "";
 		sogliaAllerta=new HashMap<String,SensorDTO>();
-		puntiAttiviB=new HashMap<String,SensorDTO>();
+		puntiAttiviB=new HashMap<SensorDTO,Long>();
 		mainP=_mainP;
 	
 		for (SensorDTO sensorDTO : _listaSensori) 
@@ -74,54 +71,18 @@ public class PortReader implements SerialPortEventListener {
         scheduler.scheduleJob(job, trigger);
         
         
-        JobDetail job1 = JobBuilder.newJob(JobSchedulerDet5Sec.class).withIdentity("detrtitiche_5_sec", "group2").build();
+        JobDetail job1 = JobBuilder.newJob(JobSchedulerAtTimeRead.class).withIdentity("atTimeRead", "group2").build();
 
         Trigger trigger1 = TriggerBuilder
                 .newTrigger()
-                .withIdentity("detrtitiche_5_sec", "group2")
-                .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(5).repeatForever())
+                .withIdentity("atTimeRead", "group2")
+                .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(1).repeatForever())
                 .build();
 
         scheduler = new StdSchedulerFactory().getScheduler();
         scheduler.start();
         scheduler.scheduleJob(job1, trigger1);
-        
-        JobDetail job2 = JobBuilder.newJob(JobSchedulerDet9Sec.class).withIdentity("detrtitiche_9_sec", "group3").build();
 
-        Trigger trigger2 = TriggerBuilder
-                .newTrigger()
-                .withIdentity("detrtitiche_9_sec", "group3")
-                .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(9).repeatForever())
-                .build();
-
-        scheduler = new StdSchedulerFactory().getScheduler();
-        scheduler.start();
-        scheduler.scheduleJob(job2, trigger2);
-        
-        JobDetail job3 = JobBuilder.newJob(JobSchedulerDet12Sec.class).withIdentity("detrtitiche_12_sec", "group4").build();
-
-        Trigger trigger3 = TriggerBuilder
-                .newTrigger()
-                .withIdentity("detrtitiche_12_sec", "group4")
-                .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(12).repeatForever())
-                .build();
-
-        scheduler = new StdSchedulerFactory().getScheduler();
-        scheduler.start();
-        scheduler.scheduleJob(job3, trigger3);
-        
-        JobDetail job4 = JobBuilder.newJob(JobSchedulerDet15Sec.class).withIdentity("detrtitiche_15_sec", "group5").build();
-
-        Trigger trigger4 = TriggerBuilder
-                .newTrigger()
-                .withIdentity("detrtitiche_15_sec", "group5")
-                .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(15).repeatForever())
-                .build();
-
-        scheduler = new StdSchedulerFactory().getScheduler();
-        scheduler.start();
-        scheduler.scheduleJob(job4, trigger4);
-		
 	}
 
 	public static void checkHealthSensor(SensorDTO sensorDTO) throws SerialPortException {
@@ -267,7 +228,7 @@ public class PortReader implements SerialPortEventListener {
 			
 			if(value.startsWith("<HT-"+sensor.getIdentifier()) && sensor.getStato()!=1)
 			{
-			//	System.out.println("HEALTH ["+sensor.getIdentifier()+"]");
+				System.out.println("HEALTH ["+sensor.getIdentifier()+"] "+value);
 				sensor.setTempo_periodo_5_sec(0);
 				sensor.setTempo_periodo_3_sec(0);
 				sensor.setTempo_periodo_2_sec(0);

@@ -1,6 +1,8 @@
 package it.sti.landsidemonitor.scheduler;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -17,6 +19,7 @@ public class JobSchedulerAtTime implements Job {
 		ArrayList<SensorDTO> listaSonde=PortReader.getListaSonde();
 		
 		double startTime=System.currentTimeMillis();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy HH:mm:ss.SSS");
 		while(true) 
 		{
 				double tempoTrascorso =System.currentTimeMillis()-startTime;
@@ -29,14 +32,19 @@ public class JobSchedulerAtTime implements Job {
 							message.startsWith("<"+sensorDTO.getIdentifier())) &&
 							message.split(",").length==4) 
 						{
-							PortReader.puntiAttiviB.put(sensorDTO.getIdentifier(), sensorDTO);
-						//	System.out.println("Add: "+message);
+							if(!PortReader.puntiAttiviB.containsKey(sensorDTO))
+							{
+								PortReader.puntiAttiviB.put(sensorDTO,System.currentTimeMillis());
+								System.out.println("Add: "+message +"at time "+sdf.format(new Date()));
+							}
+						
 						}
 						
 						if(message.startsWith("<HT-"+sensorDTO.getIdentifier())) 
 						{
-							PortReader.puntiAttiviB.remove(sensorDTO.getIdentifier());
-					//		System.out.println("Remove: "+message);
+							
+							PortReader.puntiAttiviB.remove(sensorDTO);
+							System.out.println("Remove: "+message +"at time "+sdf.format(new Date()));
 						}
 					}
 				}else 
