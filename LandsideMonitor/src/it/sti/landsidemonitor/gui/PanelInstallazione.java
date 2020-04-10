@@ -2,10 +2,7 @@ package it.sti.landsidemonitor.gui;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
-
-import javax.swing.JButton;
 import javax.swing.JPanel;
-
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
@@ -14,22 +11,19 @@ import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
-
-import it.sti.landsidemonitor.bo.PortReader;
 import it.sti.landsidemonitor.dto.SensorDTO;
 import it.sti.landsidemonitor.scheduler.JobCalibration;
 
 
 public class PanelInstallazione extends JPanel {
-	
-	RasterPanel mainPanel;
-	PortReader pr;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	ArrayList<SensorDTO> listaSensori;
 	Scheduler scheduler;
 
-	boolean exit;
-	
-	
 	public PanelInstallazione(ArrayList<SensorDTO> _listaSensori) 
 	{
 		super(true); //crea un JPanel con doubleBuffered true

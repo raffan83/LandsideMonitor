@@ -19,6 +19,11 @@ import net.miginfocom.swing.MigLayout;
 
 public class Password extends JFrame  {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private static String OK = "ok";
 
 	private JPasswordField passwordField;
