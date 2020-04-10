@@ -127,8 +127,6 @@ public class MainFrame extends JFrame {
 				
 					try 
 					{
-					//JFrame f=new FrameParametri();
-	            	
 					JFrame f=new Password(g);	
 					f.setDefaultCloseOperation(1);
 	      	        f.setVisible(true);
@@ -179,6 +177,7 @@ public class MainFrame extends JFrame {
 					JFrame f=new FrameInstallazione(listaSensori);
 	            	f.setDefaultCloseOperation(1);
 	      	        f.setVisible(true);
+	      	        
 					}catch (Exception ex2) {
 						ex2.printStackTrace();
 					}

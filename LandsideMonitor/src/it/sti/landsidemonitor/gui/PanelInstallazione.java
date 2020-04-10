@@ -16,8 +16,8 @@ import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 
 import it.sti.landsidemonitor.bo.PortReader;
-import it.sti.landsidemonitor.bo.Write;
 import it.sti.landsidemonitor.dto.SensorDTO;
+import it.sti.landsidemonitor.scheduler.JobCalibration;
 
 
 public class PanelInstallazione extends JPanel {
@@ -34,10 +34,6 @@ public class PanelInstallazione extends JPanel {
 	{
 		super(true); //crea un JPanel con doubleBuffered true
 		listaSensori=_listaSensori;
-		
-		JButton b = new JButton("Test") ;
-		add(b);
-		
 		try {
 			startScheduler();
 		} catch (SchedulerException e) {
@@ -50,7 +46,7 @@ public class PanelInstallazione extends JPanel {
 	
 	    public void startScheduler() throws SchedulerException {
     	
-    	JobDetail job = JobBuilder.newJob(Write.class).withIdentity("write", "group1").build();
+    	JobDetail job = JobBuilder.newJob(JobCalibration.class).withIdentity("write", "group1").build();
 
         Trigger trigger = TriggerBuilder
                 .newTrigger()

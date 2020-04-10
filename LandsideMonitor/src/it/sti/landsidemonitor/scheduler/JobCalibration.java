@@ -1,4 +1,4 @@
-package it.sti.landsidemonitor.bo;
+package it.sti.landsidemonitor.scheduler;
 
 import java.util.ArrayList;
 
@@ -6,10 +6,11 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import it.sti.landsidemonitor.bo.PortReader;
 import it.sti.landsidemonitor.dto.SensorDTO;
 import jssc.SerialPortException;
 
-public class Write implements Job{
+public class JobCalibration implements Job{
 	
 
 	@Override

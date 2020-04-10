@@ -20,6 +20,10 @@ import it.sti.landsidemonitor.dto.SensorDTO;
 
 public class FrameInstallazione extends JFrame {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	static PanelInstallazione mainPanel;
 	ArrayList<SensorDTO> listaSonde=null;
 	JTable tabellaSonde;
