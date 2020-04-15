@@ -88,7 +88,7 @@ public class PortReader implements SerialPortEventListener {
 	public static void checkHealthSensor(SensorDTO sensorDTO) throws SerialPortException {
 		
 		System.out.println("Check sensor: "+sensorDTO.getIdentifier());
-		write(sensorDTO.getIdentifier());
+		write("C"+sensorDTO.getIdentifier());
 		
 		String playload="";
 		boolean read=false;
@@ -204,15 +204,15 @@ public class PortReader implements SerialPortEventListener {
 			if(value.startsWith("<CL-"+sensor.getIdentifier()))
 			{
 				
-				String levBatt=value.split(",")[0];
+				String levBatt=value.split(",")[1];
 				
-				String bering=value.split(",")[1];
+				String bering=value.split(",")[2];
 				
-				String pitch=value.split(",")[2];
+				String pitch=value.split(",")[3];
 				
-				String roll=value.split(",")[3].substring(0,value.split(",")[3].length()-1);
+				String roll=value.split(",")[4].substring(0,value.split(",")[4].length()-1);
 				
-				System.out.println("Calibration  "+sensor.getIdentifier()+" ["+bering+"]["+pitch+"]["+roll+"]");
+				System.out.println("Calibration  "+sensor.getIdentifier()+" ["+levBatt+"] ["+bering+"]["+pitch+"]["+roll+"]");
 				
 				sensor.setBattLevel(levBatt);
 				
@@ -224,6 +224,13 @@ public class PortReader implements SerialPortEventListener {
 				
 				
 				
+			}
+			
+			if(value.startsWith("<RSSI"+sensor.getIdentifier()))
+			{
+				System.out.println("Signal  "+sensor.getIdentifier()+" "+value.split(":")[1].substring(0,value.split(":")[1].length()-1));
+				
+				sensor.setSignal(value.split(":")[1].substring(0,value.split(":")[1].length()-1));
 			}
 			
 			if(value.startsWith("<HT-"+sensor.getIdentifier()) && sensor.getStato()!=1)

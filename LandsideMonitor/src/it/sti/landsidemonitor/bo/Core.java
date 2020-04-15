@@ -71,13 +71,7 @@ public class Core {
 		
 		Costanti.PORT=parametri.getPORT();
 		Costanti.FRAMERATE=parametri.getFRAMERATE();
-		
-		Costanti.LIMIT_GRAPH_X_AXIS=parametri.getLIMIT_GRAPH_X_AXIS();
-		Costanti.LIMIT_GRAPH_Y_AXIS=parametri.getLIMIT_GRAPH_Y_AXIS();
-		Costanti.LIMIT_GRAPH_Z_AXIS=parametri.getLIMIT_GRAPH_Z_AXIS();
-		
-		Costanti.FRAMERATE_READ_GRAPH=parametri.getFRAMERATE_READ_GRAPH();
-		
+				
 		if(parametri.getDEBUG().equals("0"))
 		{
 			Costanti.DEBUG=false;
@@ -87,7 +81,6 @@ public class Core {
 			Costanti.DEBUG=true;
 		}
 		
-		Costanti.VALORE_MANCATA_RICEZIONE_SONDA=parametri.getVALORE_MANCATA_RICEZIONE_SONDA();
 		
 		Costanti.LIMITE_MIN_P1=parametri.getLIMITE_MIN_P1();
 		Costanti.LIMITE_MAX_P1=parametri.getLIMITE_MAX_P1();

@@ -281,12 +281,7 @@ public class MainDAO {
 				
 				param.setPORT(rs.getString("PORT"));
 				param.setFRAMERATE(rs.getInt("FRAMERATE"));
-				param.setLIMIT_GRAPH_X_AXIS(rs.getDouble("LIMIT_GRAPH_X_AXIS"));
-				param.setLIMIT_GRAPH_Y_AXIS(rs.getDouble("LIMIT_GRAPH_Y_AXIS"));
-				param.setLIMIT_GRAPH_Z_AXIS(rs.getDouble("LIMIT_GRAPH_Z_AXIS"));
-				param.setFRAMERATE_READ_GRAPH(rs.getInt("FRAMERATE_READ_GRAPH"));
 				param.setDEBUG(rs.getString("DEBUG"));
-				param.setVALORE_MANCATA_RICEZIONE_SONDA(rs.getInt("VALORE_MANCATA_RICEZIONE_SONDA"));
 				
 				param.setLIMITE_MIN_P1(rs.getDouble("LIMITE_MIN_P1"));
 				param.setLIMITE_MAX_P1(rs.getDouble("LIMITE_MAX_P1"));
@@ -332,8 +327,7 @@ public class MainDAO {
 		try {
 			
 			con=getConnection();
-			pst=con.prepareStatement("UPDATE tbl_param SET PORT=?,FRAMERATE=?,LIMIT_GRAPH_X_AXIS=?,LIMIT_GRAPH_Y_AXIS=?,"
-					+ "LIMIT_GRAPH_Z_AXIS=?,FRAMERATE_READ_GRAPH=?,DEBUG=?,VALORE_MANCATA_RICEZIONE_SONDA=?,"
+			pst=con.prepareStatement("UPDATE tbl_param SET PORT=?,FRAMERATE=?,DEBUG=?,"
 					+ "LIMITE_MIN_P1=?,LIMITE_MAX_P1=?,ITERAZIONI_P1=?,"
 					+ "LIMITE_MIN_P2=?,LIMITE_MAX_P2=?,ITERAZIONI_P2=?,"
 					+ "LIMITE_MIN_P3=?,LIMITE_MAX_P3=?,ITERAZIONI_P3=?,"
@@ -341,33 +335,28 @@ public class MainDAO {
 			
 			pst.setString(1, param.getPORT());
 			pst.setInt(2,param.getFRAMERATE());
-			pst.setDouble(3, param.getLIMIT_GRAPH_X_AXIS());
-			pst.setDouble(4, param.getLIMIT_GRAPH_Y_AXIS());
-			pst.setDouble(5, param.getLIMIT_GRAPH_Z_AXIS());
-			pst.setInt(6, param.getFRAMERATE_READ_GRAPH());
-			pst.setString(7, param.getDEBUG());
-			pst.setInt(8, param.getVALORE_MANCATA_RICEZIONE_SONDA());
+			pst.setString(3, param.getDEBUG());
 			
-			pst.setDouble(9, param.getLIMITE_MIN_P1());
-			pst.setDouble(10, param.getLIMITE_MAX_P1());
-			pst.setInt(11, param.getITERAZIONI_P1());
+			pst.setDouble(4, param.getLIMITE_MIN_P1());
+			pst.setDouble(5, param.getLIMITE_MAX_P1());
+			pst.setInt(6, param.getITERAZIONI_P1());
 			
-			pst.setDouble(12, param.getLIMITE_MIN_P2());
-			pst.setDouble(13, param.getLIMITE_MAX_P2());
-			pst.setInt(14, param.getITERAZIONI_P2());
+			pst.setDouble(7, param.getLIMITE_MIN_P2());
+			pst.setDouble(8, param.getLIMITE_MAX_P2());
+			pst.setInt(9, param.getITERAZIONI_P2());
 			
-			pst.setDouble(15, param.getLIMITE_MIN_P3());
-			pst.setDouble(16, param.getLIMITE_MAX_P3());
-			pst.setInt(17, param.getITERAZIONI_P3());
+			pst.setDouble(10, param.getLIMITE_MIN_P3());
+			pst.setDouble(11, param.getLIMITE_MAX_P3());
+			pst.setInt(12, param.getITERAZIONI_P3());
 			
-			pst.setString(18, param.getHOST_NAME_MAIL());
-			pst.setString(19, param.getUSERNAME_MAIL());
-			pst.setString(20, param.getPASSWORD_MAIL());
-			pst.setString(21, param.getSMTP_AUTH());
-			pst.setString(22, param.getPORT_MAIL());
-			pst.setString(23, param.getSSL());
-			pst.setString(24, param.getDEST_MAIL_PRE());
-			pst.setString(25, param.getDEST_MAIL_ALARM());
+			pst.setString(13, param.getHOST_NAME_MAIL());
+			pst.setString(14, param.getUSERNAME_MAIL());
+			pst.setString(15, param.getPASSWORD_MAIL());
+			pst.setString(16, param.getSMTP_AUTH());
+			pst.setString(17, param.getPORT_MAIL());
+			pst.setString(18, param.getSSL());
+			pst.setString(19, param.getDEST_MAIL_PRE());
+			pst.setString(20, param.getDEST_MAIL_ALARM());
 			
 			pst.execute();
 			

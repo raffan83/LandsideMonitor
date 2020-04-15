@@ -77,7 +77,7 @@ public class RasterPanel extends JPanel{
                  	
                		PortReader.write("Z");
                		
-               	PortReader.write(listaSensori.get(i).getIdentifier());
+               	PortReader.write("C"+listaSensori.get(i).getIdentifier());
                	
                	double tempoStart=System.currentTimeMillis();
 				

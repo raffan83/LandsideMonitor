@@ -23,7 +23,7 @@ public class JobCalibration implements Job{
 			//	if(sensorDTO.getStato()!=5) 
 			//	{
 					System.out.println("chiamata sonda: "+sensorDTO.getIdentifier());
-					PortReader.write(sensorDTO.getIdentifier());
+					PortReader.write("C"+sensorDTO.getIdentifier());
 			//	}
 			}
 			

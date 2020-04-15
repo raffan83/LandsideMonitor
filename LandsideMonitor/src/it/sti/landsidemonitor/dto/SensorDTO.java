@@ -15,6 +15,7 @@ public class SensorDTO {
 	private String pitch="N/D";
 	private String roll="N/D";
 	private String battLevel="N/D";
+	private String signal="N/D";
 	
 	private double tempo_periodo_5_sec=0;
 	private double tempo_periodo_3_sec=0;
@@ -112,7 +113,13 @@ public class SensorDTO {
 	public void setBattLevel(String battLevel) {
 		this.battLevel = battLevel;
 	}
+	public String getSignal() {
+		return signal;
+	}
+	public void setSignal(String signal) {
+		this.signal = signal;
+	}
 
-
+	
 
 }

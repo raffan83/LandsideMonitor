@@ -96,7 +96,7 @@ public class MainFrame extends JFrame {
 		    it1= new JMenuItem("Parametri");
 		  	it2= new JMenuItem("Sonde");
 		  	it3= new JMenuItem("Console");		  	
-		  	it4= new JMenuItem("Installazione");
+		  	it4= new JMenuItem("Controllo Sonde");
 		  	
 		  
 		  	
