@@ -18,6 +18,8 @@ import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import org.apache.log4j.Logger;
+
 import it.sti.landsidemonitor.bo.Core;
 import it.sti.landsidemonitor.bo.Costanti;
 import it.sti.landsidemonitor.bo.PortReader;
@@ -41,7 +43,7 @@ public class MainFrame extends JFrame {
 	JMenu menu;
 	JMenuItem it1,it2,it3,it4;
 	
-	
+	final static Logger logger = Logger.getLogger(MainFrame.class);
 	
 	public MainFrame() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, SerialPortException, SQLException 
 	{
@@ -82,8 +84,9 @@ public class MainFrame extends JFrame {
 	 }
 	 catch (Exception e) 
 	{
-		 e.printStackTrace();
+		 logger.error("Errore", e);
 		 costruisciFrame( listaSensori);
+		 InitSplash.close();
 	}
 	
 	}

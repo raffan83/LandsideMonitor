@@ -19,7 +19,7 @@ public class JobSchedulerAtTimeRead implements Job{
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 	
 		
-		System.out.println("Check lista Punti");
+		//System.out.println("Check lista Punti");
 		
 		final int PUNTI_5_SEC=1;
 		final int PUNTI_9_SEC=3;
