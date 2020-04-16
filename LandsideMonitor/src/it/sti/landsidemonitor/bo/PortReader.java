@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
@@ -16,6 +17,8 @@ import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 
 import it.sti.landsidemonitor.dto.SensorDTO;
+import it.sti.landsidemonitor.gui.FrameInstallazione;
+import it.sti.landsidemonitor.gui.InitSplash;
 import it.sti.landsidemonitor.gui.RasterPanel;
 import it.sti.landsidemonitor.scheduler.JobSchedulerAtTime;
 import it.sti.landsidemonitor.scheduler.JobSchedulerAtTimeRead;
@@ -38,6 +41,8 @@ public class PortReader implements SerialPortEventListener {
 	
 	Scheduler scheduler;
 	
+	final static Logger logger = Logger.getLogger(PortReader.class);
+	
 	public PortReader(RasterPanel _mainP,SerialPort serialPort, ArrayList<SensorDTO> _listaSensori) throws Exception 
 	{
 		this.serialPort = serialPort;
@@ -47,11 +52,14 @@ public class PortReader implements SerialPortEventListener {
 		puntiAttiviB=new HashMap<SensorDTO,Long>();
 		mainP=_mainP;
 	
-		for (SensorDTO sensorDTO : _listaSensori) 
+		for (int i=0;i<_listaSensori.size();i++)
 		{
-			checkHealthSensor(sensorDTO);
+			int pr=(100/_listaSensori.size())*(i+1);
+			InitSplash.setMessage("Calibrazione sonda "+_listaSensori.get(i).getIdentifier(), pr);
+			checkHealthSensor(_listaSensori.get(i));
 		}
-		
+		InitSplash.setMessage("Avvio monitoraggio", 100);
+		InitSplash.close();
 		startSchedulers();
 		
 	}
@@ -88,6 +96,7 @@ public class PortReader implements SerialPortEventListener {
 	public static void checkHealthSensor(SensorDTO sensorDTO) throws SerialPortException {
 		
 		System.out.println("Check sensor: "+sensorDTO.getIdentifier());
+		logger.warn("Check sensor: "+sensorDTO.getIdentifier());
 		write("C"+sensorDTO.getIdentifier());
 		
 		String playload="";
@@ -231,6 +240,11 @@ public class PortReader implements SerialPortEventListener {
 				System.out.println("Signal  "+sensor.getIdentifier()+" "+value.split(":")[1].substring(0,value.split(":")[1].length()-1));
 				
 				sensor.setSignal(value.split(":")[1].substring(0,value.split(":")[1].length()-1));
+			}
+			
+			if(value.startsWith("<OK"+sensor.getIdentifier()))
+			{
+				FrameInstallazione.confirmPower(value);
 			}
 			
 			if(value.startsWith("<HT-"+sensor.getIdentifier()) && sensor.getStato()!=1)

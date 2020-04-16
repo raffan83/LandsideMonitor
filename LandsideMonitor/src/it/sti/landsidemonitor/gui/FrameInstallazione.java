@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -12,8 +14,12 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -32,6 +38,7 @@ import org.quartz.impl.StdSchedulerFactory;
 import it.sti.landsidemonitor.bo.PortReader;
 import it.sti.landsidemonitor.dto.SensorDTO;
 import it.sti.landsidemonitor.scheduler.JobCalibration;
+import jssc.SerialPortException;
 
 public class FrameInstallazione extends JFrame {
 	
@@ -43,7 +50,6 @@ public class FrameInstallazione extends JFrame {
 	ArrayList<SensorDTO> listaSonde=null;
 	JTable tabellaSonde;
 	PortReader pr;
-	JPanel pannello;
 	
 	public FrameInstallazione(ArrayList<SensorDTO> listaSensori) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException 
 	{
@@ -58,8 +64,11 @@ public class FrameInstallazione extends JFrame {
 	//setSize(width,height+20);
 
 	setSize(1000, 600);
-	
 	mainPanel=new PanelInstallazione(listaSensori);
+	int altezzaPannello=(50*listaSensori.size())+70;
+	
+	mainPanel.setPreferredSize(new Dimension(950,altezzaPannello));
+	
 	JScrollPane scrollTop= new JScrollPane(mainPanel);
 	getContentPane().add(scrollTop);
 	
@@ -88,10 +97,14 @@ class PanelInstallazione extends JPanel {
 
 		public PanelInstallazione(ArrayList<SensorDTO> _listaSensori) 
 		{
-			super(true); //crea un JPanel con doubleBuffered true
-			listaSensori=_listaSensori;
-			setBackground(Color.WHITE);
+			super(true);
+			
 			try {
+			
+			listaSensori=_listaSensori;
+			costruiscipannello();
+			setBackground(Color.WHITE);
+		
 				startScheduler();
 			} catch (SchedulerException e) {
 				// TODO Auto-generated catch block
@@ -101,7 +114,72 @@ class PanelInstallazione extends JPanel {
 
 		}
 		
-		    public void startScheduler() throws SchedulerException {
+		    private void costruiscipannello() {
+			
+		    	setLayout(null);
+		    	
+		    	JLabel lab= new JLabel("Impostazione livello potenza sonda");
+		    	
+		    	lab.setFont(new Font("Arial",Font.BOLD,15));
+		    	lab.setBounds(10, 10, 280, 30);
+		    	add(lab);
+		    	
+		    	JLabel sonda = new JLabel("Sonda");
+		    	sonda.setFont(new Font("Arial",Font.BOLD,14));
+		    	sonda.setBounds(20, 50, 75, 30);
+		    	add(sonda);
+		    	
+		    	JComboBox<String> comboSonde = new JComboBox<String>();
+		    	
+		    	for (SensorDTO sensorDTO : listaSensori) {
+		    		
+		    		comboSonde.addItem(sensorDTO.getIdentifier());
+				}
+			
+		    	comboSonde.setBounds(80, 50, 40, 25);
+		    	comboSonde.setFont(new Font("Arial",Font.BOLD,14));
+		    	add(comboSonde);
+		    	
+		    	JLabel lab_sign= new JLabel("Potenza segnale");
+		    	
+		    	lab_sign.setFont(new Font("Arial",Font.BOLD,15));
+		    	lab_sign.setBounds(150, 50, 120, 25);
+		    	add(lab_sign);
+		    	
+		    	String[] data = new String[]{"10","11","12","13","14","15","16","17","18","19","20","21","22","23"};
+		    	
+		    	JComboBox<String> comboSign = new JComboBox<String>(data);
+		
+		    	comboSign.setBounds(280, 50, 50, 25);
+		    	comboSign.setFont(new Font("Arial",Font.BOLD,14));
+		    	add(comboSign);
+		    	
+		    	JButton button = new JButton("Invia");
+		    	button.setIcon(new ImageIcon(FrameParametri.class.getResource("/image/continue.png")));
+		    	button.setFont(new Font("Arial", Font.BOLD, 14));
+		    	button.setBounds(360,44 , 120, 37);
+		    	add(button);
+				
+		    	button.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						String sonda =comboSonde.getSelectedItem().toString();
+						String sign=comboSign.getSelectedItem().toString();
+						
+						try {
+							PortReader.write("P"+sonda+sign);
+						} catch (SerialPortException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+				});
+		    
+		    }
+		    
+
+			public void startScheduler() throws SchedulerException {
 	    	
 	    	JobDetail job = JobBuilder.newJob(JobCalibration.class).withIdentity("write", "group1").build();
 
@@ -122,9 +200,10 @@ class PanelInstallazione extends JPanel {
 			    
 			  super.paintComponent(g);
 
+			  int start_pos=75;
 			  for (int i=0;i< listaSensori.size();i++) {
 				    try {
-						int y_pos=(i+1)*50;
+						int y_pos=((i+1)*50)+start_pos;
 						g.setFont(new Font("Arial", Font.BOLD, 16)); 
 						g.setColor(Color.BLACK);
 				    	g.drawString("SENSOR "+listaSensori.get(i).getIdentifier(),10,y_pos);
@@ -274,4 +353,10 @@ class PanelInstallazione extends JPanel {
 		}
 			
 	}
+
+public static void confirmPower(String value) {
+	
+	JOptionPane.showMessageDialog(null,"Potenza sonda "+value.subSequence(3, 4)+" settata correttmente a "+value.subSequence(4, 6)+" db","Conferma variazione potenza",JOptionPane.INFORMATION_MESSAGE,new ImageIcon(FrameInstallazione.class.getResource("/image/confirm.png")));
+	
+}
 }

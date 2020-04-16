@@ -7,6 +7,7 @@ package it.sti.landsidemonitor.executor;
 import javax.swing.SwingUtilities;
 
 import it.sti.landsidemonitor.bo.Core;
+import it.sti.landsidemonitor.gui.InitSplash;
 import it.sti.landsidemonitor.gui.MainFrame;
 
 
@@ -26,7 +27,14 @@ public class Executor {
 	            {
 	            	try
 	            	{
-	            		
+	            	
+	            	final InitSplash fr= new InitSplash();
+	           	        
+	           	    fr.setVisible(true);
+	           	        
+	           	    InitSplash.setMessage("Inizzializzazione applicazione...", 0);
+	           	    Thread.sleep(50);
+	           	        
 	            	MainFrame g1 = new MainFrame();
 	            	g1.setResizable(false);
 	            	g1.setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);

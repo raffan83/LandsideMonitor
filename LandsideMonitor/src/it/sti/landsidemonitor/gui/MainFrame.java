@@ -76,6 +76,7 @@ public class MainFrame extends JFrame {
 	} catch (jssc.SerialPortException e) {
 		
 		JOptionPane.showMessageDialog(null, "Porta "+Costanti.PORT+ " non trovata, configurare correttamente nome porta dal pannello Impostazioni","Porta non trovata",JOptionPane.INFORMATION_MESSAGE,new ImageIcon(MainFrame.class.getResource("/image/error.png")));
+		InitSplash.close();
 		costruisciFrame( listaSensori);
 		
 	 }
