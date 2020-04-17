@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -13,6 +14,8 @@ import it.sti.landsidemonitor.dto.SensorDTO;
 
 public class JobSchedulerAtTime implements Job {
 
+	final static Logger logger = Logger.getLogger(JobSchedulerAtTime.class);
+	
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		
@@ -28,14 +31,15 @@ public class JobSchedulerAtTime implements Job {
 					for (SensorDTO sensorDTO : listaSonde) 
 					{
 						String message=PortReader.getMessage();
+					
 						if((message.startsWith("<S-B"+sensorDTO.getIdentifier())||
 							message.startsWith("<"+sensorDTO.getIdentifier())) &&
-							message.split(",").length==4) 
+							message.split(",").length==5 && sensorDTO.getType().equals("B")) 
 						{
 							if(!PortReader.puntiAttiviB.containsKey(sensorDTO))
 							{
 								PortReader.puntiAttiviB.put(sensorDTO,System.currentTimeMillis());
-								System.out.println("Add: "+message +"at time "+sdf.format(new Date()));
+								logger.warn("Add: "+message +"at time "+sdf.format(new Date()));
 							}
 						
 						}
@@ -44,7 +48,7 @@ public class JobSchedulerAtTime implements Job {
 						{
 							
 							PortReader.puntiAttiviB.remove(sensorDTO);
-							System.out.println("Remove: "+message +"at time "+sdf.format(new Date()));
+							logger.warn("Remove: "+message +"at time "+sdf.format(new Date()));
 						}
 					}
 				}else 

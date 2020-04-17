@@ -2,6 +2,7 @@ package it.sti.landsidemonitor.bo;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -221,7 +222,7 @@ public class PortReader implements SerialPortEventListener {
 				
 				String roll=value.split(",")[4].substring(0,value.split(",")[4].length()-1);				
 				
-				logger.warn("Calibration  "+sensor.getIdentifier()+" ["+levBatt+"] ["+bering+"]["+pitch+"]["+roll+"]");
+				logger.debug("CALIBRATION  "+sensor.getIdentifier()+" ["+levBatt+"] ["+bering+"]["+pitch+"]["+roll+"]");
 				
 				sensor.setBattLevel(levBatt);
 				
@@ -237,13 +238,14 @@ public class PortReader implements SerialPortEventListener {
 			
 			if(value.startsWith("<RSSI"+sensor.getIdentifier()))
 			{
-				logger.warn("Signal  "+sensor.getIdentifier()+" "+value.split(":")[1].substring(0,value.split(":")[1].length()-1));
+				logger.debug("SIGNAL  "+sensor.getIdentifier()+" "+value.split(":")[1].substring(0,value.split(":")[1].length()-1));
 				
 				sensor.setSignal(value.split(":")[1].substring(0,value.split(":")[1].length()-1));
 			}
 			
 			if(value.startsWith("<OK"+sensor.getIdentifier()))
 			{
+				logger.warn("SIGNAL POWER "+value);
 				FrameInstallazione.confirmPower(value);
 			}
 			
@@ -268,19 +270,19 @@ public class PortReader implements SerialPortEventListener {
 
 
 				
-				if(value.split(",")[1].length()>0) 
+				if(value.split(",")[2].length()>0) 
 				{
-					acc_X=Math.abs(Double.parseDouble(data[1]));
+					acc_X=Math.abs(Double.parseDouble(data[2]));
 				}
 
-				if(value.split(",")[2].length()>0)
+				if(value.split(",")[3].length()>0)
 				{
-					acc_Y=Math.abs(Double.parseDouble(data[2]));
+					acc_Y=Math.abs(Double.parseDouble(data[3]));
 				}
 
-				if(value.split(",")[3].length()>0) 
+				if(value.split(",")[4].length()>0) 
 				{ 
-					acc_Z=Math.abs(Double.parseDouble(data[3].substring(0,data[3].length()-1)));
+					acc_Z=Math.abs(Double.parseDouble(data[4].substring(0,data[4].length()-1)));
 				}
 						
 				/*Dati test accelerazione */
@@ -289,7 +291,7 @@ public class PortReader implements SerialPortEventListener {
 			//	acc_Z=1.25;
 				
 				/*SONDE APPARTENENTE AL GRUPPO A*/
-				if(sensor.getType().equals("R") && sensor.getStato()!=1 )
+				if(sensor.getType().equals("A") && sensor.getStato()!=1 )
 				{
 
 					if(sensor.getStato()!=1 && sensor.getStato()!=2) 
@@ -299,7 +301,7 @@ public class PortReader implements SerialPortEventListener {
 						
 					}
 					
-				//	System.out.println("Movimento sonda: "+sensor.getIdentifier()+" Evento:["+data[0].split("_")[1]+ "] [X]:"+acc_X+" [Y]:"+acc_Y+" [Z]:"+acc_Z + " Time: "+sdf.format(new Date()));
+	//				System.out.println("Movimento sonda: "+sensor.getIdentifier()+" Evento:["+data[0]+" - "+data[1]+ "] [X]:"+acc_X+" [Y]:"+acc_Y+" [Z]:"+acc_Z + " Time: "+sdf.format(new Date()));
 				
 					/*ALLERTA*/
 					if(statoAllarme(acc_X,acc_Y,acc_Z)==1) 

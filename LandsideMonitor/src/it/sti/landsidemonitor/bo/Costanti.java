@@ -10,6 +10,10 @@ public class Costanti {
 	public static final String COD_EVE_004 = "ALLERTA PERIODO 3";
 	public static final String COD_EVE_005 = "ALLARME 2 o PIU' SONDE IN ALLERTA ";
 	
+	public static final String COD_EVE_006="ALLARME SUPERAMENTO DURATA 4 PUNTI GR. B";
+	public static final String COD_EVE_007="ALLARME SUPERAMENTO DURATA 3 PUNTI GR. B";
+	public static final String COD_EVE_008="ALLARME SUPERAMENTO DURATA 2 PUNTI GR. B";
+	public static final String COD_EVE_009="ALLARME SUPERAMENTO DURATA 1 PUNTI GR. B";
 	
 	
 	public static String PORT="";

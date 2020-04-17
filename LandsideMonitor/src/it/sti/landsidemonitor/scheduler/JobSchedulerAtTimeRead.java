@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -15,17 +16,20 @@ import it.sti.landsidemonitor.dto.SensorDTO;
 
 public class JobSchedulerAtTimeRead implements Job{
 
+	final static Logger logger = Logger.getLogger(JobSchedulerAtTimeRead.class);
+	
 	@Override
+	
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 	
 		
-		//System.out.println("Check lista Punti");
-		
-		final int PUNTI_5_SEC=1;
+		final int PUNTI_5_SEC=4;
 		final int PUNTI_9_SEC=3;
 		final int PUNTI_12_SEC=2;
-		final int PUNTI_15_SEC=4;
-		
+		final int PUNTI_15_SEC=1;
+	
+	try {
+	
 		if(PortReader.puntiAttiviB.size()>=PUNTI_5_SEC) 
 		{
 			ArrayList<SensorDTO> lisSen = new ArrayList<>();
@@ -36,7 +40,7 @@ public class JobSchedulerAtTimeRead implements Job{
 			      
 			       long time =(Long)me.getValue();
 			       
-			       System.out.println("[5 SEC] " +(System.currentTimeMillis()-time));
+			       logger.warn("[5 SEC] " +(System.currentTimeMillis()-time));
 			       if(System.currentTimeMillis()-time>=5000) 
 			       {
 			    	   lisSen.add((SensorDTO)me.getKey());
@@ -45,9 +49,11 @@ public class JobSchedulerAtTimeRead implements Job{
 			 
 			 if(lisSen.size()>=PUNTI_5_SEC) 
 			 {
-				 for (SensorDTO sensorDTO : lisSen) {
+				 for (SensorDTO sensorDTO : lisSen) 
+				 {
 					 PortReader.cambiaStato(sensorDTO, 1);
-				     System.out.println("Cambio Stato ALLARME sonda: "+sensorDTO.getIdentifier());
+				     logger.warn("Cambio Stato ALLARME sonda: "+sensorDTO.getIdentifier());
+				     Core.registraEvento(sensorDTO.getIdentifier(),"006",2,0,0,0);
 				}
 			 }
 			   
@@ -76,8 +82,9 @@ public class JobSchedulerAtTimeRead implements Job{
 				 for (SensorDTO sensorDTO : lisSen) 
 				 {
 					 PortReader.cambiaStato(sensorDTO, 2);
-				     System.out.println("Cambio Stato ALLARME sonda: "+sensorDTO.getIdentifier());
-				}
+					 logger.warn("Cambio Stato ALLARME sonda: "+sensorDTO.getIdentifier());
+				     Core.registraEvento(sensorDTO.getIdentifier(),"007",2,0,0,0);
+				 }
 			 }
 			 
 		}
@@ -105,8 +112,9 @@ public class JobSchedulerAtTimeRead implements Job{
 				 for (SensorDTO sensorDTO : lisSen) 
 				 {
 					 PortReader.cambiaStato(sensorDTO, 2);
-				     System.out.println("Cambio Stato ALLARME sonda: "+sensorDTO.getIdentifier());
-				}
+					 logger.warn("Cambio Stato ALLARME sonda: "+sensorDTO.getIdentifier());
+				     Core.registraEvento(sensorDTO.getIdentifier(),"008",2,0,0,0);
+				 }
 			 }
 		
 		}
@@ -134,13 +142,19 @@ public class JobSchedulerAtTimeRead implements Job{
 				 for (SensorDTO sensorDTO : lisSen) 
 				 {
 					 PortReader.cambiaStato(sensorDTO, 2);
-				     System.out.println("Cambio Stato ALLARME sonda: "+sensorDTO.getIdentifier());
-				}
+				     logger.warn("Cambio Stato ALLARME sonda: "+sensorDTO.getIdentifier());
+				     Core.registraEvento(sensorDTO.getIdentifier(),"009",2,0,0,0);
+				 }
 			 }
 		
 		
 		}
 			
+	}catch (Exception e) 
+	{
+		logger.error(e);
+		
+	}
 	}
 
 }

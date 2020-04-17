@@ -54,9 +54,22 @@ public class Core {
 		return MainDAO.getListaEventi(identifier);
 	}
 
-	public static void cambiaStato(int idSonda, int stato) throws SQLException {
+	public static void cambiaStato(int idSonda, int stato) throws Exception {
 		
-		MainDAO.cambiaStato(idSonda,stato);
+		if(stato==1) 
+		{
+			PortReader.write("Y");
+		}
+		if(stato==2) 
+		{
+			PortReader.write("X");
+		}
+		if(stato==0) 
+		{
+			PortReader.write("Z");
+		}
+		
+		MainDAO.cambiaStatoDAO(idSonda,stato);
 		
 	}
 	

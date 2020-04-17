@@ -57,6 +57,23 @@ public class Utility {
 		{
 			return Costanti.COD_EVE_005;
 		}
+		if(codice.equals("006")) 
+		{
+			return Costanti.COD_EVE_006;
+		}
+		if(codice.equals("007")) 
+		{
+			return Costanti.COD_EVE_007;
+		}
+		if(codice.equals("008")) 
+		{
+			return Costanti.COD_EVE_008;
+		}
+		if(codice.equals("009")) 
+		{
+			return Costanti.COD_EVE_009;
+		}
+		
 		return "";
 	}
 

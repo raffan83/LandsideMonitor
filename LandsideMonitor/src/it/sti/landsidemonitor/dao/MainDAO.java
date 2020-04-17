@@ -238,7 +238,7 @@ public class MainDAO {
 		
 	}
 
-	public static void cambiaStato(int idSonda, int stato) throws SQLException {
+	public static void cambiaStatoDAO(int idSonda, int stato) throws SQLException {
 	
 		Connection con=null;
 		PreparedStatement pst=null;

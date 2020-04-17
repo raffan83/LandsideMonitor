@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import it.sti.landsidemonitor.bo.Core;
 import it.sti.landsidemonitor.bo.PortReader;
 import it.sti.landsidemonitor.dao.MainDAO;
 import it.sti.landsidemonitor.dto.SensorDTO;
@@ -72,10 +73,9 @@ public class RasterPanel extends JPanel{
 				String idSonda = ""+listaSensori.get(i).getId();
                	 try {
              
-               		cambiaStato(Integer.parseInt(idSonda), 0);
-                 	cambiaStatoOriginale(Integer.parseInt(idSonda), 0);
-                 	
-               		PortReader.write("Z");
+               	cambiaStato(Integer.parseInt(idSonda), 0);
+                cambiaStatoOriginale(Integer.parseInt(idSonda), 0);
+
                		
                	PortReader.write("C"+listaSensori.get(i).getIdentifier());
                	
@@ -89,6 +89,7 @@ public class RasterPanel extends JPanel{
 					
 					String message=PortReader.getMessage();
 				
+					
 					if(message.startsWith("<CL-"+listaSensori.get(i).getIdentifier()))
 						{
 							System.out.println("MGR RESET "+message);
@@ -131,7 +132,7 @@ public class RasterPanel extends JPanel{
 	  public void paintComponent(Graphics g){
 	    super.paintComponent(g);
 
-	 //   this.setBounds(0, 0, myFrame.getWidth(), myFrame.getHeight()-40);
+	
 	    g.drawImage(img, 0, 0, myFrame.getWidth(), myFrame.getHeight()-40,this);
 	  
 	    for (int i=0;i<listaSensori.size();i++) {
@@ -144,35 +145,35 @@ public class RasterPanel extends JPanel{
 	    	{
 	    		 g.fillOval(point.x, point.y,20, 20);
 	    		 g.setFont(new Font("Arial", Font.BOLD, 16)); 
-	    		 g.drawString("NON DEFINITO "+listaSensori.get(i).getIdentifier(), point.x,point.y);
+	    		 g.drawString("NON DEFINITO "+listaSensori.get(i).getIdentifier()+"("+listaSensori.get(i).getType()+")", point.x,point.y);
 	    		
 	    	}
 	    	else if(stato==3)
 	    	{
 	    		 g.fillOval(point.x, point.y,20, 20);
 	    		 g.setFont(new Font("Arial", Font.BOLD, 16)); 
-	    		 g.drawString("PRE ALLARME "+listaSensori.get(i).getIdentifier(), point.x,point.y);
+	    		 g.drawString("PRE ALLARME "+listaSensori.get(i).getIdentifier()+"("+listaSensori.get(i).getType()+")", point.x,point.y);
 	    		
 	    	}
 	    	else if(stato==2)
 	    	{
 	    		 g.fillOval(point.x, point.y,20, 20);
 	    		 g.setFont(new Font("Arial", Font.BOLD, 16)); 
-	    		 g.drawString("ALLERTA "+listaSensori.get(i).getIdentifier(), point.x,point.y);
+	    		 g.drawString("ALLERTA "+listaSensori.get(i).getIdentifier()+"("+listaSensori.get(i).getType()+")", point.x,point.y);
 	    		
 	    	}
 	    	else if(stato==1)
 	    	{
 	    		 g.fillOval(point.x, point.y,20, 20);
 	    		 g.setFont(new Font("Arial", Font.BOLD, 16));
-	    		 g.drawString("ALLARME "+listaSensori.get(i).getIdentifier(), point.x,point.y);
+	    		 g.drawString("ALLARME "+listaSensori.get(i).getIdentifier()+"("+listaSensori.get(i).getType()+")", point.x,point.y);
 	    		  
 	    	}
 	    	else 
 	    	{
 	    		g.fillOval(point.x, point.y,20, 20);
 	    		g.setFont(new Font("Arial", Font.BOLD,16));
-			    g.drawString(""+listaSensori.get(i).getIdentifier(), point.x,point.y);
+			    g.drawString(""+listaSensori.get(i).getIdentifier()+"("+listaSensori.get(i).getType()+")", point.x,point.y);
 			   
 	    	}
 		    
@@ -294,7 +295,7 @@ public class RasterPanel extends JPanel{
 				  listaSensori.get(i).setStato(stato);
 				  try 
 				  {
-					MainDAO.cambiaStato(idSonda, stato);  
+					Core.cambiaStato(idSonda, stato);  
 				
 				} catch (Exception e) {
 					// TODO Auto-generated catch block

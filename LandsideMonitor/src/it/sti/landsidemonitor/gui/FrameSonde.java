@@ -584,8 +584,8 @@ public class FrameSonde extends JFrame implements ActionListener{
 			panel.add(lblType, "cell 0 4,alignx trailing");
 			
 			JComboBox<String> tf_type = new JComboBox<String>();
-			tf_type.addItem("R");
-			tf_type.addItem("D");
+			tf_type.addItem("A");
+			tf_type.addItem("B");
 			tf_type.setFont(new Font("Arial", Font.PLAIN, 14));
 			panel.add(tf_type, "cell 1 4,wmax 100");
 			

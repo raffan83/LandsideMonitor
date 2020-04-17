@@ -2,6 +2,7 @@ package it.sti.landsidemonitor.scheduler;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -12,6 +13,7 @@ import jssc.SerialPortException;
 
 public class JobCalibration implements Job{
 	
+	final static Logger logger = Logger.getLogger(JobCalibration.class);
 
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
@@ -22,7 +24,7 @@ public class JobCalibration implements Job{
 			{
 			//	if(sensorDTO.getStato()!=5) 
 			//	{
-					System.out.println("chiamata sonda: "+sensorDTO.getIdentifier());
+					logger.debug("Call sensor: "+sensorDTO.getIdentifier());
 					PortReader.write("C"+sensorDTO.getIdentifier());
 			//	}
 			}
