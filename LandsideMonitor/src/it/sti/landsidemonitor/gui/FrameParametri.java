@@ -24,6 +24,9 @@ import it.sti.landsidemonitor.bo.Core;
 import it.sti.landsidemonitor.bo.Costanti;
 import it.sti.landsidemonitor.dto.ParamDTO;
 import net.miginfocom.swing.MigLayout;
+import javax.swing.border.TitledBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.UIManager;
 
 public class FrameParametri extends JFrame {
 	
@@ -48,6 +51,10 @@ public class FrameParametri extends JFrame {
 	private JTextField textField_iter_p2;
 	private JTextField textField_iter_p3;
 	private JTextField textField_destinatari_alarm;
+	private JTextField textField_det_5_sec;
+	private JTextField textField_det_9_sec;
+	private JTextField textField_det_12_sec;
+	private JTextField textField_det_15_sec;
 
 	public FrameParametri() throws SQLException 
 	{
@@ -61,15 +68,17 @@ public class FrameParametri extends JFrame {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		
 		JPanel panelMainParam = new JPanel();
+		panelMainParam.setBackground(Color.WHITE);
 		
 		JPanel panelMail = new JPanel();
+		panelMail.setBackground(Color.WHITE);
 		
 		tabbedPane.addTab("Parametri generali",panelMainParam);
 		
 		tabbedPane.addTab("Parametri Mail",panelMail);
 		
 		setLocation(x, y);
-		panelMainParam.setLayout(new MigLayout("", "[pref!,grow][pref!][grow][grow]", "[][9.00][grow][grow][grow][grow][grow][grow][grow][]"));
+		panelMainParam.setLayout(new MigLayout("", "[pref!,grow][pref!,grow][grow][grow]", "[][9.00][30px:30px][:30px:30px][:30px:30px][grow][:20px:20px][grow][][]"));
 		
 		panelMail.setLayout(new MigLayout("", "[pref!,grow][pref!,grow][grow]", "[][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][][grow][]"));
 		
@@ -154,6 +163,141 @@ public class FrameParametri extends JFrame {
 		textField_1.setColumns(10);
 		panelMainParam.add(textField_1, "cell 1 3,alignx left");
 		
+		JPanel panel_rocc_a = new JPanel();
+		panel_rocc_a.setBorder(new TitledBorder(new LineBorder(new Color(255, 0, 0), 2, true), "Parametri sonde tipo roccioso (Gruppo A)", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(255, 0, 0)));
+		panel_rocc_a.setBackground(Color.WHITE);
+		panelMainParam.add(panel_rocc_a, "cell 0 5 4 1,grow");
+		panel_rocc_a.setLayout(new MigLayout("", "[grow][grow][grow][grow]", "[grow][grow][grow]"));
+		
+		JLabel lblLimiteAllarme = new JLabel("RANGE ALLERTA 1*");
+		panel_rocc_a.add(lblLimiteAllarme, "cell 0 0");
+		lblLimiteAllarme.setFont(new Font("Arial", Font.BOLD, 14));
+		
+		JLabel lblMin = new JLabel("MIN");
+		panel_rocc_a.add(lblMin, "flowx,cell 1 0");
+		lblMin.setFont(new Font("Arial", Font.BOLD, 12));
+		
+		textField_min_p1 = new JTextField();
+		panel_rocc_a.add(textField_min_p1, "cell 1 0");
+		textField_min_p1.setHorizontalAlignment(SwingConstants.RIGHT);
+		textField_min_p1.setColumns(10);
+		
+		textField_min_p1.setText(""+Costanti.LIMITE_MIN_P1);
+		
+		JLabel label_9 = new JLabel("m/s\u00B2");
+		panel_rocc_a.add(label_9, "cell 1 0");
+		label_9.setFont(new Font("Arial", Font.PLAIN, 11));
+		
+		JLabel lblMax = new JLabel("MAX");
+		panel_rocc_a.add(lblMax, "flowx,cell 2 0");
+		lblMax.setFont(new Font("Arial", Font.BOLD, 12));
+		
+		textField_max_p1 = new JTextField();
+		panel_rocc_a.add(textField_max_p1, "cell 2 0");
+		textField_max_p1.setHorizontalAlignment(SwingConstants.RIGHT);
+		textField_max_p1.setColumns(10);
+		textField_max_p1.setText(""+Costanti.LIMITE_MAX_P1);
+		
+		JLabel label_12 = new JLabel("m/s\u00B2");
+		panel_rocc_a.add(label_12, "cell 2 0");
+		label_12.setFont(new Font("Arial", Font.PLAIN, 11));
+		
+		JLabel lblSensibilita = new JLabel("SEC");
+		panel_rocc_a.add(lblSensibilita, "flowx,cell 3 0");
+		lblSensibilita.setFont(new Font("Arial", Font.BOLD, 12));
+		
+		textField_iter_p1 = new JTextField();
+		panel_rocc_a.add(textField_iter_p1, "cell 3 0");
+		textField_iter_p1.setHorizontalAlignment(SwingConstants.RIGHT);
+		textField_iter_p1.setColumns(10);
+		textField_iter_p1.setText(""+Costanti.TEMPO_ALLERTA_1/1000);
+		
+		JLabel lblRangePreallarme = new JLabel("RANGE ALLERTA 2*");
+		panel_rocc_a.add(lblRangePreallarme, "cell 0 1");
+		lblRangePreallarme.setFont(new Font("Arial", Font.BOLD, 14));
+		
+		JLabel label = new JLabel("MIN");
+		panel_rocc_a.add(label, "flowx,cell 1 1");
+		label.setFont(new Font("Arial", Font.BOLD, 12));
+		
+		textField_min_p2 = new JTextField();
+		panel_rocc_a.add(textField_min_p2, "cell 1 1");
+		textField_min_p2.setHorizontalAlignment(SwingConstants.RIGHT);
+		textField_min_p2.setColumns(10);
+		
+		textField_min_p2.setText(""+Costanti.LIMITE_MIN_P2);
+		
+		JLabel label_10 = new JLabel("m/s\u00B2");
+		panel_rocc_a.add(label_10, "cell 1 1");
+		label_10.setFont(new Font("Arial", Font.PLAIN, 11));
+		
+		JLabel label_2 = new JLabel("MAX");
+		panel_rocc_a.add(label_2, "flowx,cell 2 1");
+		label_2.setFont(new Font("Arial", Font.BOLD, 12));
+		
+		textField_max_p2 = new JTextField();
+		panel_rocc_a.add(textField_max_p2, "cell 2 1");
+		textField_max_p2.setHorizontalAlignment(SwingConstants.RIGHT);
+		textField_max_p2.setColumns(10);
+		textField_max_p2.setText(""+Costanti.LIMITE_MAX_P2);
+		
+		JLabel label_13 = new JLabel("m/s\u00B2");
+		panel_rocc_a.add(label_13, "cell 2 1");
+		label_13.setFont(new Font("Arial", Font.PLAIN, 11));
+		
+		JLabel lblSec = new JLabel("SEC");
+		panel_rocc_a.add(lblSec, "flowx,cell 3 1");
+		lblSec.setFont(new Font("Arial", Font.BOLD, 12));
+		
+		textField_iter_p2 = new JTextField();
+		panel_rocc_a.add(textField_iter_p2, "cell 3 1");
+		textField_iter_p2.setHorizontalAlignment(SwingConstants.RIGHT);
+		textField_iter_p2.setColumns(10);
+		textField_iter_p2.setText(""+Costanti.TEMPO_ALLERTA_2/1000);
+		
+		JLabel lblRangePreallarme_1 = new JLabel("RANGE ALLERTA 3*");
+		panel_rocc_a.add(lblRangePreallarme_1, "cell 0 2");
+		lblRangePreallarme_1.setFont(new Font("Arial", Font.BOLD, 14));
+		
+		JLabel label_1 = new JLabel("MIN");
+		panel_rocc_a.add(label_1, "flowx,cell 1 2");
+		label_1.setFont(new Font("Arial", Font.BOLD, 12));
+		
+		textField_min_p3 = new JTextField();
+		panel_rocc_a.add(textField_min_p3, "cell 1 2");
+		textField_min_p3.setHorizontalAlignment(SwingConstants.RIGHT);
+		textField_min_p3.setColumns(10);
+		
+		textField_min_p3.setText(""+Costanti.LIMITE_MIN_P3);
+		
+		JLabel label_11 = new JLabel("m/s\u00B2");
+		panel_rocc_a.add(label_11, "cell 1 2");
+		label_11.setFont(new Font("Arial", Font.PLAIN, 11));
+		
+		JLabel label_3 = new JLabel("MAX");
+		panel_rocc_a.add(label_3, "flowx,cell 2 2");
+		label_3.setFont(new Font("Arial", Font.BOLD, 12));
+		
+		textField_max_p3 = new JTextField();
+		panel_rocc_a.add(textField_max_p3, "cell 2 2");
+		textField_max_p3.setHorizontalAlignment(SwingConstants.RIGHT);
+		textField_max_p3.setColumns(10);
+		textField_max_p3.setText(""+Costanti.LIMITE_MAX_P3);
+		
+		JLabel label_14 = new JLabel("m/s\u00B2");
+		panel_rocc_a.add(label_14, "cell 2 2");
+		label_14.setFont(new Font("Arial", Font.PLAIN, 11));
+		
+		JLabel lblSec_1 = new JLabel("SEC\r\n");
+		panel_rocc_a.add(lblSec_1, "flowx,cell 3 2");
+		lblSec_1.setFont(new Font("Arial", Font.BOLD, 12));
+		
+		textField_iter_p3 = new JTextField();
+		panel_rocc_a.add(textField_iter_p3, "cell 3 2");
+		textField_iter_p3.setHorizontalAlignment(SwingConstants.RIGHT);
+		textField_iter_p3.setColumns(10);
+		textField_iter_p3.setText(""+Costanti.TEMPO_ALLERTA_3/1000);
+		
 		JLabel lblDebug = new JLabel("DEBUG");
 		lblDebug.setFont(new Font("Arial", Font.BOLD, 14));
 		panelMainParam.add(lblDebug, "cell 0 4,alignx trailing");
@@ -161,50 +305,71 @@ public class FrameParametri extends JFrame {
 		JComboBox comboBox = new JComboBox(new String[] {"SI","NO"});
 		panelMainParam.add(comboBox, "cell 1 4,alignx left");
 		
-		JLabel lblLimiteAllarme = new JLabel("RANGE ALLERTA 1*");
-		lblLimiteAllarme.setFont(new Font("Arial", Font.BOLD, 14));
-		panelMainParam.add(lblLimiteAllarme, "cell 0 5,alignx trailing");
+		JPanel panel = new JPanel();
+		panel.setBorder(new TitledBorder(new LineBorder(new Color(255, 0, 0), 2, true), "Parametri sonde detritiche (Gruppo B)", TitledBorder.LEADING, TitledBorder.TOP, null, Color.RED));
+		panel.setBackground(new Color(255, 255, 255));
+		panelMainParam.add(panel, "cell 0 7 4 1,grow");
+		panel.setLayout(new MigLayout("", "[131px][][][][]", "[17px,grow][grow][grow][grow]"));
 		
-		JLabel lblMin = new JLabel("MIN");
-		lblMin.setFont(new Font("Arial", Font.BOLD, 12));
-		panelMainParam.add(lblMin, "flowx,cell 1 5,alignx trailing");
+		JLabel lblNPuntiAllarme = new JLabel("N\u00B0 PUNTI ALLARME MOVIMENTO 5 SECONDI");
+		lblNPuntiAllarme.setFont(new Font("Arial", Font.BOLD, 14));
+		panel.add(lblNPuntiAllarme, "cell 0 0");
 		
-		textField_min_p1 = new JTextField();
-		textField_min_p1.setHorizontalAlignment(SwingConstants.RIGHT);
-		textField_min_p1.setColumns(10);
-		panelMainParam.add(textField_min_p1, "cell 1 5,width 75:75:75,alignx left");
+		textField_det_5_sec = new JTextField();
+		textField_det_5_sec.setHorizontalAlignment(SwingConstants.RIGHT);
+		textField_det_5_sec.setColumns(10);
+		textField_det_5_sec.setText(""+Costanti.PUNTI_DET_5_SEC);
+		panel.add(textField_det_5_sec, "cell 2 0,width 30:30:30");
 		
-		JLabel lblRangePreallarme = new JLabel("RANGE ALLERTA 2*");
-		lblRangePreallarme.setFont(new Font("Arial", Font.BOLD, 14));
-		panelMainParam.add(lblRangePreallarme, "cell 0 6,alignx trailing");
+		JLabel lblAllarme = new JLabel("ALLARME");
+		lblAllarme.setForeground(Color.RED);
+		lblAllarme.setFont(new Font("Arial", Font.BOLD, 14));
+		panel.add(lblAllarme, "cell 4 0");
 		
-		JLabel label = new JLabel("MIN");
-		label.setFont(new Font("Arial", Font.BOLD, 12));
-		panelMainParam.add(label, "flowx,cell 1 6,alignx trailing");
+		JLabel lblNPuntiAllarme_1 = new JLabel("N\u00B0 PUNTI ALLARME MOVIMENTO 9 SECONDI");
+		lblNPuntiAllarme_1.setFont(new Font("Arial", Font.BOLD, 14));
+		panel.add(lblNPuntiAllarme_1, "cell 0 1");
 		
-		JLabel label_2 = new JLabel("MAX");
-		label_2.setFont(new Font("Arial", Font.BOLD, 12));
-		panelMainParam.add(label_2, "flowx,cell 2 6,alignx trailing");
+		textField_det_9_sec = new JTextField();
+		textField_det_9_sec.setHorizontalAlignment(SwingConstants.RIGHT);
+		textField_det_9_sec.setColumns(10);
+		textField_det_9_sec.setText(""+Costanti.PUNTI_DET_9_SEC);
+		panel.add(textField_det_9_sec, "cell 2 1,width 30:30:30");
 		
-		JLabel lblSec = new JLabel("SEC");
-		lblSec.setFont(new Font("Arial", Font.BOLD, 12));
-		panelMainParam.add(lblSec, "flowx,cell 3 6,alignx trailing");
+		JLabel lblAllerta = new JLabel("ALLERTA\r\n");
+		lblAllerta.setForeground(Color.ORANGE);
+		lblAllerta.setFont(new Font("Arial", Font.BOLD, 14));
+		panel.add(lblAllerta, "cell 4 1");
 		
-		JLabel lblRangePreallarme_1 = new JLabel("RANGE ALLERTA 3*");
-		lblRangePreallarme_1.setFont(new Font("Arial", Font.BOLD, 14));
-		panelMainParam.add(lblRangePreallarme_1, "cell 0 7,alignx trailing");
+		JLabel lblNPuntiAllarme_2 = new JLabel("N\u00B0 PUNTI ALLARME MOVIMENTO 12 SECONDI");
+		lblNPuntiAllarme_2.setFont(new Font("Arial", Font.BOLD, 14));
+		panel.add(lblNPuntiAllarme_2, "cell 0 2,alignx trailing");
 		
-		JLabel label_1 = new JLabel("MIN");
-		label_1.setFont(new Font("Arial", Font.BOLD, 12));
-		panelMainParam.add(label_1, "flowx,cell 1 7,alignx trailing");
+		textField_det_12_sec = new JTextField();
+		textField_det_12_sec.setHorizontalAlignment(SwingConstants.RIGHT);
+		textField_det_12_sec.setColumns(10);
+		textField_det_12_sec.setText(""+Costanti.PUNTI_DET_12_SEC);
+		panel.add(textField_det_12_sec, "cell 2 2,width 30:30:30");
 		
-		JLabel label_3 = new JLabel("MAX");
-		label_3.setFont(new Font("Arial", Font.BOLD, 12));
-		panelMainParam.add(label_3, "flowx,cell 2 7,alignx trailing");
+		JLabel label_4 = new JLabel("ALLERTA\r\n");
+		label_4.setForeground(Color.ORANGE);
+		label_4.setFont(new Font("Arial", Font.BOLD, 14));
+		panel.add(label_4, "cell 4 2");
 		
-		JLabel lblSec_1 = new JLabel("SEC\r\n");
-		lblSec_1.setFont(new Font("Arial", Font.BOLD, 12));
-		panelMainParam.add(lblSec_1, "flowx,cell 3 7,alignx trailing");
+		JLabel lblNPuntiAllarme_3 = new JLabel("N\u00B0 PUNTI ALLARME MOVIMENTO 15 SECONDI");
+		lblNPuntiAllarme_3.setFont(new Font("Arial", Font.BOLD, 14));
+		panel.add(lblNPuntiAllarme_3, "cell 0 3,alignx trailing");
+		
+		textField_det_15_sec = new JTextField();
+		textField_det_15_sec.setHorizontalAlignment(SwingConstants.RIGHT);
+		textField_det_15_sec.setColumns(10);
+		textField_det_15_sec.setText(""+Costanti.PUNTI_DET_15_SEC);
+		panel.add(textField_det_15_sec, "cell 2 3,width 30:30:30");
+		
+		JLabel label_5 = new JLabel("ALLERTA\r\n");
+		label_5.setForeground(Color.ORANGE);
+		label_5.setFont(new Font("Arial", Font.BOLD, 14));
+		panel.add(label_5, "cell 4 3");
 		
 		JLabel lblIParametri = new JLabel("* I parametri verranno applicati solo al prossimo riavvio");
 		lblIParametri.setFont(new Font("Arial", Font.BOLD, 12));
@@ -235,94 +400,10 @@ public class FrameParametri extends JFrame {
 			comboBox.setSelectedIndex(1);
 		}
 		
-		JLabel lblMax = new JLabel("MAX");
-		lblMax.setFont(new Font("Arial", Font.BOLD, 12));
-		panelMainParam.add(lblMax, "flowx,cell 2 5,alignx trailing");
-		
-		textField_max_p1 = new JTextField();
-		textField_max_p1.setHorizontalAlignment(SwingConstants.RIGHT);
-		panelMainParam.add(textField_max_p1, "cell 2 5,width 75:75:75");
-		textField_max_p1.setColumns(10);
-		
-		JLabel lblSensibilita = new JLabel("SEC");
-		lblSensibilita.setFont(new Font("Arial", Font.BOLD, 12));
-		panelMainParam.add(lblSensibilita, "flowx,cell 3 5,alignx trailing");
-		
-		textField_iter_p1 = new JTextField();
-		textField_iter_p1.setHorizontalAlignment(SwingConstants.RIGHT);
-		panelMainParam.add(textField_iter_p1, "cell 3 5,width 75:75:75");
-		textField_iter_p1.setColumns(10);
-		
-		textField_min_p2 = new JTextField();
-		textField_min_p2.setHorizontalAlignment(SwingConstants.RIGHT);
-		textField_min_p2.setColumns(10);
-		panelMainParam.add(textField_min_p2, "cell 1 6,width 75:75:75,alignx left");
-		
-		textField_min_p3 = new JTextField();
-		textField_min_p3.setHorizontalAlignment(SwingConstants.RIGHT);
-		textField_min_p3.setColumns(10);
-		panelMainParam.add(textField_min_p3, "cell 1 7,width 75:75:75,alignx left");
-		
-		textField_max_p2 = new JTextField();
-		textField_max_p2.setHorizontalAlignment(SwingConstants.RIGHT);
-		textField_max_p2.setColumns(10);
-		panelMainParam.add(textField_max_p2, "cell 2 6,width 75:75:75,alignx left");
-		
-		textField_max_p3 = new JTextField();
-		textField_max_p3.setHorizontalAlignment(SwingConstants.RIGHT);
-		textField_max_p3.setColumns(10);
-		panelMainParam.add(textField_max_p3, "cell 2 7,width 75:75:75,alignx left");
-		
-		textField_iter_p2 = new JTextField();
-		textField_iter_p2.setHorizontalAlignment(SwingConstants.RIGHT);
-		textField_iter_p2.setColumns(10);
-		panelMainParam.add(textField_iter_p2, "cell 3 6,width 75:75:75,alignx left");
-		
-		textField_iter_p3 = new JTextField();
-		textField_iter_p3.setHorizontalAlignment(SwingConstants.RIGHT);
-		textField_iter_p3.setColumns(10);
-		panelMainParam.add(textField_iter_p3, "cell 3 7,width 75:75:75,alignx left");
-		
-		textField_min_p1.setText(""+Costanti.LIMITE_MIN_P1);
-		textField_max_p1.setText(""+Costanti.LIMITE_MAX_P1);
-		textField_iter_p1.setText(""+Costanti.TEMPO_ALLERTA_1/1000);
-		
-		textField_min_p2.setText(""+Costanti.LIMITE_MIN_P2);
-		textField_max_p2.setText(""+Costanti.LIMITE_MAX_P2);
-		textField_iter_p2.setText(""+Costanti.TEMPO_ALLERTA_2/1000);
-		
-		textField_min_p3.setText(""+Costanti.LIMITE_MIN_P3);
-		textField_max_p3.setText(""+Costanti.LIMITE_MAX_P3);
-		textField_iter_p3.setText(""+Costanti.TEMPO_ALLERTA_3/1000);
-		
 		JButton btnAnnulla = new JButton("ANNULLA");
 		btnAnnulla.setIcon(new ImageIcon(FrameParametri.class.getResource("/image/abort.png")));
 		btnAnnulla.setFont(new Font("Arial", Font.BOLD, 14));
 		panelMainParam.add(btnAnnulla, "cell 0 9 4 1");
-		
-		JLabel label_10 = new JLabel("m/s\u00B2");
-		label_10.setFont(new Font("Arial", Font.PLAIN, 11));
-		panelMainParam.add(label_10, "cell 1 6");
-		
-		JLabel label_11 = new JLabel("m/s\u00B2");
-		label_11.setFont(new Font("Arial", Font.PLAIN, 11));
-		panelMainParam.add(label_11, "cell 1 7");
-		
-		JLabel label_12 = new JLabel("m/s\u00B2");
-		label_12.setFont(new Font("Arial", Font.PLAIN, 11));
-		panelMainParam.add(label_12, "cell 2 5");
-		
-		JLabel label_13 = new JLabel("m/s\u00B2");
-		label_13.setFont(new Font("Arial", Font.PLAIN, 11));
-		panelMainParam.add(label_13, "cell 2 6");
-		
-		JLabel label_14 = new JLabel("m/s\u00B2");
-		label_14.setFont(new Font("Arial", Font.PLAIN, 11));
-		panelMainParam.add(label_14, "cell 2 7");
-		
-		JLabel label_9 = new JLabel("m/s\u00B2");
-		label_9.setFont(new Font("Arial", Font.PLAIN, 11));
-		panelMainParam.add(label_9, "cell 1 5");
 		btnAnnulla.addActionListener(new ActionListener() {
 			
 			@Override
@@ -389,15 +470,6 @@ public class FrameParametri extends JFrame {
 				}
 				
 				/*Soglia pre allarme 1*/
-				if(textField_min_p1.getText().length()==0 || controllaNumero(textField_min_p1.getText())==false) 
-				{
-					textField_min_p1.setBackground(Color.red);
-					save =false;
-				}
-				else 
-				{
-					textField_min_p1.setBackground(Color.white);
-				}
 				
 				if(textField_min_p1.getText().length()==0 || controllaNumero(textField_min_p1.getText())==false) 
 				{
@@ -443,16 +515,6 @@ public class FrameParametri extends JFrame {
 					textField_min_p2.setBackground(Color.white);
 				}
 				
-				if(textField_min_p2.getText().length()==0 || controllaNumero(textField_min_p2.getText())==false) 
-				{
-					textField_min_p2.setBackground(Color.red);
-					save =false;
-				}
-				else 
-				{
-					textField_min_p2.setBackground(Color.white);
-				}
-				
 				if(textField_max_p2.getText().length()==0 || controllaNumero(textField_max_p2.getText())==false) 
 				{
 					textField_max_p2.setBackground(Color.red);
@@ -475,17 +537,7 @@ public class FrameParametri extends JFrame {
 				
 				/*
 				 * Soglia Preallarme 3
-				 */
-				if(textField_min_p3.getText().length()==0 || controllaNumero(textField_min_p3.getText())==false) 
-				{
-					textField_min_p3.setBackground(Color.red);
-					save =false;
-				}
-				else 
-				{
-					textField_min_p3.setBackground(Color.white);
-				}
-				
+				 */		
 				if(textField_min_p3.getText().length()==0 || controllaNumero(textField_min_p3.getText())==false) 
 				{
 					textField_min_p3.setBackground(Color.red);
@@ -516,6 +568,47 @@ public class FrameParametri extends JFrame {
 					textField_iter_p3.setBackground(Color.white);
 				}
 				
+				/*Punti detritici 5-9-12-15*/
+				
+				if(textField_det_5_sec.getText().length()==0 || controllaNumero(textField_det_5_sec.getText())==false) 
+				{
+					textField_det_5_sec.setBackground(Color.red);
+					save =false;
+				}
+				else 
+				{
+					textField_det_5_sec.setBackground(Color.white);
+				}
+				
+				if(textField_det_9_sec.getText().length()==0 || controllaNumero(textField_det_9_sec.getText())==false) 
+				{
+					textField_det_9_sec.setBackground(Color.red);
+					save =false;
+				}
+				else 
+				{
+					textField_det_9_sec.setBackground(Color.white);
+				}
+				
+				if(textField_det_12_sec.getText().length()==0 || controllaNumero(textField_det_12_sec.getText())==false) 
+				{
+					textField_det_12_sec.setBackground(Color.red);
+					save =false;
+				}
+				else 
+				{
+					textField_det_12_sec.setBackground(Color.white);
+				}
+				
+				if(textField_det_15_sec.getText().length()==0 || controllaNumero(textField_det_15_sec.getText())==false) 
+				{
+					textField_det_15_sec.setBackground(Color.red);
+					save =false;
+				}
+				else 
+				{
+					textField_det_15_sec.setBackground(Color.white);
+				}
 				
 				if(save) 
 				{
@@ -542,6 +635,11 @@ public class FrameParametri extends JFrame {
 					param.setLIMITE_MIN_P3(Double.parseDouble(textField_min_p3.getText()));
 					param.setLIMITE_MAX_P3(Double.parseDouble(textField_max_p3.getText()));
 					param.setITERAZIONI_P3(Integer.parseInt(textField_iter_p3.getText()));
+					
+					param.setPUNTI_DET_5_SEC(Integer.parseInt(textField_det_5_sec.getText()));
+					param.setPUNTI_DET_9_SEC(Integer.parseInt(textField_det_9_sec.getText()));
+					param.setPUNTI_DET_12_SEC(Integer.parseInt(textField_det_12_sec.getText()));
+					param.setPUNTI_DET_15_SEC(Integer.parseInt(textField_det_15_sec.getText()));
 					
 					param.setHOST_NAME_MAIL(textField_hostname.getText());
 					param.setUSERNAME_MAIL(textField_username.getText());

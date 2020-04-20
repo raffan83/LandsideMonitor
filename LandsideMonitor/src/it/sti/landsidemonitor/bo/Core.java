@@ -107,6 +107,10 @@ public class Core {
 		Costanti.LIMITE_MAX_P3=parametri.getLIMITE_MAX_P3();
 		Costanti.TEMPO_ALLERTA_3=parametri.getITERAZIONI_P3()*1000;
 		
+		Costanti.PUNTI_DET_5_SEC=parametri.getPUNTI_DET_5_SEC();
+		Costanti.PUNTI_DET_9_SEC=parametri.getPUNTI_DET_9_SEC();
+		Costanti.PUNTI_DET_12_SEC=parametri.getPUNTI_DET_12_SEC();
+		Costanti.PUNTI_DET_15_SEC=parametri.getPUNTI_DET_15_SEC();
 		
 		Costanti.HOST_NAME_MAIL=parametri.getHOST_NAME_MAIL();
 		Costanti.USERNAME_MAIL=parametri.getUSERNAME_MAIL();

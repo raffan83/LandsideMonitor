@@ -10,8 +10,8 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import it.sti.landsidemonitor.bo.Core;
+import it.sti.landsidemonitor.bo.Costanti;
 import it.sti.landsidemonitor.bo.PortReader;
-import it.sti.landsidemonitor.dao.MainDAO;
 import it.sti.landsidemonitor.dto.SensorDTO;
 
 public class JobSchedulerAtTimeRead implements Job{
@@ -23,10 +23,10 @@ public class JobSchedulerAtTimeRead implements Job{
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 	
 		
-		final int PUNTI_5_SEC=4;
-		final int PUNTI_9_SEC=3;
-		final int PUNTI_12_SEC=2;
-		final int PUNTI_15_SEC=1;
+		final int PUNTI_5_SEC=Costanti.PUNTI_DET_5_SEC;
+		final int PUNTI_9_SEC=Costanti.PUNTI_DET_9_SEC;
+		final int PUNTI_12_SEC=Costanti.PUNTI_DET_12_SEC;
+		final int PUNTI_15_SEC=Costanti.PUNTI_DET_15_SEC;
 	
 	try {
 	

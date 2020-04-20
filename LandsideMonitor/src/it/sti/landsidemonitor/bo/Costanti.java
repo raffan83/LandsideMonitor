@@ -18,12 +18,8 @@ public class Costanti {
 	
 	public static String PORT="";
 	public static int FRAMERATE=0;
-	public static  double LIMIT_GRAPH_X_AXIS = 0;
-	public static  double LIMIT_GRAPH_Y_AXIS = 0;
-	public static  double LIMIT_GRAPH_Z_AXIS = 0;
-	public static  long FRAMERATE_READ_GRAPH = 0;
 	public static  boolean DEBUG = true;
-	public static  int VALORE_MANCATA_RICEZIONE_SONDA = 0;
+
 	
 	public static  double LIMITE_MIN_P1 = 0;
 	public static  double LIMITE_MAX_P1 = 0;
@@ -37,6 +33,10 @@ public class Costanti {
 	public static  double LIMITE_MAX_P3 = 0;
 	public static int TEMPO_ALLERTA_3=0;
 	
+	public static int PUNTI_DET_5_SEC;
+	public static int PUNTI_DET_9_SEC;
+	public static int PUNTI_DET_12_SEC;
+	public static int PUNTI_DET_15_SEC;
 	public static  double SENSIBILITA_PREALLARME = 10;
 	
 
@@ -53,5 +53,6 @@ public class Costanti {
 	public static String DEST_MAIL_PRE="";
 	public static String DEST_MAIL_ALARM="";
 	public static long TIMER_ITERAZIONI=15;
+	
 	
 }

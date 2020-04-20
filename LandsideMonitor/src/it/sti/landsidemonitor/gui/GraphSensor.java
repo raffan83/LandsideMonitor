@@ -62,7 +62,7 @@ public class GraphSensor extends JFrame {
 						@Override public void run() {
 							 while (!exit){
 								try {
-									Thread.sleep(Costanti.FRAMERATE_READ_GRAPH);
+									Thread.sleep(50);
 									String value=MainFrame.pr.getValue();
 
 									if(value.split(",").length==4) 
@@ -76,15 +76,16 @@ public class GraphSensor extends JFrame {
 													double numberY = Double.parseDouble(value.split(",")[2].trim());
 													double numberZ = Double.parseDouble(value.split(",")[3].substring(0,value.split(",")[3].length()-1).trim());
 													
-													if(numberX >= Costanti.LIMIT_GRAPH_X_AXIS || numberX <= -Costanti.LIMIT_GRAPH_X_AXIS )
+													if(numberX >= 0.2  || numberX <= -0.2 )
 													{
-																											seriesX.add(x++,numberX);
-													}else 
+														seriesX.add(x++,numberX);
+													}
+													else 
 													{
 														seriesX.add(x++,0);
 													}
 													
-													if(numberY >= Costanti.LIMIT_GRAPH_Y_AXIS || numberY <= -Costanti.LIMIT_GRAPH_Y_AXIS )
+													if(numberY >= 0.2 || numberY <= -0.2 )
 													{
 														seriesY.add(x++,numberY);
 													}else 
@@ -92,7 +93,7 @@ public class GraphSensor extends JFrame {
 														seriesY.add(x++,0);
 													}
 													
-													if(numberZ >= Costanti.LIMIT_GRAPH_Z_AXIS || numberZ <= -Costanti.LIMIT_GRAPH_Z_AXIS )
+													if(numberZ >= 0.2 || numberZ <= -0.2 )
 													{
 														seriesZ.add(x++,numberZ);
 													}else 

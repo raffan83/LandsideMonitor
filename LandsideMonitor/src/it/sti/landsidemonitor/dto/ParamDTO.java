@@ -18,6 +18,10 @@ public class ParamDTO {
 	private   double LIMITE_MAX_P3 = 0;
 	private  int ITERAZIONI_P3=0;
 	
+	private int PUNTI_DET_5_SEC=0;
+	private int PUNTI_DET_9_SEC=0;
+	private int PUNTI_DET_12_SEC=0;
+	private int PUNTI_DET_15_SEC=0; 
 	
 	private  String HOST_NAME_MAIL;
 	private  String USERNAME_MAIL;
@@ -115,6 +119,31 @@ public class ParamDTO {
 	}
 	public void setITERAZIONI_P3(int iTERAZIONI_P3) {
 		ITERAZIONI_P3 = iTERAZIONI_P3;
+	}
+	
+	public int getPUNTI_DET_5_SEC() {
+		return PUNTI_DET_5_SEC;
+	}
+	public void setPUNTI_DET_5_SEC(int pUNTI_DET_5_SEC) {
+		PUNTI_DET_5_SEC = pUNTI_DET_5_SEC;
+	}
+	public int getPUNTI_DET_9_SEC() {
+		return PUNTI_DET_9_SEC;
+	}
+	public void setPUNTI_DET_9_SEC(int pUNTI_DET_9_SEC) {
+		PUNTI_DET_9_SEC = pUNTI_DET_9_SEC;
+	}
+	public int getPUNTI_DET_12_SEC() {
+		return PUNTI_DET_12_SEC;
+	}
+	public void setPUNTI_DET_12_SEC(int pUNTI_DET_12_SEC) {
+		PUNTI_DET_12_SEC = pUNTI_DET_12_SEC;
+	}
+	public int getPUNTI_DET_15_SEC() {
+		return PUNTI_DET_15_SEC;
+	}
+	public void setPUNTI_DET_15_SEC(int pUNTI_DET_15_SEC) {
+		PUNTI_DET_15_SEC = pUNTI_DET_15_SEC;
 	}
 	public String getHOST_NAME_MAIL() {
 		return HOST_NAME_MAIL;

@@ -49,7 +49,7 @@ public class FrameConsole extends JFrame {
 				while(!stop) {
 		
 					try {
-					Thread.sleep(Costanti.FRAMERATE_READ_GRAPH);	
+					Thread.sleep(50);	
 					area.append(pr.getValue()+"\n");
 					area.setCaretPosition(area.getText().length() - 1);
 					} catch(Exception e) {}

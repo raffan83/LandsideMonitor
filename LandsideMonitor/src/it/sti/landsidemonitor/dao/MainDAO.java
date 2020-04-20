@@ -295,6 +295,11 @@ public class MainDAO {
 				param.setLIMITE_MAX_P3(rs.getDouble("LIMITE_MAX_P3"));
 				param.setITERAZIONI_P3(rs.getInt("ITERAZIONI_P3"));
 				
+				param.setPUNTI_DET_5_SEC(rs.getInt("PUNTI_DET_5_SEC"));
+				param.setPUNTI_DET_9_SEC(rs.getInt("PUNTI_DET_9_SEC"));
+				param.setPUNTI_DET_12_SEC(rs.getInt("PUNTI_DET_12_SEC"));
+				param.setPUNTI_DET_15_SEC(rs.getInt("PUNTI_DET_15_SEC"));
+				
 				param.setHOST_NAME_MAIL(rs.getString("HOST_NAME_MAIL"));
 				param.setUSERNAME_MAIL(rs.getString("USER_NAME_MAIL"));
 				param.setPASSWORD_MAIL(rs.getString("PASSWORD_MAIL"));
@@ -331,6 +336,7 @@ public class MainDAO {
 					+ "LIMITE_MIN_P1=?,LIMITE_MAX_P1=?,ITERAZIONI_P1=?,"
 					+ "LIMITE_MIN_P2=?,LIMITE_MAX_P2=?,ITERAZIONI_P2=?,"
 					+ "LIMITE_MIN_P3=?,LIMITE_MAX_P3=?,ITERAZIONI_P3=?,"
+					+ "PUNTI_DET_5_SEC=?,PUNTI_DET_9_SEC=?,PUNTI_DET_12_SEC=?,PUNTI_DET_15_SEC=?,"
 					+ "HOST_NAME_MAIL=?,USER_NAME_MAIL=?,PASSWORD_MAIL=?,SMTP_AUTH=?,PORT_MAIL=?,SSL=?,DEST_MAIL_PRE=?,DEST_MAIL_ALARM=? WHERE id=1");
 			
 			pst.setString(1, param.getPORT());
@@ -349,14 +355,19 @@ public class MainDAO {
 			pst.setDouble(11, param.getLIMITE_MAX_P3());
 			pst.setInt(12, param.getITERAZIONI_P3());
 			
-			pst.setString(13, param.getHOST_NAME_MAIL());
-			pst.setString(14, param.getUSERNAME_MAIL());
-			pst.setString(15, param.getPASSWORD_MAIL());
-			pst.setString(16, param.getSMTP_AUTH());
-			pst.setString(17, param.getPORT_MAIL());
-			pst.setString(18, param.getSSL());
-			pst.setString(19, param.getDEST_MAIL_PRE());
-			pst.setString(20, param.getDEST_MAIL_ALARM());
+			pst.setInt(13, param.getPUNTI_DET_5_SEC());
+			pst.setInt(14, param.getPUNTI_DET_9_SEC());
+			pst.setInt(15, param.getPUNTI_DET_12_SEC());
+			pst.setInt(16, param.getPUNTI_DET_15_SEC());
+			
+			pst.setString(17, param.getHOST_NAME_MAIL());
+			pst.setString(18, param.getUSERNAME_MAIL());
+			pst.setString(19, param.getPASSWORD_MAIL());
+			pst.setString(20, param.getSMTP_AUTH());
+			pst.setString(21, param.getPORT_MAIL());
+			pst.setString(22, param.getSSL());
+			pst.setString(23, param.getDEST_MAIL_PRE());
+			pst.setString(24, param.getDEST_MAIL_ALARM());
 			
 			pst.execute();
 			
