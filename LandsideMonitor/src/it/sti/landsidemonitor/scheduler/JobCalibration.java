@@ -24,7 +24,8 @@ public class JobCalibration implements Job{
 			{
 			//	if(sensorDTO.getStato()!=5) 
 			//	{
-					logger.debug("Call sensor: "+sensorDTO.getIdentifier());
+					System.out.println("Call sensor: "+sensorDTO.getIdentifier());
+					logger.warn("Call sensor: "+sensorDTO.getIdentifier());
 					PortReader.write("C"+sensorDTO.getIdentifier());
 			//	}
 			}

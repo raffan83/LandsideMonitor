@@ -194,7 +194,7 @@ public class PortReader implements SerialPortEventListener {
 							msg=playload;
 							playload="";
 							
-						//	System.out.println("Lettura: "+ msg);
+							System.out.println("Lettura: "+ msg);
 							valutaSegnale(msg);
 							
 						}
@@ -222,6 +222,7 @@ public class PortReader implements SerialPortEventListener {
 				
 				String roll=value.split(",")[4].substring(0,value.split(",")[4].length()-1);				
 				
+				System.out.println("CALIBRATION  "+sensor.getIdentifier()+" ["+levBatt+"] ["+bering+"]["+pitch+"]["+roll+"]");
 				logger.debug("CALIBRATION  "+sensor.getIdentifier()+" ["+levBatt+"] ["+bering+"]["+pitch+"]["+roll+"]");
 				
 				sensor.setBattLevel(levBatt);

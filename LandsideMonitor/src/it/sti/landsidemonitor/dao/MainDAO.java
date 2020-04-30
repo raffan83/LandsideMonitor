@@ -20,7 +20,7 @@ public class MainDAO {
 	{
 		Class.forName("org.sqlite.JDBC");
 		
-		Connection con=DriverManager.getConnection("jdbc:sqlite:persistence.db");
+		Connection con=DriverManager.getConnection("jdbc:sqlite:c:\\landside\\persistence.db");
 		
 		return con;
 	}
