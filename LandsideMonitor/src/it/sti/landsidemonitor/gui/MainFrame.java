@@ -73,7 +73,8 @@ public class MainFrame extends JFrame {
 		pr = new PortReader(mainPanel,serialPort,listaSensori);
 
 		serialPort.addEventListener(pr, SerialPort.MASK_RXCHAR);
-			
+		
+		PortReader.startSchedulers();
 		
 	} catch (jssc.SerialPortException e) {
 		
@@ -84,7 +85,7 @@ public class MainFrame extends JFrame {
 	 }
 	 catch (Exception e) 
 	{
-		 logger.error("Errore", e);
+		 logger.error("Errore Main", e);
 		 costruisciFrame( listaSensori);
 		 InitSplash.close();
 	}

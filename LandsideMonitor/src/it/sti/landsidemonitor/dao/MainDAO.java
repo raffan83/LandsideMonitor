@@ -263,7 +263,7 @@ public class MainDAO {
 		
 	}
 
-	public static ParamDTO getParam() throws SQLException {
+	public static ParamDTO getParam() throws Exception {
 		
 		ParamDTO param = new ParamDTO();
 		Connection con=null;
@@ -312,7 +312,7 @@ public class MainDAO {
 			
 			
 		}catch (Exception e) {
-			e.printStackTrace();
+			throw e;
 		} 
 		finally 
 		{

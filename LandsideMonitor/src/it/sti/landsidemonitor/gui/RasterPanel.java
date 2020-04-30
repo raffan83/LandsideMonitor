@@ -1,14 +1,17 @@
 package it.sti.landsidemonitor.gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -60,7 +63,9 @@ public class RasterPanel extends JPanel{
 		  JButton reset = new JButton("RESET");
 	      reset.setIcon(new ImageIcon(FrameSonde.class.getResource("/image/update.png")));
 	      reset.setFont(new Font("Arial", Font.BOLD, 14));
-	      reset.setBounds(10, 800, 120, 30);
+	     
+	      Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+	      reset.setBounds(10, (int)dim.getHeight()-100, 120, 30);
 	      
 	      this.add(reset);
 	      
@@ -106,6 +111,8 @@ public class RasterPanel extends JPanel{
 						break;
 					}
 				}	
+               	
+      //         	PortReader.puntiAttiviB= new HashMap<SensorDTO, Long>();
                	
 					} catch (Exception e) {
 						// TODO Auto-generated catch block

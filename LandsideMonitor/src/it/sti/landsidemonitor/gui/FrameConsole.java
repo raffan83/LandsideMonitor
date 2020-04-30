@@ -49,8 +49,8 @@ public class FrameConsole extends JFrame {
 				while(!stop) {
 		
 					try {
-					Thread.sleep(50);	
-					area.append(pr.getValue()+"\n");
+					Thread.sleep(200);	
+					area.append(PortReader.getMessage()+"\n");
 					area.setCaretPosition(area.getText().length() - 1);
 					} catch(Exception e) {}
 				}

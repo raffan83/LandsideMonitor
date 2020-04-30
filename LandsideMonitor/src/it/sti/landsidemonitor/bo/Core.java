@@ -73,12 +73,12 @@ public class Core {
 		
 	}
 	
-	public static ParamDTO getParam() throws SQLException 
+	public static ParamDTO getParam() throws Exception 
 	{
 		return MainDAO.getParam();
 	}
 
-	public static void inizialize() throws SQLException {
+	public static void inizialize() throws Exception {
 		
 		ParamDTO parametri =getParam();
 		

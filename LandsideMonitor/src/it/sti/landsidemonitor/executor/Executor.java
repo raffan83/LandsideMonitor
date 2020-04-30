@@ -52,22 +52,6 @@ public class Executor {
 	            	g1.setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
 	            	g1.setDefaultCloseOperation(3);
 	      	        g1.setVisible(true);
-
-	      	        Thread t = new Thread(new Runnable() {
-						
-						@Override
-						public void run() {
-						
-							 try {
-							//	SendEmailBO.sendEmailAlarm("raffan83@gmail.com");
-							} catch (Exception e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-							
-						}
-					});
-	      	   //    t.start();
 	      	        
 	      	        }
 	            	catch (SQLException exe) 

@@ -40,7 +40,7 @@ public class PortReader implements SerialPortEventListener {
 
 	SimpleDateFormat sdf = new SimpleDateFormat("ss.SSS");
 	
-	Scheduler scheduler;
+	public static Scheduler scheduler;
 	
 	final static Logger logger = Logger.getLogger(PortReader.class);
 	
@@ -61,11 +61,11 @@ public class PortReader implements SerialPortEventListener {
 		}
 		InitSplash.setMessage("Avvio monitoraggio", 100);
 		InitSplash.close();
-		startSchedulers();
+	//	startSchedulers();
 		
 	}
 
-	private void startSchedulers() throws SchedulerException {
+	public static  void startSchedulers() throws SchedulerException {
 		
 		JobDetail job = JobBuilder.newJob(JobSchedulerAtTime.class).withIdentity("atTime", "group1").build();
 
@@ -160,7 +160,7 @@ public class PortReader implements SerialPortEventListener {
 				}
 				
 			}catch (Exception ex) {
-				logger.error("Errore", ex);
+				logger.error("Errore calibrazione", ex);
 			}                           
 		}
 	}
@@ -172,6 +172,7 @@ public class PortReader implements SerialPortEventListener {
 	
 	@Override
 	public void serialEvent(SerialPortEvent event) { 
+		System.out.println("start serial event");
 		String playload="";
 		boolean read=false;
 		byte[] by= new byte[1];
@@ -194,7 +195,7 @@ public class PortReader implements SerialPortEventListener {
 							msg=playload;
 							playload="";
 							
-							System.out.println("Lettura: "+ msg);
+						//	System.out.println("Lettura: "+ msg);
 							valutaSegnale(msg);
 							
 						}
@@ -222,8 +223,8 @@ public class PortReader implements SerialPortEventListener {
 				
 				String roll=value.split(",")[4].substring(0,value.split(",")[4].length()-1);				
 				
-				System.out.println("CALIBRATION  "+sensor.getIdentifier()+" ["+levBatt+"] ["+bering+"]["+pitch+"]["+roll+"]");
-				logger.debug("CALIBRATION  "+sensor.getIdentifier()+" ["+levBatt+"] ["+bering+"]["+pitch+"]["+roll+"]");
+				
+				logger.warn("CALIBRATION  "+sensor.getIdentifier()+" ["+levBatt+"] ["+bering+"]["+pitch+"]["+roll+"]");
 				
 				sensor.setBattLevel(levBatt);
 				
@@ -239,7 +240,7 @@ public class PortReader implements SerialPortEventListener {
 			
 			if(value.startsWith("<RSSI"+sensor.getIdentifier()))
 			{
-				logger.debug("SIGNAL  "+sensor.getIdentifier()+" "+value.split(":")[1].substring(0,value.split(":")[1].length()-1));
+				logger.warn("SIGNAL  "+sensor.getIdentifier()+" "+value.split(":")[1].substring(0,value.split(":")[1].length()-1));
 				
 				sensor.setSignal(value.split(":")[1].substring(0,value.split(":")[1].length()-1));
 			}
@@ -261,7 +262,7 @@ public class PortReader implements SerialPortEventListener {
 			}
 			
 			
-			if((value.startsWith("<S-A"+sensor.getIdentifier())||value.startsWith("<S-B"+sensor.getIdentifier())||value.startsWith("<"+sensor.getIdentifier()))&& !value.startsWith("<:") && !value.startsWith("<HT"))
+			if((value.startsWith("<S-A"+sensor.getIdentifier())||value.startsWith("<S-B"+sensor.getIdentifier())||value.startsWith("<"+sensor.getIdentifier()))&& !value.startsWith("<:") && !value.startsWith("<CL") && !value.startsWith("<HT"))
 			{
 				String[] data=value.split(",");
 				
