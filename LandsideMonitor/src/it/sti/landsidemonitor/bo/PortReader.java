@@ -35,7 +35,7 @@ public class PortReader implements SerialPortEventListener {
 	public static  String msg;
 	private static  ArrayList<SensorDTO> listaSensori;
 	private static RasterPanel mainP;
-	HashMap<String, SensorDTO> sogliaAllerta;
+	public static HashMap<String, SensorDTO> sogliaAllerta;
 	public static HashMap<SensorDTO, Long> puntiAttiviB;
 
 	SimpleDateFormat sdf = new SimpleDateFormat("ss.SSS");
@@ -132,7 +132,7 @@ public class PortReader implements SerialPortEventListener {
 						}
 				}
 				
-				if(tempoTrascorso>1000) 
+				if(tempoTrascorso>1250) 
 				{
 					boolean alive=false;
 					for (String msg : listaMessaggi) 

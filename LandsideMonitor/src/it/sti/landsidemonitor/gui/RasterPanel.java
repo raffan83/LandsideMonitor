@@ -72,11 +72,11 @@ public class RasterPanel extends JPanel{
 	      reset.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					
-               
+		 try {   
 			for (int i=0;i<listaSensori.size();i++) 
 			{		
 				String idSonda = ""+listaSensori.get(i).getId();
-               	 try {
+               	
              
                	cambiaStato(Integer.parseInt(idSonda), 0);
                 cambiaStatoOriginale(Integer.parseInt(idSonda), 0);
@@ -101,7 +101,7 @@ public class RasterPanel extends JPanel{
 							msgCalibration=message;
 						}
 					
-					if(tempoTrascorso>1000) 
+					if(tempoTrascorso>1500) 
 					{
 						if(msgCalibration.equals(""))
 						{
@@ -112,16 +112,19 @@ public class RasterPanel extends JPanel{
 					}
 				}	
                	
-      //         	PortReader.puntiAttiviB= new HashMap<SensorDTO, Long>();
+              	
                	
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					
                	 
 					
 				}
-		//	dispose();
+			PortReader.puntiAttiviB= new HashMap<SensorDTO, Long>();
+          	PortReader.sogliaAllerta= new HashMap<String, SensorDTO>();
+		 } catch (Exception e) {
+				
+				e.printStackTrace();
+			}
+		 
 			}
 			});
 		
