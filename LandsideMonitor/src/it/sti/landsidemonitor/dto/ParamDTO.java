@@ -31,6 +31,7 @@ public class ParamDTO {
 	private  String SSL;
 	private  String DEST_MAIL_PRE;
 	private  String DEST_MAIL_ALARM;
+	private  String DEST_MAIL_MAN;
 	
 	
 	public String getDEST_MAIL_PRE() {
@@ -180,6 +181,12 @@ public class ParamDTO {
 	}
 	public void setSSL(String sSL) {
 		SSL = sSL;
+	}
+	public String getDEST_MAIL_MAN() {
+		return DEST_MAIL_MAN;
+	}
+	public void setDEST_MAIL_MAN(String dEST_MAIL_MAN) {
+		DEST_MAIL_MAN = dEST_MAIL_MAN;
 	}
 	
 	

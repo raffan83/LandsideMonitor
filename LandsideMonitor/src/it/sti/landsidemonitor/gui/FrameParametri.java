@@ -55,6 +55,7 @@ public class FrameParametri extends JFrame {
 	private JTextField textField_det_9_sec;
 	private JTextField textField_det_12_sec;
 	private JTextField textField_det_15_sec;
+	private JTextField textField_destinatari_manutenzione;
 
 	public FrameParametri() throws SQLException 
 	{
@@ -134,9 +135,9 @@ public class FrameParametri extends JFrame {
 		comboBox_ssl.setModel(new DefaultComboBoxModel(new String[] {"true", "false"}));
 		panelMail.add(comboBox_ssl, "cell 1 6,width :75:");
 		
-		JLabel lblDestinatari = new JLabel("DESTINATARI PREALLARME");
+		JLabel lblDestinatari = new JLabel("DESTINATARI ALLERTA");
 		lblDestinatari.setFont(new Font("Arial", Font.BOLD, 14));
-		panelMail.add(lblDestinatari, "cell 0 7,alignx trailing");
+		panelMail.add(lblDestinatari, "cell 0 7,alignx left");
 		
 		textField_destinatari_pre = new JTextField();
 		textField_destinatari_pre.setText("");
@@ -382,7 +383,7 @@ public class FrameParametri extends JFrame {
 	
 		JLabel lblDestinatariAllarme = new JLabel("DESTINATARI ALLARME");
 		lblDestinatariAllarme.setFont(new Font("Arial", Font.BOLD, 14));
-		panelMail.add(lblDestinatariAllarme, "cell 0 8,alignx trailing");
+		panelMail.add(lblDestinatariAllarme, "cell 0 8,alignx left");
 		
 		textField_destinatari_alarm = new JTextField();
 		textField_destinatari_alarm.setText("");
@@ -436,9 +437,22 @@ public class FrameParametri extends JFrame {
 		{
 			comboBox_ssl.setSelectedIndex(1);
 		}
+		JLabel lblDestinatariManutenzione = new JLabel("DESTINATARI MANUTENZIONE");
+		lblDestinatariManutenzione.setFont(new Font("Arial", Font.BOLD, 14));
+		panelMail.add(lblDestinatariManutenzione, "cell 0 9,alignx trailing");
+		
+		textField_destinatari_manutenzione = new JTextField();
+		textField_destinatari_manutenzione.setText("");
+		textField_destinatari_manutenzione.setColumns(10);
+		panelMail.add(textField_destinatari_manutenzione, "cell 1 9 2 1,growx");
+		
 		
 		textField_destinatari_pre.setText(Costanti.DEST_MAIL_PRE);
 		textField_destinatari_alarm.setText(Costanti.DEST_MAIL_ALARM);
+		textField_destinatari_manutenzione.setText(Costanti.DEST_MAIL_MAN);
+	
+		
+		
 		
 		
 		
@@ -649,6 +663,7 @@ public class FrameParametri extends JFrame {
 					param.setSSL(comboBox_ssl.getSelectedItem().toString());
 					param.setDEST_MAIL_PRE(textField_destinatari_pre.getText());
 					param.setDEST_MAIL_ALARM(textField_destinatari_alarm.getText());
+					param.setDEST_MAIL_MAN(textField_destinatari_manutenzione.getText());
 					
 					Costanti.PORT=param.getPORT();
 					Costanti.FRAMERATE=param.getFRAMERATE();
@@ -682,6 +697,7 @@ public class FrameParametri extends JFrame {
 					Costanti.SSL=param.getSSL();
 					Costanti.DEST_MAIL_PRE=param.getDEST_MAIL_PRE();
 					Costanti.DEST_MAIL_ALARM=param.getDEST_MAIL_ALARM();
+					Costanti.DEST_MAIL_MAN=param.getDEST_MAIL_MAN();
 					
 					
 					try {

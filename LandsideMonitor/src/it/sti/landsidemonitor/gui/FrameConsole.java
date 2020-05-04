@@ -46,12 +46,18 @@ public class FrameConsole extends JFrame {
 		Thread thread = new Thread(){
 			@Override public void run() {
 
+				String actualValue="";
 				while(!stop) {
 		
 					try {
-					Thread.sleep(200);	
-					area.append(PortReader.getMessage()+"\n");
-					area.setCaretPosition(area.getText().length() - 1);
+					Thread.sleep(200);
+					if(!actualValue.equals(PortReader.getMessage()))
+					{
+						actualValue=PortReader.getMessage();
+						area.append(PortReader.getMessage()+"\n");
+						area.setCaretPosition(area.getText().length() - 1);
+					}
+					
 					} catch(Exception e) {}
 				}
 		

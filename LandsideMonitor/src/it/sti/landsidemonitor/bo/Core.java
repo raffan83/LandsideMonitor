@@ -120,6 +120,7 @@ public class Core {
 		Costanti.SSL=parametri.getSSL();
 		Costanti.DEST_MAIL_PRE=parametri.getDEST_MAIL_PRE();
 		Costanti.DEST_MAIL_ALARM=parametri.getDEST_MAIL_ALARM();
+		Costanti.DEST_MAIL_MAN=parametri.getDEST_MAIL_MAN();
 		
 		
 	}

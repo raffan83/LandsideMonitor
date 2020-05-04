@@ -6,17 +6,27 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+
+import org.apache.log4j.Logger;
+
+
 import it.sti.landsidemonitor.bo.Core;
+import it.sti.landsidemonitor.bo.PortReader;
 import it.sti.landsidemonitor.bo.Utility;
 import it.sti.landsidemonitor.dto.SensorDTO;
 import net.miginfocom.swing.MigLayout;
@@ -25,11 +35,15 @@ public class LogEventi extends JFrame{
 
 	JTable tabellaEventi;
 	ModelTabella model;
+	JFrame frm;
+	
+	final static Logger logger = Logger.getLogger(LogEventi.class);
 	
 	public LogEventi(SensorDTO sensor, RasterPanel mainP) throws SQLException {
 	
 		setSize(1200,600);
 		setTitle("Log eventi sonda "+sensor.getIdentifier());
+		frm=this;
 		
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = (dim.width - 1200) / 2;
@@ -82,11 +96,61 @@ public class LogEventi extends JFrame{
 		});
 		btnCancellaLog.setIcon(new ImageIcon(LogEventi.class.getResource("/image/error.png")));
 		btnCancellaLog.setFont(new Font("Arial", Font.BOLD, 14));
-		getContentPane().add(btnCancellaLog, "cell 0 0");
+		getContentPane().add(btnCancellaLog, "flowx,cell 0 0");
 		
 		JScrollPane scroll = new JScrollPane(tabellaEventi);
 		
 		getContentPane().add(scroll, "cell 0 1,grow");
+		
+		JButton btnScaricaCvs = new JButton("Export CVS");
+		btnScaricaCvs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			
+
+				try {
+
+						JFileChooser jfc = new JFileChooser();
+						jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+						jfc.showSaveDialog(frm);
+
+						File f= jfc.getSelectedFile();
+						if(f!=null)
+						{
+							FileOutputStream fos = new FileOutputStream(new File(f.getAbsoluteFile()+"\\"+"Datalog_sensor_"+sensor.getIdentifier()+".csv"));
+							PrintStream ps = new PrintStream(fos);
+							
+							ps.println("Data;Stato;codice;Descrizione;Asse X;Asse Y;Asse Z");
+							
+							for (String evt : listaEventi) {
+								String[]evento=evt.split(";");
+								
+								String evtLog="";
+
+								evtLog=evento[0]+";";
+								evtLog=evtLog+Utility.getLabelStato(Integer.parseInt(evento[1]))+";";
+								evtLog=evtLog+evento[2]+";";
+								evtLog=evtLog+evento[3]+";";
+								evtLog=evtLog+evento[4]+";";
+								evtLog=evtLog+evento[5]+";";
+								evtLog=evtLog+evento[6];
+								
+								ps.println(evtLog);
+							}
+							ps.close();
+							fos.close();
+						}
+
+					
+				} catch (Exception ec) {
+
+					logger.error(ec);
+				}
+				
+			}
+		});
+		btnScaricaCvs.setIcon(new ImageIcon(LogEventi.class.getResource("/image/load.png")));
+		btnScaricaCvs.setFont(new Font("Arial", Font.BOLD, 14));
+		getContentPane().add(btnScaricaCvs, "cell 0 0");
 	}
 
 	class ModelTabella extends DefaultTableModel {

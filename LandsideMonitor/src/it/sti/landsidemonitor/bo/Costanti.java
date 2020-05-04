@@ -52,6 +52,7 @@ public class Costanti {
 	public static String SSL="true";
 	public static String DEST_MAIL_PRE="";
 	public static String DEST_MAIL_ALARM="";
+	public static String DEST_MAIL_MAN="";
 	public static long TIMER_ITERAZIONI=15;
 	
 	

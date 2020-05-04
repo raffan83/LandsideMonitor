@@ -227,7 +227,7 @@ public class FrameSonde extends JFrame implements ActionListener{
 			});
 			btnNewButton.setIcon(new ImageIcon(FrameSonde.class.getResource("/image/update.png")));
 			btnNewButton.setFont(new Font("Arial", Font.BOLD, 14));
-			mainPanel.add(btnNewButton, "cell 0 0");
+		//	mainPanel.add(btnNewButton, "cell 0 0");
 			
 			
 			

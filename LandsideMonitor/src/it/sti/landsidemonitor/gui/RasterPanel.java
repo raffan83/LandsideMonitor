@@ -17,12 +17,16 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.border.LineBorder;
 
 import it.sti.landsidemonitor.bo.Core;
 import it.sti.landsidemonitor.bo.PortReader;
 import it.sti.landsidemonitor.dao.MainDAO;
 import it.sti.landsidemonitor.dto.SensorDTO;
+import net.miginfocom.swing.MigLayout;
 
 
 public class RasterPanel extends JPanel{
@@ -72,17 +76,25 @@ public class RasterPanel extends JPanel{
 	      reset.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					
-		 try {   
+		 try {
+			 
+			JFrame progress = new JFrameProgress();			
+			progress.setVisible(true);
+			
+			
+			
 			for (int i=0;i<listaSensori.size();i++) 
 			{		
 				String idSonda = ""+listaSensori.get(i).getId();
                	
-             
-               	cambiaStato(Integer.parseInt(idSonda), 0);
+				int pr=(100/listaSensori.size())*(i+1);
+				((JFrameProgress) progress).setMessage("Calibrazione sonda "+listaSensori.get(i).getIdentifier(), pr);
+              
+				cambiaStato(Integer.parseInt(idSonda), 0);
                 cambiaStatoOriginale(Integer.parseInt(idSonda), 0);
 
                		
-               	PortReader.write("C"+listaSensori.get(i).getIdentifier());
+              	PortReader.write("C"+listaSensori.get(i).getIdentifier());
                	
                	double tempoStart=System.currentTimeMillis();
 				
@@ -93,7 +105,6 @@ public class RasterPanel extends JPanel{
 					double tempoTrascorso=System.currentTimeMillis()-tempoStart;
 					
 					String message=PortReader.getMessage();
-				
 					
 					if(message.startsWith("<CL-"+listaSensori.get(i).getIdentifier()))
 						{
@@ -111,15 +122,11 @@ public class RasterPanel extends JPanel{
 						break;
 					}
 				}	
-               	
-              	
-               	
-					
-               	 
 					
 				}
 			PortReader.puntiAttiviB= new HashMap<SensorDTO, Long>();
           	PortReader.sogliaAllerta= new HashMap<String, SensorDTO>();
+          	((JFrameProgress) progress).close();
 		 } catch (Exception e) {
 				
 				e.printStackTrace();
@@ -359,4 +366,78 @@ public class RasterPanel extends JPanel{
 	}
 	
 	
+	class JFrameProgress extends JFrame
+	{
+	
+		JProgressBar pb;
+		JLabel lblPb;
+		JLabel lblMessPb;
+		JFrame g;
+		public JFrameProgress() 
+		{
+			g=this;
+			setUndecorated(true);
+			setIconImage(Toolkit.getDefaultToolkit().getImage(InitSplash.class.getResource("/image/covic.png")));
+			setResizable(false);
+			getContentPane().setBackground(Color.WHITE);
+			
+			JPanel panel = new JPanel();
+			panel.setBorder(new LineBorder(Color.RED, 2, true));
+			panel.setBackground(Color.WHITE);
+			setSize(480, 80);
+			panel.setSize(480,60);
+			panel.setLayout(new MigLayout("", "[grow]", "[30px][25px]"));
+		
+			
+			Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+			int x = (dim.width - panel.getWidth()) / 2;
+			int y = (dim.height - panel.getHeight()) / 2;
+			setLocation(x, y);
+			
+			getContentPane().setLayout(new MigLayout("", "[grow]", "[grow]"));
+			 
+			pb = new JProgressBar();
+			panel.add(pb, "flowx,cell 0 1,grow");
+			
+			lblPb = new JLabel("0%");
+			lblPb.setFont(new Font("Arial", Font.BOLD, 12));
+			panel.add(lblPb, "cell 0 1,width :30:");
+			
+			lblMessPb = new JLabel("-");
+			lblMessPb.setFont(new Font("Arial", Font.PLAIN, 12));
+			panel.add(lblMessPb, "flowx,cell 0 2,growx");
+			
+			getContentPane().add("cell 0 0 ,grow", panel);
+		}
+		
+		public  void setMessage(final String mess, final int progress)
+		{
+		
+			
+			Runnable updateGUI = new Runnable() {  
+				public void run() {  
+					pb.setValue(progress);
+					lblPb.setText(progress+"%");
+					lblMessPb.setText(mess);
+					g.update(g.getGraphics());
+				}  
+			};  
+			try{
+					Thread t = new Thread(updateGUI);  
+					t.start();
+					
+					Thread.sleep(10);
+			}catch 
+			(Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+
+		public  void close() {
+			
+			g.dispose();
+		}
 	}
+	}
+

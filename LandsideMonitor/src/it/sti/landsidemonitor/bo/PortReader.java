@@ -8,10 +8,12 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
+import org.quartz.SchedulerFactory;
 import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
@@ -23,6 +25,7 @@ import it.sti.landsidemonitor.gui.InitSplash;
 import it.sti.landsidemonitor.gui.RasterPanel;
 import it.sti.landsidemonitor.scheduler.JobSchedulerAtTime;
 import it.sti.landsidemonitor.scheduler.JobSchedulerAtTimeRead;
+import it.sti.landsidemonitor.scheduler.JobService;
 import jssc.SerialPort;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
@@ -33,7 +36,7 @@ public class PortReader implements SerialPortEventListener {
 	static SerialPort serialPort;
 	String canale;
 	public static  String msg;
-	private static  ArrayList<SensorDTO> listaSensori;
+	public static  ArrayList<SensorDTO> listaSensori;
 	private static RasterPanel mainP;
 	public static HashMap<String, SensorDTO> sogliaAllerta;
 	public static HashMap<SensorDTO, Long> puntiAttiviB;
@@ -92,6 +95,20 @@ public class PortReader implements SerialPortEventListener {
         scheduler.start();
         scheduler.scheduleJob(job1, trigger1);
         logger.warn("Start scheduler read state");
+        
+
+        scheduler = new StdSchedulerFactory().getScheduler();
+        scheduler.start();
+        JobDetail job2 = JobBuilder.newJob(JobService.class).build();
+        Trigger trigger2 = TriggerBuilder.newTrigger()
+                                        .startNow()
+                                        .withSchedule(
+                                             CronScheduleBuilder.cronSchedule("0 1 0 1/1 * ? *"))
+                                        .build();
+        scheduler.scheduleJob(job2, trigger2);
+        
+        logger.warn("Start scheduler service");
+        
 	}
 
 	public static void checkHealthSensor(SensorDTO sensorDTO) throws SerialPortException {

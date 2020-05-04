@@ -308,6 +308,7 @@ public class MainDAO {
 				param.setSSL(rs.getString("SSL"));
 				param.setDEST_MAIL_PRE(rs.getString("DEST_MAIL_PRE"));
 				param.setDEST_MAIL_ALARM(rs.getString("DEST_MAIL_ALARM"));
+				param.setDEST_MAIL_MAN(rs.getString("DEST_MAIL_MAN"));
 			}
 			
 			
@@ -337,7 +338,7 @@ public class MainDAO {
 					+ "LIMITE_MIN_P2=?,LIMITE_MAX_P2=?,ITERAZIONI_P2=?,"
 					+ "LIMITE_MIN_P3=?,LIMITE_MAX_P3=?,ITERAZIONI_P3=?,"
 					+ "PUNTI_DET_5_SEC=?,PUNTI_DET_9_SEC=?,PUNTI_DET_12_SEC=?,PUNTI_DET_15_SEC=?,"
-					+ "HOST_NAME_MAIL=?,USER_NAME_MAIL=?,PASSWORD_MAIL=?,SMTP_AUTH=?,PORT_MAIL=?,SSL=?,DEST_MAIL_PRE=?,DEST_MAIL_ALARM=? WHERE id=1");
+					+ "HOST_NAME_MAIL=?,USER_NAME_MAIL=?,PASSWORD_MAIL=?,SMTP_AUTH=?,PORT_MAIL=?,SSL=?,DEST_MAIL_PRE=?,DEST_MAIL_ALARM=?,DEST_MAIL_MAN=? WHERE id=1");
 			
 			pst.setString(1, param.getPORT());
 			pst.setInt(2,param.getFRAMERATE());
@@ -368,6 +369,7 @@ public class MainDAO {
 			pst.setString(22, param.getSSL());
 			pst.setString(23, param.getDEST_MAIL_PRE());
 			pst.setString(24, param.getDEST_MAIL_ALARM());
+			pst.setString(25, param.getDEST_MAIL_MAN());
 			
 			pst.execute();
 			
