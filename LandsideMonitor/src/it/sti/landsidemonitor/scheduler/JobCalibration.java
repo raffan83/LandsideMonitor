@@ -20,14 +20,24 @@ public class JobCalibration implements Job{
 		try {
 			ArrayList<SensorDTO> listaSonde=PortReader.getListaSonde();
 			
+			double tempoAttuale=System.currentTimeMillis();
+			
 			for (SensorDTO sensorDTO : listaSonde) 
 			{
-			//	if(sensorDTO.getStato()!=5) 
-			//	{
-					System.out.println("Call sensor: "+sensorDTO.getIdentifier());
-					logger.warn("Call sensor: "+sensorDTO.getIdentifier());
-					PortReader.write("C"+sensorDTO.getIdentifier());
-			//	}
+				
+				while(true) 
+				{
+					if(System.currentTimeMillis()-tempoAttuale>200) 
+					{
+						System.out.println("Call sensor: "+sensorDTO.getIdentifier());
+			//			logger.warn("Call sensor: "+sensorDTO.getIdentifier());
+						PortReader.write("C"+sensorDTO.getIdentifier());
+						tempoAttuale=System.currentTimeMillis();
+						break;
+						
+					}
+				}
+			
 			}
 			
 		} catch (SerialPortException e) {

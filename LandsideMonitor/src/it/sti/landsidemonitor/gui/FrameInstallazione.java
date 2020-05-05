@@ -47,7 +47,7 @@ public class FrameInstallazione extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	static PanelInstallazione mainPanel;
-	ArrayList<SensorDTO> listaSonde=null;
+	
 	JTable tabellaSonde;
 	PortReader pr;
 	
@@ -65,7 +65,7 @@ public class FrameInstallazione extends JFrame {
 
 	setSize(1000, 600);
 	mainPanel=new PanelInstallazione(listaSensori);
-	int altezzaPannello=(50*listaSensori.size())+70;
+	int altezzaPannello=(50*listaSensori.size())+90;
 	
 	mainPanel.setPreferredSize(new Dimension(950,altezzaPannello));
 	
@@ -105,7 +105,7 @@ class PanelInstallazione extends JPanel {
 			costruiscipannello();
 			setBackground(Color.WHITE);
 		
-				startScheduler();
+			startScheduler();
 			} catch (SchedulerException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -175,12 +175,29 @@ class PanelInstallazione extends JPanel {
 						}
 					}
 				});
-		    
+		    	
+		    	JButton buttonAgg = new JButton("Aggiorna");
+		    	buttonAgg.setIcon(new ImageIcon(FrameParametri.class.getResource("/image/update.png")));
+		    	buttonAgg.setFont(new Font("Arial", Font.BOLD, 14));
+		    	buttonAgg.setBounds(500,44 , 140, 37);
+		    	add(buttonAgg);
+		    	
+		    	buttonAgg.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						
+						azzeraValoriSonde();
+						
+					}
+				});
 		    }
 		    
 
 			public void startScheduler() throws SchedulerException {
 	    	
+			azzeraValoriSonde();
+				
 	    	JobDetail job = JobBuilder.newJob(JobCalibration.class).withIdentity("write", "group1").build();
 
 	        Trigger trigger = TriggerBuilder
@@ -196,7 +213,20 @@ class PanelInstallazione extends JPanel {
 
 
 
-		  public void paintComponent(Graphics g){
+		  private void azzeraValoriSonde() {
+				
+			  for (SensorDTO sensor : listaSensori) {
+				
+				  sensor.setBering("N/D");
+				  sensor.setPitch("N/D");
+				  sensor.setRoll("N/D");
+				  sensor.setBattLevel("N/D");
+				  sensor.setSignal("N/D");
+			}
+				
+			}
+
+		public void paintComponent(Graphics g){
 			    
 			  super.paintComponent(g);
 
