@@ -56,7 +56,6 @@ public class JobSchedulerAtTime implements Job {
 					break;
 				}
 			}
-		
 	}
 
 }

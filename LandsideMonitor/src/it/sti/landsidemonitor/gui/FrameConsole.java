@@ -22,6 +22,7 @@ public class FrameConsole extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	boolean stop=false;
+	private static JTextArea area;
 	public FrameConsole(PortReader pr) {
 		
 		
@@ -35,7 +36,7 @@ public class FrameConsole extends JFrame {
 		JButton btnStart = new JButton("START");
 		getContentPane().add(btnStart, "cell 0 0");
 		
-		JTextArea area = new JTextArea();
+		area = new JTextArea();
 		area.setBackground(Color.BLACK);
 		area.setForeground(Color.WHITE);
 		
@@ -96,4 +97,12 @@ public class FrameConsole extends JFrame {
 		
 	}
 
+	public static void printConsole(String value) 
+	{
+		if (area!=null) 
+		{
+			area.append(value+"\n");
+			area.setCaretPosition(area.getText().length() - 1);
+		}
+	}
 }

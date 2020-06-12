@@ -39,6 +39,7 @@ public class RasterPanel extends JPanel{
 	  int height;
 	  static JFrame myFrame=null;
 	  private ArrayList<SensorDTO> listaSensori;
+	  public static JButton reset;
 	  
 	  public RasterPanel(URL imageURL, JFrame g, ArrayList<SensorDTO> _listaSensori){
 	    super(true); //crea un JPanel con doubleBuffered true
@@ -64,7 +65,7 @@ public class RasterPanel extends JPanel{
 	  
 	  private void aggiungiTasti() {
 		
-		  JButton reset = new JButton("RESET");
+		  reset = new JButton("RESET");
 	      reset.setIcon(new ImageIcon(FrameSonde.class.getResource("/image/update.png")));
 	      reset.setFont(new Font("Arial", Font.BOLD, 14));
 	     

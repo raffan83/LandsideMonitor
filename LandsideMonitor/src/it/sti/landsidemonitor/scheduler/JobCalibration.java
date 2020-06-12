@@ -27,7 +27,7 @@ public class JobCalibration implements Job{
 				
 				while(true) 
 				{
-					if(System.currentTimeMillis()-tempoAttuale>200) 
+					if(System.currentTimeMillis()-tempoAttuale>250) 
 					{
 						System.out.println("Call sensor: "+sensorDTO.getIdentifier());
 			//			logger.warn("Call sensor: "+sensorDTO.getIdentifier());
@@ -45,6 +45,11 @@ public class JobCalibration implements Job{
 			e.printStackTrace();
 		}
 		
+		
 	}
 
+	public void  close() {
+		
+		this.close();
+	}
 }

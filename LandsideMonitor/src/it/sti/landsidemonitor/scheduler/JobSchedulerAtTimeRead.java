@@ -13,15 +13,28 @@ import it.sti.landsidemonitor.bo.Core;
 import it.sti.landsidemonitor.bo.Costanti;
 import it.sti.landsidemonitor.bo.PortReader;
 import it.sti.landsidemonitor.dto.SensorDTO;
+import it.sti.landsidemonitor.gui.FrameConsole;
+import it.sti.landsidemonitor.gui.RasterPanel;
 
 public class JobSchedulerAtTimeRead implements Job{
 
 	final static Logger logger = Logger.getLogger(JobSchedulerAtTimeRead.class);
 	
-	@Override
-	
+
+
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 	
+		String currentState=PortReader.getMessage();
+		
+		if(currentState.equals(PortReader.prevState)) 
+		{
+			RasterPanel.reset.setEnabled(true);
+		}
+		else 
+		{
+			RasterPanel.reset.setEnabled(false);
+		}
+		PortReader.prevState=currentState;
 		
 		final int PUNTI_5_SEC=Costanti.PUNTI_DET_5_SEC;
 		final int PUNTI_9_SEC=Costanti.PUNTI_DET_9_SEC;
@@ -41,6 +54,7 @@ public class JobSchedulerAtTimeRead implements Job{
 			       long time =(Long)me.getValue();
 			       
 			       logger.warn("[5 SEC] " +(System.currentTimeMillis()-time));
+			       FrameConsole.printConsole("[5 SEC] " +(System.currentTimeMillis()-time));
 			       if(System.currentTimeMillis()-time>=5000) 
 			       {
 			    	   lisSen.add((SensorDTO)me.getKey());
@@ -71,6 +85,7 @@ public class JobSchedulerAtTimeRead implements Job{
 			       long time =(Long)me.getValue();
 			       
 			       System.out.println("[9 SEC] " +(System.currentTimeMillis()-time));
+			       FrameConsole.printConsole("[9 SEC] " +(System.currentTimeMillis()-time));
 			       if(System.currentTimeMillis()-time>=9000) 
 			       {
 			    	   lisSen.add((SensorDTO)me.getKey());
@@ -101,6 +116,7 @@ public class JobSchedulerAtTimeRead implements Job{
 			       long time =(Long)me.getValue();
 			       
 			     System.out.println("[12 SEC] " +(System.currentTimeMillis()-time));
+			     FrameConsole.printConsole("[12 SEC] " +(System.currentTimeMillis()-time));
 			       if(System.currentTimeMillis()-time>=12000) 
 			       {
 			    	   lisSen.add((SensorDTO)me.getKey());
@@ -131,7 +147,10 @@ public class JobSchedulerAtTimeRead implements Job{
 			       long time =(Long)me.getValue();
 			       
 			     System.out.println("[15 SEC] " +(System.currentTimeMillis()-time));
-			       if(System.currentTimeMillis()-time>=15000) 
+			     
+			     FrameConsole.printConsole("[15 SEC] " +(System.currentTimeMillis()-time));  
+			     
+			     if(System.currentTimeMillis()-time>=15000) 
 			       {
 			    	   lisSen.add((SensorDTO)me.getKey());
 			       }

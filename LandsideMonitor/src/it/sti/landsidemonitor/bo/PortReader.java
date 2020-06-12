@@ -40,6 +40,7 @@ public class PortReader implements SerialPortEventListener {
 	private static RasterPanel mainP;
 	public static HashMap<String, SensorDTO> sogliaAllerta;
 	public static HashMap<SensorDTO, Long> puntiAttiviB;
+	public static String  prevState;
 
 	SimpleDateFormat sdf = new SimpleDateFormat("ss.SSS");
 	
@@ -402,6 +403,18 @@ public class PortReader implements SerialPortEventListener {
 
 						sogliaAllerta= new HashMap<String,SensorDTO>();
 					//	serialPort.writeString("Y");
+					}
+				}
+				
+				/*SONDE APPARTENENTE AL GRUPPO B*/
+				if(sensor.getType().equals("B") && sensor.getStato()!=1 )
+				{
+
+					if(sensor.getStato()!=1 && sensor.getStato()!=2) 
+					{
+						sensor.setStato(3);
+						mainP.cambiaStato(sensor.getId(), 3);
+						
 					}
 				}
 			
