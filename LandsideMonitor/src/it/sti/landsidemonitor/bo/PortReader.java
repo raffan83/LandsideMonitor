@@ -100,14 +100,16 @@ public class PortReader implements SerialPortEventListener {
 
         scheduler = new StdSchedulerFactory().getScheduler();
         scheduler.start();
+       
         JobDetail job2 = JobBuilder.newJob(JobService.class).build();
         Trigger trigger2 = TriggerBuilder.newTrigger()
                                         .startNow()
                                         .withSchedule(
-                                             CronScheduleBuilder.cronSchedule("0 1 0 1/1 * ? *"))
+                                             CronScheduleBuilder.cronSchedule("0 59 11 1/1 * ? *"))
                                         .build();
-        scheduler.scheduleJob(job2, trigger2);
-        
+        scheduler.scheduleJob(job2, trigger2);       
+        scheduler = new StdSchedulerFactory().getScheduler();
+        scheduler.start();
         logger.warn("Start scheduler service");
         
 	}
@@ -161,11 +163,33 @@ public class PortReader implements SerialPortEventListener {
 							logger.warn("CALIBRATION ["+sensorDTO.getIdentifier()+"]");
 							alive=true;
 							
+							String levBatt=msg.split(",")[1];
+							
+							String bering=msg.split(",")[2];
+							
+							String pitch=msg.split(",")[3];
+							
+							String roll=msg.split(",")[4].substring(0,msg.split(",")[4].length()-1);				
+							
+							
+							sensorDTO.setBattLevel(levBatt);
+							
+							sensorDTO.setBering(bering);
+							
+							sensorDTO.setPitch(pitch);
+							
+							sensorDTO.setRoll(roll);
+							
 							if(sensorDTO.getStato()!=1 || sensorDTO.getStato()!=2) 
 							{
 								mainP.cambiaStato(sensorDTO.getId(), 0);
 								sensorDTO.setStato(0);
 							}
+						}
+						if(msg.startsWith("<RSSI"+sensorDTO.getIdentifier()))
+						{
+							
+							sensorDTO.setSignal(msg.split(":")[1].substring(0,msg.split(":")[1].length()-1));
 						}
 						
 					}

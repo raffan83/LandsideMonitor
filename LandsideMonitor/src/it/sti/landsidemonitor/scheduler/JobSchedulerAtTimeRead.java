@@ -1,6 +1,8 @@
 package it.sti.landsidemonitor.scheduler;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -25,6 +27,10 @@ public class JobSchedulerAtTimeRead implements Job{
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 	
 		String currentState=PortReader.getMessage();
+		
+		SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+		
+		System.out.println(sdf.format(new Date())+ " Valore Precedente: "+PortReader.prevState+" Valore Corrente"+currentState);
 		
 		if(currentState.equals(PortReader.prevState)) 
 		{
