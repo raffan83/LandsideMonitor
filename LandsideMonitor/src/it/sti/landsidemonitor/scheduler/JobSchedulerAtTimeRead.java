@@ -30,7 +30,7 @@ public class JobSchedulerAtTimeRead implements Job{
 		
 		SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 		
-		System.out.println(sdf.format(new Date())+ " Valore Precedente: "+PortReader.prevState+" Valore Corrente"+currentState);
+	//	System.out.println(sdf.format(new Date())+ " Valore Precedente: "+PortReader.prevState+" Valore Corrente"+currentState);
 		
 		if(currentState.equals(PortReader.prevState)) 
 		{
