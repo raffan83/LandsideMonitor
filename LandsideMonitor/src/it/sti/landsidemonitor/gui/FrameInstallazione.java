@@ -48,7 +48,9 @@ public class FrameInstallazione extends JFrame {
 	private static final long serialVersionUID = 1L;
 	static PanelInstallazione mainPanel;
 	private double startH=0;
-
+	private Scheduler scheduler;
+	JobDetail job;
+	
 	JTable tabellaSonde;
 	PortReader pr;
 	JFrame frm;
@@ -61,6 +63,8 @@ public class FrameInstallazione extends JFrame {
 		setLocation(x, y);
 		setTitle("Controllo Sonde");
 
+		
+		
 		frm=this;
 		//setResizable(false);
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -82,7 +86,7 @@ public class FrameInstallazione extends JFrame {
 			public void windowClosing(WindowEvent we) {
 
 				try {
-					mainPanel.stopScheduler();
+					scheduler.deleteJob(job.getKey());
 				} catch (SchedulerException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -99,7 +103,7 @@ public class FrameInstallazione extends JFrame {
 		 */
 		private static final long serialVersionUID = 1L;
 		ArrayList<SensorDTO> listaSensori;
-		Scheduler scheduler;
+		
 
 		public PanelInstallazione(ArrayList<SensorDTO> _listaSensori) 
 		{
@@ -204,18 +208,17 @@ public class FrameInstallazione extends JFrame {
 
 			azzeraValoriSonde();
 
-			JobDetail job = JobBuilder.newJob(JobCalibration.class).withIdentity("write", "group1").build();
-
-
+			 job = JobBuilder.newJob(JobCalibration.class).withIdentity("calibration", "group1").build();
+			
 			Trigger trigger = TriggerBuilder
 					.newTrigger()
-					.withIdentity("write", "group1")
+					.withIdentity("calibration", "group1")
 					.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(5).repeatForever())
 					.build();
 
 			scheduler = new StdSchedulerFactory().getScheduler();
-			scheduler.start();
 			scheduler.scheduleJob(job, trigger);
+			scheduler.start();
 		}
 
 
@@ -244,7 +247,7 @@ public class FrameInstallazione extends JFrame {
 				if(actualTime>300000) 
 				{
 					frm.dispose();
-					scheduler.shutdown();
+					scheduler.deleteJob(job.getKey());
 				}
 
 				int start_pos=75;
@@ -387,12 +390,6 @@ public class FrameInstallazione extends JFrame {
 				e.printStackTrace();
 			}
 			repaint();
-		}
-
-		public void stopScheduler() throws SchedulerException {
-
-			scheduler.shutdown();
-
 		}
 
 	}
