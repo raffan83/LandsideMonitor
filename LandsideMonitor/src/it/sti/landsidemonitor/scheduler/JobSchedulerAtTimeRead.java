@@ -73,7 +73,7 @@ public class JobSchedulerAtTimeRead implements Job{
 				 {
 					 PortReader.cambiaStato(sensorDTO, 1);
 				     logger.warn("Cambio Stato ALLARME sonda: "+sensorDTO.getIdentifier());
-				     Core.registraEvento(sensorDTO.getIdentifier(),"006",2,0,0,0);
+				     Core.registraEvento(sensorDTO.getIdentifier(),"006",1,0,0,0);
 				}
 			 }
 			   
@@ -102,10 +102,13 @@ public class JobSchedulerAtTimeRead implements Job{
 			 {
 				 for (SensorDTO sensorDTO : lisSen) 
 				 {
-					 PortReader.cambiaStato(sensorDTO, 2);
-					 logger.warn("Cambio Stato ALLARME sonda: "+sensorDTO.getIdentifier());
-				     Core.registraEvento(sensorDTO.getIdentifier(),"007",2,0,0,0);
-				 }
+					 if(sensorDTO.getStato()!=1) 
+					 {
+						 PortReader.cambiaStato(sensorDTO, 2);
+						 logger.warn("Cambio Stato ALLERTA sonda: "+sensorDTO.getIdentifier());
+					     Core.registraEvento(sensorDTO.getIdentifier(),"007",2,0,0,0);
+					 }
+					 }
 			 }
 			 
 		}
@@ -133,9 +136,12 @@ public class JobSchedulerAtTimeRead implements Job{
 			 {
 				 for (SensorDTO sensorDTO : lisSen) 
 				 {
-					 PortReader.cambiaStato(sensorDTO, 2);
-					 logger.warn("Cambio Stato ALLARME sonda: "+sensorDTO.getIdentifier());
-				     Core.registraEvento(sensorDTO.getIdentifier(),"008",2,0,0,0);
+					 if(sensorDTO.getStato()!=1) 
+					 {
+						 PortReader.cambiaStato(sensorDTO, 2);
+						 logger.warn("Cambio Stato ALLERTA sonda: "+sensorDTO.getIdentifier());
+					     Core.registraEvento(sensorDTO.getIdentifier(),"008",2,0,0,0);
+					 }
 				 }
 			 }
 		
@@ -166,9 +172,12 @@ public class JobSchedulerAtTimeRead implements Job{
 			 {
 				 for (SensorDTO sensorDTO : lisSen) 
 				 {
-					 PortReader.cambiaStato(sensorDTO, 2);
-				     logger.warn("Cambio Stato ALLARME sonda: "+sensorDTO.getIdentifier());
-				     Core.registraEvento(sensorDTO.getIdentifier(),"009",2,0,0,0);
+					 if(sensorDTO.getStato()!=1) 
+					 {
+						 PortReader.cambiaStato(sensorDTO, 2);
+						 logger.warn("Cambio Stato ALLERTA sonda: "+sensorDTO.getIdentifier());
+						 Core.registraEvento(sensorDTO.getIdentifier(),"009",2,0,0,0);
+					 }
 				 }
 			 }
 		

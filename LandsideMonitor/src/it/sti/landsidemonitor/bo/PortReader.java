@@ -57,6 +57,7 @@ public class PortReader implements SerialPortEventListener {
 		puntiAttiviB=new HashMap<SensorDTO,Long>();
 		mainP=_mainP;
 	
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.SSS");
 		for (int i=0;i<_listaSensori.size();i++)
 		{
 			int pr=(100/_listaSensori.size())*(i+1);
@@ -237,7 +238,8 @@ public class PortReader implements SerialPortEventListener {
 							msg=playload;
 							playload="";
 							
-						//	System.out.println("Lettura: "+ msg);
+							
+							System.out.println(sdf.format(new Date())+ "[RECIVE]: "+ msg);
 							valutaSegnale(msg);
 							
 						}
