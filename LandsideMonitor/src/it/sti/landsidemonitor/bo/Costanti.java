@@ -55,5 +55,8 @@ public class Costanti {
 	public static String DEST_MAIL_MAN="";
 	public static long TIMER_ITERAZIONI=15;
 	
+	public static int FLAG_SMS;
+	public static String NUMBER_SMS;
+	
 	
 }

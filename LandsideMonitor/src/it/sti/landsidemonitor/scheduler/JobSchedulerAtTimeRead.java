@@ -27,11 +27,10 @@ public class JobSchedulerAtTimeRead implements Job{
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 	
 		String currentState=PortReader.getMessage();
-		
+		/*
 		SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-		
-	//	System.out.println(sdf.format(new Date())+ " Valore Precedente: "+PortReader.prevState+" Valore Corrente"+currentState);
-		
+		System.out.println(sdf.format(new Date())+ " Valore Precedente: "+PortReader.prevState+" Valore Corrente"+currentState);
+		*/
 		if(currentState.equals(PortReader.prevState)) 
 		{
 			RasterPanel.reset.setEnabled(true);
@@ -71,7 +70,10 @@ public class JobSchedulerAtTimeRead implements Job{
 			 {
 				 for (SensorDTO sensorDTO : lisSen) 
 				 {
-					 PortReader.cambiaStato(sensorDTO, 1);
+					 if(sensorDTO.getStato()!=1 ) 
+						{
+						 PortReader.cambiaStato(sensorDTO, 1);
+						}
 				     logger.warn("Cambio Stato ALLARME sonda: "+sensorDTO.getIdentifier());
 				     Core.registraEvento(sensorDTO.getIdentifier(),"006",1,0,0,0);
 				}
@@ -102,7 +104,7 @@ public class JobSchedulerAtTimeRead implements Job{
 			 {
 				 for (SensorDTO sensorDTO : lisSen) 
 				 {
-					 if(sensorDTO.getStato()!=1) 
+					 if(sensorDTO.getStato()!=1 && sensorDTO.getStato()!=2) 
 					 {
 						 PortReader.cambiaStato(sensorDTO, 2);
 						 logger.warn("Cambio Stato ALLERTA sonda: "+sensorDTO.getIdentifier());
@@ -136,7 +138,7 @@ public class JobSchedulerAtTimeRead implements Job{
 			 {
 				 for (SensorDTO sensorDTO : lisSen) 
 				 {
-					 if(sensorDTO.getStato()!=1) 
+					 if(sensorDTO.getStato()!=1 && sensorDTO.getStato()!=2)
 					 {
 						 PortReader.cambiaStato(sensorDTO, 2);
 						 logger.warn("Cambio Stato ALLERTA sonda: "+sensorDTO.getIdentifier());
@@ -172,7 +174,7 @@ public class JobSchedulerAtTimeRead implements Job{
 			 {
 				 for (SensorDTO sensorDTO : lisSen) 
 				 {
-					 if(sensorDTO.getStato()!=1) 
+					 if(sensorDTO.getStato()!=1 && sensorDTO.getStato()!=2) 
 					 {
 						 PortReader.cambiaStato(sensorDTO, 2);
 						 logger.warn("Cambio Stato ALLERTA sonda: "+sensorDTO.getIdentifier());

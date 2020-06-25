@@ -37,7 +37,7 @@ public class MainFrame extends JFrame {
 	private JFrame g;
 	public RasterPanel mainPanel=null;
 	public static jssc.SerialPort serialPort;
-	static ArrayList<SensorDTO> listaSensori=null;
+	public static ArrayList<SensorDTO> listaSensori=null;
 	JMenuBar menuBar;
 	static PortReader pr=null;
 	JMenu menu;

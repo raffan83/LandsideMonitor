@@ -13,7 +13,6 @@ import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.quartz.SchedulerFactory;
 import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
@@ -26,6 +25,7 @@ import it.sti.landsidemonitor.gui.RasterPanel;
 import it.sti.landsidemonitor.scheduler.JobSchedulerAtTime;
 import it.sti.landsidemonitor.scheduler.JobSchedulerAtTimeRead;
 import it.sti.landsidemonitor.scheduler.JobService;
+import it.sti.landsidemonitor.scheduler.JobServiceCalibration;
 import jssc.SerialPort;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
@@ -66,7 +66,6 @@ public class PortReader implements SerialPortEventListener {
 		}
 		InitSplash.setMessage("Avvio monitoraggio", 100);
 		InitSplash.close();
-	//	startSchedulers();
 		
 	}
 
@@ -106,12 +105,23 @@ public class PortReader implements SerialPortEventListener {
         Trigger trigger2 = TriggerBuilder.newTrigger()
                                         .startNow()
                                         .withSchedule(
-                                             CronScheduleBuilder.cronSchedule("0 59 11 1/1 * ? *"))
+                                             CronScheduleBuilder.cronSchedule("0 1 0 1/1 * ? *"))
                                         .build();
         scheduler.scheduleJob(job2, trigger2);       
         scheduler = new StdSchedulerFactory().getScheduler();
         scheduler.start();
         logger.warn("Start scheduler service");
+        
+        JobDetail job3 = JobBuilder.newJob(JobServiceCalibration.class).build();
+        Trigger trigger3 = TriggerBuilder.newTrigger()
+                                        .startNow()
+                                        .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(30).repeatForever())
+                                        .build();
+        
+        scheduler.scheduleJob(job3, trigger3);       
+        scheduler = new StdSchedulerFactory().getScheduler();
+        scheduler.start();
+        logger.warn("Start scheduler Calibration");
         
 	}
 
@@ -239,7 +249,7 @@ public class PortReader implements SerialPortEventListener {
 							playload="";
 							
 							
-							System.out.println(sdf.format(new Date())+ "[RECIVE]: "+ msg);
+				//			System.out.println(sdf.format(new Date())+ "[RECIVE]: "+ msg);
 							valutaSegnale(msg);
 							
 						}
@@ -268,7 +278,7 @@ public class PortReader implements SerialPortEventListener {
 				String roll=value.split(",")[4].substring(0,value.split(",")[4].length()-1);				
 				
 				
-				logger.warn("CALIBRATION  "+sensor.getIdentifier()+" ["+levBatt+"] ["+bering+"]["+pitch+"]["+roll+"]");
+	//			logger.warn("CALIBRATION  "+sensor.getIdentifier()+" ["+levBatt+"] ["+bering+"]["+pitch+"]["+roll+"]");
 				
 				sensor.setBattLevel(levBatt);
 				
@@ -284,7 +294,7 @@ public class PortReader implements SerialPortEventListener {
 			
 			if(value.startsWith("<RSSI"+sensor.getIdentifier()))
 			{
-				logger.warn("SIGNAL  "+sensor.getIdentifier()+" "+value.split(":")[1].substring(0,value.split(":")[1].length()-1));
+	//			logger.warn("SIGNAL  "+sensor.getIdentifier()+" "+value.split(":")[1].substring(0,value.split(":")[1].length()-1));
 				
 				sensor.setSignal(value.split(":")[1].substring(0,value.split(":")[1].length()-1));
 			}
@@ -355,9 +365,11 @@ public class PortReader implements SerialPortEventListener {
 						Core.registraEvento(sensor.getIdentifier(),"001",2,acc_X,acc_Y,acc_Z);
 						logger.warn("ALLERTA ISTANTANEA > "+Costanti.LIMITE_MAX_P3+" m/s SONDA: "+ sensor.getIdentifier());
 						sogliaAllerta.put(sensor.getIdentifier(), sensor);
-						mainP.cambiaStato(sensor.getId(), 2);
-						sensor.setStato(2);
-					//	serialPort.writeString("Y");
+						if(sensor.getStato()!=1 && sensor.getStato()!=2) 
+						{	
+							mainP.cambiaStato(sensor.getId(), 2);
+							sensor.setStato(2);
+						}
 					}
 					
 					/*Pre-Allerta 5 sec*/
@@ -365,10 +377,12 @@ public class PortReader implements SerialPortEventListener {
 					{
 						if(valutaTempo(sensor,2,System.currentTimeMillis())) 
 						{
-							mainP.cambiaStato(sensor.getId(), 2);
-							sensor.setStato(2);
-							sogliaAllerta.put(sensor.getIdentifier(),sensor);
-							//serialPort.writeString("X");							
+							if(sensor.getStato()!=1 && sensor.getStato()!=2) 
+							{
+								mainP.cambiaStato(sensor.getId(), 2);
+								sensor.setStato(2);
+							}
+							sogliaAllerta.put(sensor.getIdentifier(),sensor);							
 							Core.registraEvento(sensor.getIdentifier(),"002",2,acc_X,acc_Y,acc_Z);
 							logger.warn("ALLERTA 5 SEC ["+sensor.getIdentifier()+"]");
 							
@@ -382,8 +396,11 @@ public class PortReader implements SerialPortEventListener {
 					{
 						if(valutaTempo(sensor,3,System.currentTimeMillis())) 
 						{
-							mainP.cambiaStato(sensor.getId(), 2);
-							sensor.setStato(2);
+							if(sensor.getStato()!=1 && sensor.getStato()!=2) 
+							{
+								mainP.cambiaStato(sensor.getId(), 2);
+								sensor.setStato(2);
+							}
 							sogliaAllerta.put(sensor.getIdentifier(), sensor);
 //							serialPort.writeString("X");
 							
@@ -397,11 +414,12 @@ public class PortReader implements SerialPortEventListener {
 					{
 						if(valutaTempo(sensor,4,System.currentTimeMillis())) 
 						{
-							mainP.cambiaStato(sensor.getId(), 2);
-							sensor.setStato(2);
+							if(sensor.getStato()!=1 && sensor.getStato()!=2) 
+							{
+								mainP.cambiaStato(sensor.getId(), 2);
+								sensor.setStato(2);
+							}
 							sogliaAllerta.put(sensor.getIdentifier(), sensor);
-//							serialPort.writeString("X");
-							
 							Core.registraEvento(sensor.getIdentifier(),"004",2,acc_X,acc_Y,acc_Z);
 							logger.warn("ALLERTA 2 SEC ["+sensor.getIdentifier()+"]");
 						}
@@ -422,8 +440,12 @@ public class PortReader implements SerialPortEventListener {
 						       logger.warn("\t SONDA: "+me.getKey());
 						      
 						       SensorDTO s=(SensorDTO)me.getValue();
-						       mainP.cambiaStato(s.getId(), 1);
-							   s.setStato(1);
+						       
+						       if(sensor.getStato()!=1) 
+						       {
+							       mainP.cambiaStato(s.getId(), 1);
+								   s.setStato(1);
+						       }
 							   Core.registraEvento(s.getIdentifier(),"005",1,acc_X,acc_Y,acc_Z);
 						 }
 

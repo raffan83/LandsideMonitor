@@ -27,6 +27,7 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.UIManager;
+import javax.swing.JCheckBox;
 
 public class FrameParametri extends JFrame {
 	
@@ -56,9 +57,11 @@ public class FrameParametri extends JFrame {
 	private JTextField textField_det_12_sec;
 	private JTextField textField_det_15_sec;
 	private JTextField textField_destinatari_manutenzione;
+	private JTextField textField_lista_sms;
 
 	public FrameParametri() throws SQLException 
 	{
+		getContentPane().setBackground(Color.WHITE);
 		setTitle("Impostazioni Sistema");
 		setSize(650, 600);
 		
@@ -76,10 +79,10 @@ public class FrameParametri extends JFrame {
 		
 		tabbedPane.addTab("Parametri generali",panelMainParam);
 		
-		tabbedPane.addTab("Parametri Mail",panelMail);
+		tabbedPane.addTab("Parametri Mail & SMS\r\n",panelMail);
 		
 		setLocation(x, y);
-		panelMainParam.setLayout(new MigLayout("", "[pref!,grow][pref!,grow][grow][grow]", "[][9.00][30px:30px][:30px:30px][:30px:30px][grow][:20px:20px][grow][][]"));
+		panelMainParam.setLayout(new MigLayout("", "[pref!,grow][pref!,grow][grow][grow]", "[][9.00][30px:30px][:30px:30px][:30px:30px][grow][:20px:20px][grow]"));
 		
 		panelMail.setLayout(new MigLayout("", "[pref!,grow][pref!,grow][grow]", "[][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][][grow][]"));
 		
@@ -371,15 +374,6 @@ public class FrameParametri extends JFrame {
 		label_5.setForeground(Color.ORANGE);
 		label_5.setFont(new Font("Arial", Font.BOLD, 14));
 		panel.add(label_5, "cell 4 3");
-		
-		JLabel lblIParametri = new JLabel("* I parametri verranno applicati solo al prossimo riavvio");
-		lblIParametri.setFont(new Font("Arial", Font.BOLD, 12));
-		panelMainParam.add(lblIParametri, "flowx,cell 0 8 3 1");
-		
-		JButton btnSalva = new JButton("SALVA");
-		btnSalva.setIcon(new ImageIcon(FrameParametri.class.getResource("/image/save.png")));
-		btnSalva.setFont(new Font("Arial", Font.BOLD, 14));
-		panelMainParam.add(btnSalva, "cell 0 9 4 1,alignx center");
 	
 		JLabel lblDestinatariAllarme = new JLabel("DESTINATARI ALLARME");
 		lblDestinatariAllarme.setFont(new Font("Arial", Font.BOLD, 14));
@@ -400,20 +394,6 @@ public class FrameParametri extends JFrame {
 		{
 			comboBox.setSelectedIndex(1);
 		}
-		
-		JButton btnAnnulla = new JButton("ANNULLA");
-		btnAnnulla.setIcon(new ImageIcon(FrameParametri.class.getResource("/image/abort.png")));
-		btnAnnulla.setFont(new Font("Arial", Font.BOLD, 14));
-		panelMainParam.add(btnAnnulla, "cell 0 9 4 1");
-		btnAnnulla.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				dispose();
-				
-			}
-		});
 		
 		
 		textField_hostname.setText(Costanti.HOST_NAME_MAIL);
@@ -450,13 +430,59 @@ public class FrameParametri extends JFrame {
 		textField_destinatari_pre.setText(Costanti.DEST_MAIL_PRE);
 		textField_destinatari_alarm.setText(Costanti.DEST_MAIL_ALARM);
 		textField_destinatari_manutenzione.setText(Costanti.DEST_MAIL_MAN);
+		
+		JLabel lblSeparareI = new JLabel("* separare i nuemri con \";\" ed anteporre al numero 39");
+		lblSeparareI.setFont(new Font("Arial", Font.BOLD, 12));
+		panelMail.add(lblSeparareI, "cell 1 11 2 1,aligny bottom");
+		
+		JCheckBox chckbxInvioSms = new JCheckBox("INVIO SMS");
+		chckbxInvioSms.setFont(new Font("Arial", Font.BOLD, 12));
+		chckbxInvioSms.setBackground(Color.WHITE);
+		panelMail.add(chckbxInvioSms, "cell 0 12,alignx right");
 	
+		if(Costanti.FLAG_SMS==1) 
+		{
+			chckbxInvioSms.setSelected(true);
+		}
+		else 
+		{
+			chckbxInvioSms.setSelected(false);
+		}
+		textField_lista_sms = new JTextField();
+		textField_lista_sms.setText("");
+		textField_lista_sms.setColumns(10);
+		panelMail.add(textField_lista_sms, "cell 1 12 2 1,growx");
+	
+		if(Costanti.NUMBER_SMS!=null)
+		{
+			textField_lista_sms.setText(Costanti.NUMBER_SMS);
+		}
+		getContentPane().setLayout(new MigLayout("", "[634px,grow]", "[561px,grow][15px:n][60px:n]"));
 		
+		getContentPane().add(tabbedPane, "cell 0 0,grow");
 		
+		JLabel lblIParametri = new JLabel("* I parametri verranno applicati solo al prossimo riavvio");
+		getContentPane().add(lblIParametri, "cell 0 1");
+		lblIParametri.setFont(new Font("Arial", Font.BOLD, 12));
 		
+		JButton btnSalva = new JButton("SALVA");
+		getContentPane().add(btnSalva, "flowx,cell 0 2,alignx center");
+		btnSalva.setIcon(new ImageIcon(FrameParametri.class.getResource("/image/save.png")));
+		btnSalva.setFont(new Font("Arial", Font.BOLD, 14));
 		
-		
-		getContentPane().add(tabbedPane);
+		JButton btnAnnulla = new JButton("ANNULLA");
+		getContentPane().add(btnAnnulla, "cell 0 2");
+		btnAnnulla.setIcon(new ImageIcon(FrameParametri.class.getResource("/image/abort.png")));
+		btnAnnulla.setFont(new Font("Arial", Font.BOLD, 14));
+		btnAnnulla.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				dispose();
+				
+			}
+		});
 		
 		btnSalva.addActionListener(new ActionListener() {
 			
@@ -665,6 +691,18 @@ public class FrameParametri extends JFrame {
 					param.setDEST_MAIL_ALARM(textField_destinatari_alarm.getText());
 					param.setDEST_MAIL_MAN(textField_destinatari_manutenzione.getText());
 					
+					if(chckbxInvioSms.isSelected()) 
+					{
+						param.setFLAG_SMS(1);
+						Costanti.FLAG_SMS=1;
+					}else 
+					{
+						param.setFLAG_SMS(0);
+						Costanti.FLAG_SMS=0;
+					}
+					
+					param.setNUMBER_SMS(textField_lista_sms.getText());
+					
 					Costanti.PORT=param.getPORT();
 					Costanti.FRAMERATE=param.getFRAMERATE();
 					if(param.getDEBUG().equals("1")) 
@@ -698,6 +736,7 @@ public class FrameParametri extends JFrame {
 					Costanti.DEST_MAIL_PRE=param.getDEST_MAIL_PRE();
 					Costanti.DEST_MAIL_ALARM=param.getDEST_MAIL_ALARM();
 					Costanti.DEST_MAIL_MAN=param.getDEST_MAIL_MAN();
+					Costanti.NUMBER_SMS=param.getNUMBER_SMS();
 					
 					
 					try {

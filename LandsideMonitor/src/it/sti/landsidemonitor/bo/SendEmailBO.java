@@ -2,80 +2,34 @@ package it.sti.landsidemonitor.bo;
 
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 
 import it.sti.landsidemonitor.dto.SensorDTO;
 
-
- 
-
-public class SendEmailBO {
-	public static void sendEmailAlarm(String mailTo,SensorDTO sensor,String posX,String posY,String posZ) throws Exception {
-				
-
-		  
-		  
- 	}
-
-	public static void sendEmailAlarm(String destinatario, String idSonda, int tipoAllarme, double pos_X, double pos_Y,double pos_Z) throws EmailException {
-		  // Create the email message
-		  HtmlEmail email = new HtmlEmail();
-		  email.setHostName(Costanti.HOST_NAME_MAIL);
-		 //email.setDebug(true);
-		  email.setAuthentication(Costanti.USERNAME_MAIL,Costanti.PASSWORD_MAIL);
-
-		  String labelAlarm=getLabel(tipoAllarme);
-
-	        email.getMailSession().getProperties().put("mail.smtp.auth",Costanti.SMTP_AUTH);
-	        email.getMailSession().getProperties().put("mail.debug", "true");
-	        email.getMailSession().getProperties().put("mail.smtp.port", Costanti.PORT_MAIL);
-	        email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", Costanti.PORT_MAIL);
-	        email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-	        email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
-	        email.getMailSession().getProperties().put("mail.smtp.ssl.enable", Costanti.SSL);
-
-		  
-
-		  email.addTo(destinatario);
-		  email.setFrom("system@alarm.com", "Segnalazione Allarme");
-		  email.setSubject("Segnalazione "+ labelAlarm+" sonda "+idSonda);
-		  
-
-		  email.setHtmlMsg("<html><h3>Segnalazione "+labelAlarm+" sonda "+idSonda+" <br>"
-		  					   + "ACC X:"+pos_X+" <br>"
-		  					   + "ACC Y:"+pos_Y+" <br>"
-		  					   + "ACC Z:"+pos_Z+"</h3></html>");
-
-
-		  // set the alternative message
-		  email.setTextMsg("Segnalazione allarme");
-
-		  // add the attachment
-		  
-		  // send the email
-		  email.send();
-		  
-		
+public class SendEmailBO implements Runnable {
+	
+	private String idSonda="";
+	private int tipoAllarme;
+	
+	public SendEmailBO(String _idSonda,int _tipoAllarme) 
+	{
+		idSonda=_idSonda;
+		tipoAllarme=_tipoAllarme;
 	}
-
+ 
 	private static String getLabel(int tipoAllarme) {
 		
 		if(tipoAllarme==1) 
 		{
-			return "PRE ALLARME 1";
+			return "<h3 style=\"color: red\">ALLARME</h3>";
 		}
 		if(tipoAllarme==2) 
 		{
-			return "PRE ALLARME 2";
-		}
-		if(tipoAllarme==3) 
-		{
-			return "PRE ALLARME 3";
-		}
-		if(tipoAllarme==4) 
-		{
-			return "ALLARME";
+			return "<h3 style=\"color: orange\">ALLERTA</h3>";
 		}
 		return null;
 	}
@@ -194,5 +148,74 @@ public class SendEmailBO {
 		  // send the email
 		  email.send();
 		
+	}
+
+	@Override
+	public void run() {
+		
+		try 
+		{
+		System.out.println("INVIO MAIL");
+		 String[] des= null;
+		
+		 if(tipoAllarme==1) 
+		 {
+			 des=Costanti.DEST_MAIL_ALARM.split(";");
+		 }else 
+		 {
+			 des=Costanti.DEST_MAIL_PRE.split(";");
+		 }
+		 
+		 if(des!=null && des.length>0) 
+		 {
+		
+		  for (String destinatario : des) {
+			 
+		  HtmlEmail email = new HtmlEmail();
+		  email.setHostName(Costanti.HOST_NAME_MAIL);
+		 //email.setDebug(true);
+		  email.setAuthentication(Costanti.USERNAME_MAIL,Costanti.PASSWORD_MAIL);
+
+		  
+		  String labelAlarm=getLabel(tipoAllarme);
+
+	        email.getMailSession().getProperties().put("mail.smtp.auth",Costanti.SMTP_AUTH);
+	        email.getMailSession().getProperties().put("mail.debug", "true");
+	        email.getMailSession().getProperties().put("mail.smtp.port", Costanti.PORT_MAIL);
+	        email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", Costanti.PORT_MAIL);
+	        email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+	        email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
+	        email.getMailSession().getProperties().put("mail.smtp.ssl.enable", Costanti.SSL);
+
+		  email.addTo(destinatario);
+		 
+		  
+		  if(tipoAllarme==1) 
+		  {
+			  email.setSubject("Segnalazione ALLARME sonda "+idSonda);
+			  email.setFrom("genova@stisrl.com", "Segnalazione ALLARME");
+		  }
+		  else 
+		  {
+			  email.setSubject("Segnalazione ALLERTA sonda "+idSonda);
+			  email.setFrom("genova@stisrl.com", "Segnalazione ALLERTA");
+		  }
+		  SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+		  
+		  email.setHtmlMsg("<html><h3>In data "+sdf.format(new Date())+" la sonda "+idSonda+" ha segnalato un "+labelAlarm+"</h3></html>");
+
+		  // set the alternative message
+		  email.setTextMsg("Segnalazione allarme");
+
+		  // add the attachment
+		  
+		  // send the email
+		  email.send();
+		  System.out.println("MAIL INVIATA");
+		  }
+		 }
+		}catch (Exception e) {
+		 e.printStackTrace();
+		}
 	}
 }

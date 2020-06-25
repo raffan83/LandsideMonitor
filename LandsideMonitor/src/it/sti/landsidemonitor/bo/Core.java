@@ -121,7 +121,8 @@ public class Core {
 		Costanti.DEST_MAIL_PRE=parametri.getDEST_MAIL_PRE();
 		Costanti.DEST_MAIL_ALARM=parametri.getDEST_MAIL_ALARM();
 		Costanti.DEST_MAIL_MAN=parametri.getDEST_MAIL_MAN();
-		
+		Costanti.FLAG_SMS=parametri.getFLAG_SMS();
+		Costanti.NUMBER_SMS=parametri.getNUMBER_SMS();
 		
 	}
 

@@ -32,6 +32,8 @@ public class ParamDTO {
 	private  String DEST_MAIL_PRE;
 	private  String DEST_MAIL_ALARM;
 	private  String DEST_MAIL_MAN;
+	private int FLAG_SMS;
+	private String NUMBER_SMS;
 	
 	
 	public String getDEST_MAIL_PRE() {
@@ -187,6 +189,18 @@ public class ParamDTO {
 	}
 	public void setDEST_MAIL_MAN(String dEST_MAIL_MAN) {
 		DEST_MAIL_MAN = dEST_MAIL_MAN;
+	}
+	public int getFLAG_SMS() {
+		return FLAG_SMS;
+	}
+	public void setFLAG_SMS(int fLAG_SMS) {
+		FLAG_SMS = fLAG_SMS;
+	}
+	public String getNUMBER_SMS() {
+		return NUMBER_SMS;
+	}
+	public void setNUMBER_SMS(String nUMBER_SMS) {
+		NUMBER_SMS = nUMBER_SMS;
 	}
 	
 	

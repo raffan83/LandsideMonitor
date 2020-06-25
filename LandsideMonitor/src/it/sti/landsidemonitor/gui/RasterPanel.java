@@ -24,6 +24,7 @@ import javax.swing.border.LineBorder;
 
 import it.sti.landsidemonitor.bo.Core;
 import it.sti.landsidemonitor.bo.PortReader;
+import it.sti.landsidemonitor.bo.SendEmailBO;
 import it.sti.landsidemonitor.dao.MainDAO;
 import it.sti.landsidemonitor.dto.SensorDTO;
 import net.miginfocom.swing.MigLayout;
@@ -314,7 +315,15 @@ public class RasterPanel extends JPanel{
 				  try 
 				  {
 					Core.cambiaStato(idSonda, stato);  
-				
+					
+					if(stato==1 || stato==2) 
+						
+					{ 
+						String id=listaSensori.get(i).getIdentifier()+" (GR."+listaSensori.get(i).getType()+")";
+						SendEmailBO mail = new SendEmailBO(id, stato);
+						new Thread(mail).start();
+
+					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
