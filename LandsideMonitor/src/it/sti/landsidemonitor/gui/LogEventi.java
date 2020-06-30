@@ -102,7 +102,7 @@ public class LogEventi extends JFrame{
 		
 		getContentPane().add(scroll, "cell 0 1,grow");
 		
-		JButton btnScaricaCvs = new JButton("Export CVS");
+		JButton btnScaricaCvs = new JButton("Export");
 		btnScaricaCvs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			

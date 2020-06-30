@@ -27,8 +27,10 @@ public class JobSchedulerAtTimeRead implements Job{
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 	
 		String currentState=PortReader.getMessage();
-		/*
+		
 		SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+		
+		/*
 		System.out.println(sdf.format(new Date())+ " Valore Precedente: "+PortReader.prevState+" Valore Corrente"+currentState);
 		*/
 		if(currentState.equals(PortReader.prevState)) 
@@ -47,6 +49,19 @@ public class JobSchedulerAtTimeRead implements Job{
 		final int PUNTI_15_SEC=Costanti.PUNTI_DET_15_SEC;
 	
 	try {
+		
+		/*Controllo Sirene*/
+		
+		if(PortReader.alarmDuration!=0) 
+		{
+			System.out.println(sdf.format(new Date())+ " Controllo durata allarme ["+(System.currentTimeMillis()-PortReader.alarmDuration)+"]");
+			if(System.currentTimeMillis()-PortReader.alarmDuration>180000)
+			{
+				PortReader.write("Z");
+				PortReader.alarmDuration=0;
+			}
+		}
+		
 	
 		if(PortReader.puntiAttiviB.size()>=PUNTI_5_SEC) 
 		{

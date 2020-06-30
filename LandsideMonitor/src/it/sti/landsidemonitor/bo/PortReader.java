@@ -41,6 +41,7 @@ public class PortReader implements SerialPortEventListener {
 	public static HashMap<String, SensorDTO> sogliaAllerta;
 	public static HashMap<SensorDTO, Long> puntiAttiviB;
 	public static String  prevState;
+	public static long  alarmDuration=0;
 
 	SimpleDateFormat sdf = new SimpleDateFormat("ss.SSS");
 	

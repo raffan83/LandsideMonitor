@@ -15,6 +15,7 @@ public class SendEmailBO implements Runnable {
 	private String idSonda="";
 	private int tipoAllarme;
 	
+	
 	public SendEmailBO(String _idSonda,int _tipoAllarme) 
 	{
 		idSonda=_idSonda;

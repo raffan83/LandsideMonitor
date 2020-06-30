@@ -25,8 +25,8 @@ import javax.swing.border.LineBorder;
 import it.sti.landsidemonitor.bo.Core;
 import it.sti.landsidemonitor.bo.PortReader;
 import it.sti.landsidemonitor.bo.SendEmailBO;
-import it.sti.landsidemonitor.dao.MainDAO;
 import it.sti.landsidemonitor.dto.SensorDTO;
+import it.sti.landsidemonitor.sms.SendSMS;
 import net.miginfocom.swing.MigLayout;
 
 
@@ -320,9 +320,14 @@ public class RasterPanel extends JPanel{
 						
 					{ 
 						String id=listaSensori.get(i).getIdentifier()+" (GR."+listaSensori.get(i).getType()+")";
+						
 						SendEmailBO mail = new SendEmailBO(id, stato);
 						new Thread(mail).start();
-
+						
+						SendSMS sms = new SendSMS(id, stato);
+						new Thread(sms).start();
+						
+						PortReader.alarmDuration=System.currentTimeMillis();
 					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
