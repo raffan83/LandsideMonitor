@@ -31,7 +31,7 @@ public class SendSMS implements Runnable{
     	
        
 
-        String username ="raffan83";
+        String username ="ncsnetowk";
         String password = "Ncsnetwork2020";
         
         String[] numeri=Costanti.NUMBER_SMS.split(";");

@@ -321,7 +321,7 @@ public class RasterPanel extends JPanel{
 					{ 
 						String id=listaSensori.get(i).getIdentifier()+" (GR."+listaSensori.get(i).getType()+")";
 						
-						SendEmailBO mail = new SendEmailBO(id, stato);
+						SendEmailBO mail = new SendEmailBO(id, stato,1,null);
 						new Thread(mail).start();
 						
 						SendSMS sms = new SendSMS(id, stato);

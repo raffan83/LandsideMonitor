@@ -2,6 +2,7 @@ package it.sti.landsidemonitor.scheduler;
 
 import java.util.ArrayList;
 
+import org.apache.commons.mail.EmailException;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -11,6 +12,7 @@ import it.sti.landsidemonitor.bo.PortReader;
 import it.sti.landsidemonitor.bo.SendEmailBO;
 import it.sti.landsidemonitor.dto.SensorDTO;
 import it.sti.landsidemonitor.gui.MainFrame;
+import it.sti.landsidemonitor.gui.RasterPanel;
 import jssc.SerialPortException;
 
 public class JobServiceCalibration  implements Job{
@@ -18,7 +20,11 @@ public class JobServiceCalibration  implements Job{
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 	
+		if(PortReader.firstSendMailCalibration==true) 
+		{
 		ArrayList<SensorDTO> listaSensori=MainFrame.listaSensori;
+		
+		ArrayList<SensorDTO> listaSensoriAssenti=new ArrayList<SensorDTO>();
 		
 		System.out.println("Inizio calibrazione periodica");
 		for (int i=0;i<listaSensori.size();i++) 
@@ -58,6 +64,7 @@ public class JobServiceCalibration  implements Job{
 					{
 						System.out.println("Mancata risposta: "+listaSensori.get(i).getIdentifier()+" invio mail");
 						try {
+							listaSensoriAssenti.add(listaSensori.get(i));
 							Core.cambiaStato(Integer.parseInt(idSonda), 5);
 						//	SendEmailBO.
 						} catch (Exception e) {
@@ -70,7 +77,26 @@ public class JobServiceCalibration  implements Job{
 			}	
 				
 			}
+		
+		if(listaSensoriAssenti.size()>0) 
+		{
+			try {
+				SendEmailBO mail = new SendEmailBO("",0,2,listaSensoriAssenti);
+				new Thread(mail).start();
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		System.out.println("Fine calibrazione periodica");
+		
+		}
+		else 
+		{
+		//	System.out.println("Abilitazione controllo");
+		PortReader.firstSendMailCalibration=true;
+		}
 		
 	}
 
