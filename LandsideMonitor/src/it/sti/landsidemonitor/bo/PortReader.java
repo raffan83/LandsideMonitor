@@ -60,12 +60,14 @@ public class PortReader implements SerialPortEventListener {
 		mainP=_mainP;
 	
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.SSS");
-		for (int i=0;i<_listaSensori.size();i++)
-		{
-			int pr=(100/_listaSensori.size())*(i+1);
-			InitSplash.setMessage("Calibrazione sonda "+_listaSensori.get(i).getIdentifier(), pr);
-			checkHealthSensor(_listaSensori.get(i));
-		}
+		
+		checkHealthSensor(_listaSensori);	
+		
+		
+		SendEmailBO report =new SendEmailBO("", 0, 2);
+		Thread tReport = new Thread(report);
+		tReport.start();
+		
 		InitSplash.setMessage("Avvio monitoraggio", 100);
 		InitSplash.close();
 		
@@ -103,39 +105,53 @@ public class PortReader implements SerialPortEventListener {
         scheduler = new StdSchedulerFactory().getScheduler();
         scheduler.start();
        
-        JobDetail job2 = JobBuilder.newJob(JobService.class).build();
-        Trigger trigger2 = TriggerBuilder.newTrigger()
-                                        .startNow()
-                                        .withSchedule(
-                                             CronScheduleBuilder.cronSchedule("0 1 0 1/1 * ? *"))
-                                        .build();
-        scheduler.scheduleJob(job2, trigger2);       
-        scheduler = new StdSchedulerFactory().getScheduler();
-        scheduler.start();
-        logger.warn("Start scheduler service");
-        
-        JobDetail job3 = JobBuilder.newJob(JobServiceCalibration.class).build();
-        Trigger trigger3 = TriggerBuilder.newTrigger()
-                                        .startNow()
-                                        .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(30).repeatForever())
-                                        .build();
-        
-        scheduler.scheduleJob(job3, trigger3);       
-        scheduler = new StdSchedulerFactory().getScheduler();
-        scheduler.start();
-        logger.warn("Start scheduler Calibration");
+//        JobDetail job2 = JobBuilder.newJob(JobService.class).build();
+//        Trigger trigger2 = TriggerBuilder.newTrigger()
+//                                        .startNow()
+//                                        .withSchedule(
+//                                             CronScheduleBuilder.cronSchedule("0 1 0 1/1 * ? *"))
+//                                        .build();
+//        scheduler.scheduleJob(job2, trigger2);       
+//        scheduler = new StdSchedulerFactory().getScheduler();
+//        scheduler.start();
+//        logger.warn("Start scheduler service");
+//        
+//        JobDetail job3 = JobBuilder.newJob(JobServiceCalibration.class).build();
+//        Trigger trigger3 = TriggerBuilder.newTrigger()
+//                                        .startNow()
+//                                        .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(2).repeatForever())
+//                                        .build();
+//        
+//        scheduler.scheduleJob(job3, trigger3);       
+//        scheduler = new StdSchedulerFactory().getScheduler();
+//        scheduler.start();
+//        logger.warn("Start scheduler Calibration");
         
 	}
 
-	public static void checkHealthSensor(SensorDTO sensorDTO) throws SerialPortException {
+	public static void checkHealthSensor(ArrayList<SensorDTO> _listaSensori) throws SerialPortException {
 		
+		
+		for (int i=0;i<_listaSensori.size();i++)
+		{
+		
+		boolean flagCalibrazione=false;
+		boolean flagSegnale=false;
+		
+		int numero_tentativi=0;
+	    int pr=(100/_listaSensori.size())*(i+1);
+		InitSplash.setMessage("Calibrazione sonda "+_listaSensori.get(i).getIdentifier(), pr);
+		
+		SensorDTO sensorDTO =listaSensori.get(i);
+		   
 		logger.warn("Check sensor: "+sensorDTO.getIdentifier());
+		
 		write("C"+sensorDTO.getIdentifier());
 		
 		String playload="";
 		boolean read=false;
 		byte[] by= new byte[1];
-		ArrayList<String> listaMessaggi= new ArrayList<>();
+	//	ArrayList<String> listaMessaggi= new ArrayList<>();
 		
 		double tempoStart=System.currentTimeMillis();
 
@@ -161,56 +177,70 @@ public class PortReader implements SerialPortEventListener {
 							read=false;
 							msg=playload;
 							playload="";
-							listaMessaggi.add(msg);
+							if(msg.startsWith("<CL-"+sensorDTO.getIdentifier()) && sensorDTO.getStato()!=1)
+							{
+
+								logger.warn("CALIBRATION ["+sensorDTO.getIdentifier()+"]");
+
+								String levBatt=msg.split(",")[1];
+								
+								String bering=msg.split(",")[2];
+								
+								String pitch=msg.split(",")[3];
+								
+								String roll=msg.split(",")[4].substring(0,msg.split(",")[4].length()-1);				
+								
+								
+								sensorDTO.setBattLevel(levBatt);
+								
+								sensorDTO.setBering(bering);
+								
+								sensorDTO.setPitch(pitch);
+								
+								sensorDTO.setRoll(roll);
+								
+								if(sensorDTO.getStato()!=1 || sensorDTO.getStato()!=2) 
+								{
+									mainP.cambiaStato(sensorDTO.getId(), 0);
+									sensorDTO.setStato(0);
+									flagCalibrazione=true;
+								}
+							}
+							if(msg.startsWith("<RSSI"+sensorDTO.getIdentifier()))
+							{
+					//			logger.warn("SIGNAL  "+sensor.getIdentifier()+" "+value.split(":")[1].substring(0,value.split(":")[1].length()-1));
+								
+								sensorDTO.setSignal(msg.split(":")[1].substring(0,msg.split(":")[1].length()-1));
+								flagSegnale=true;
+							}
+							
+							if(flagSegnale==true && flagCalibrazione==true) 
+							{
+								break;
+							}
+							
+							
 						}
 				}
 				
-				if(tempoTrascorso>1250) 
+				if(tempoTrascorso>500) 
 				{
-					boolean alive=false;
-					for (String msg : listaMessaggi) 
-					{
-						if(msg.startsWith("<CL-"+sensorDTO.getIdentifier()) && sensorDTO.getStato()!=1)
-						{
-
-							logger.warn("CALIBRATION ["+sensorDTO.getIdentifier()+"]");
-							alive=true;
-							
-							String levBatt=msg.split(",")[1];
-							
-							String bering=msg.split(",")[2];
-							
-							String pitch=msg.split(",")[3];
-							
-							String roll=msg.split(",")[4].substring(0,msg.split(",")[4].length()-1);				
-							
-							
-							sensorDTO.setBattLevel(levBatt);
-							
-							sensorDTO.setBering(bering);
-							
-							sensorDTO.setPitch(pitch);
-							
-							sensorDTO.setRoll(roll);
-							
-							if(sensorDTO.getStato()!=1 || sensorDTO.getStato()!=2) 
-							{
-								mainP.cambiaStato(sensorDTO.getId(), 0);
-								sensorDTO.setStato(0);
-							}
-						}
-						if(msg.startsWith("<RSSI"+sensorDTO.getIdentifier()))
-						{
-							
-							sensorDTO.setSignal(msg.split(":")[1].substring(0,msg.split(":")[1].length()-1));
-						}
-						
-					}
-					if(alive==false) 
+					numero_tentativi++;
+					if(numero_tentativi==3) 
 					{
 						mainP.cambiaStato(sensorDTO.getId(), 5);
 						sensorDTO.setStato(5);
+						break;
 					}
+					else 
+					{
+						PortReader.write("C"+listaSensori.get(i).getIdentifier());
+						tempoStart=System.currentTimeMillis();
+						System.out.println("Chiamata 2 ripetizione "+numero_tentativi);
+						
+					}		
+					
+					
 					break;
 				}
 				
@@ -218,6 +248,7 @@ public class PortReader implements SerialPortEventListener {
 				logger.error("Errore calibrazione", ex);
 			}                           
 		}
+	 }
 	}
 
 	public static String getMessage() 

@@ -19,85 +19,82 @@ public class JobServiceCalibration  implements Job{
 
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
-	
+		
 		if(PortReader.firstSendMailCalibration==true) 
-		{
-		ArrayList<SensorDTO> listaSensori=MainFrame.listaSensori;
-		
-		ArrayList<SensorDTO> listaSensoriAssenti=new ArrayList<SensorDTO>();
-		
-		System.out.println("Inizio calibrazione periodica");
-		for (int i=0;i<listaSensori.size();i++) 
 		{	
-			System.out.println("Chiamata periodica sonda: "+listaSensori.get(i).getIdentifier());
-			
-			String idSonda = ""+listaSensori.get(i).getId();
-
-          	try {
-          		
-				PortReader.write("C"+listaSensori.get(i).getIdentifier());
-			} catch (SerialPortException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-           	
-           	double tempoStart=System.currentTimeMillis();
-			
-    		String msgCalibration="";
-    		
-           	while(true)
+			System.out.println("Inizio calibrazione periodica");
+			try 
 			{
-				double tempoTrascorso=System.currentTimeMillis()-tempoStart;
+
+				ArrayList<SensorDTO> listaSensori=MainFrame.listaSensori;
+
+				ArrayList<SensorDTO> listaSensoriAssenti=new ArrayList<SensorDTO>();
+
+				System.out.println("Inizio calibrazione periodica");
 				
-				String message=PortReader.getMessage();
-				
-				if(message.startsWith("<CL-"+listaSensori.get(i).getIdentifier()))
+				for (int i=0;i<listaSensori.size();i++) 
+				{	
+					System.out.println("Chiamata periodica sonda: "+listaSensori.get(i).getIdentifier());
+
+					PortReader.write("C"+listaSensori.get(i).getIdentifier());
+
+					double tempoStart=System.currentTimeMillis();
+
+					String msgCalibration="";
+
+					while(true)
 					{
-					System.out.println("Risposta periodica sonda: "+listaSensori.get(i).getIdentifier());
-						msgCalibration=message;
-						break;
-					}
-				
-				if(tempoTrascorso>1500) 
-				{
-					if(msgCalibration.equals(""))
-					{
-						System.out.println("Mancata risposta: "+listaSensori.get(i).getIdentifier()+" invio mail");
-						try {
-							listaSensoriAssenti.add(listaSensori.get(i));
-							Core.cambiaStato(Integer.parseInt(idSonda), 5);
-						//	SendEmailBO.
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+						double tempoTrascorso=System.currentTimeMillis()-tempoStart;
+
+						String message=PortReader.getMessage();
+
+						System.out.println(message);
+						if(message.startsWith("<CL-"+listaSensori.get(i).getIdentifier()))
+						{
+							System.out.println("Risposta periodica sonda: "+listaSensori.get(i).getIdentifier());
+							msgCalibration=message;
+
 						}
-					}
-					break;
+
+						if(tempoTrascorso>15000) 
+						{
+							if(msgCalibration.equals(""))
+							{
+								System.out.println("Mancata risposta: "+listaSensori.get(i).getIdentifier()+" invio mail");
+
+								listaSensoriAssenti.add(listaSensori.get(i));
+								PortReader.cambiaStato(listaSensori.get(i), 5);
+
+							}
+							break;
+						}
+					}	
+
 				}
-			}	
+
+				if(listaSensoriAssenti.size()>0) 
+				{
+
+//					SendEmailBO mail = new SendEmailBO("",0,2,listaSensoriAssenti);
+//					new Thread(mail).start();
+//
+//
+//
+//					System.out.println("Fine calibrazione periodica");
+
+				}
 				
-			}
-		
-		if(listaSensoriAssenti.size()>0) 
-		{
-			try {
-				SendEmailBO mail = new SendEmailBO("",0,2,listaSensoriAssenti);
-				new Thread(mail).start();
-				
+
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		System.out.println("Fine calibrazione periodica");
-		
-		}
 		else 
 		{
-		//	System.out.println("Abilitazione controllo");
-		PortReader.firstSendMailCalibration=true;
+			//	System.out.println("Abilitazione controllo");
+			PortReader.firstSendMailCalibration=true;
 		}
-		
-	}
 
+	}
 }

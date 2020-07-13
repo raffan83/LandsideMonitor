@@ -24,7 +24,7 @@ public class JobService implements Job{
 			for (String dest : destinatari) 
 			{
 				System.out.println("Send man: "+dest);
-				SendEmailBO.sendEmailReport(dest);
+				SendEmailBO.sendEmailReport();
 			}
 			
 			

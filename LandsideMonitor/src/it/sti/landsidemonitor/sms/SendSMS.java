@@ -1,7 +1,9 @@
 package it.sti.landsidemonitor.sms;
 
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import icontact.sms.ws.tutorial.managesms.client.Result;
 import icontact.sms.ws.tutorial.managesms.client.SendResponse;
@@ -29,8 +31,8 @@ public class SendSMS implements Runnable{
 	
 	public void run() {
     	
-       
-
+       System.out.println("Inside");
+  
         String username ="ncsnetowk";
         String password = "Ncsnetwork2020";
         
@@ -43,7 +45,7 @@ public class SendSMS implements Runnable{
         for (String numero : numeri) {
 			
 			
-        System.out.println("\n\n--> SEND SMS\n");
+        System.out.println("\n\n--> SEND SMS :"+numero+"\n");
         try {
             ManageSmsWrapper smsWrapper = new ManageSmsWrapper(username, password);
 
@@ -57,8 +59,12 @@ public class SendSMS implements Runnable{
             {
             	segnalazione="ALLERTA";
             }
-            SendResponse sendResult = smsWrapper.send("Monitoraggio sito",numero,"Segnalazione "+segnalazione+" sonda "+idSonda + System.currentTimeMillis(),null,null);
 
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+            
+            String lab="Segnalazione "+segnalazione+" sonda "+idSonda +" "+sdf.format(new Date());
+            
+            SendResponse sendResult = smsWrapper.send("STATUS", numero,lab, null,null);
 
             Integer internalId = null;
 
@@ -131,5 +137,15 @@ public class SendSMS implements Runnable{
         }
 
     }
+	
+	/*public static void main(String[] args) {
+		System.out.println("Start");
+		Costanti.NUMBER_SMS="393331251160";
+		Costanti.FLAG_SMS=1;
+		SendSMS sms = new SendSMS("A", 1);
+		Thread t = new Thread(sms);
+		t.start();
+		System.out.println("stop");
+	}*/
 
 }

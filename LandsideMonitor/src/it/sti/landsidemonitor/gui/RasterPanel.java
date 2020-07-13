@@ -86,7 +86,8 @@ public class RasterPanel extends JPanel{
 			
 			
 			for (int i=0;i<listaSensori.size();i++) 
-			{		
+			{	
+				int numero_tentativi=0;
 				String idSonda = ""+listaSensori.get(i).getId();
                	
 				int pr=(100/listaSensori.size())*(i+1);
@@ -97,7 +98,8 @@ public class RasterPanel extends JPanel{
 
                		
               	PortReader.write("C"+listaSensori.get(i).getIdentifier());
-               	
+               
+              	System.out.println("Chiamata 1");
                	double tempoStart=System.currentTimeMillis();
 				
         		String msgCalibration="";
@@ -108,20 +110,34 @@ public class RasterPanel extends JPanel{
 					
 					String message=PortReader.getMessage();
 					
+				//	System.out.println(message);
 					if(message.startsWith("<CL-"+listaSensori.get(i).getIdentifier()))
 						{
 							System.out.println("MGR RESET "+message);
 							msgCalibration=message;
+							cambiaStato(Integer.parseInt(idSonda), 0);
+		                 	cambiaStatoOriginale(Integer.parseInt(idSonda), 0);
+							break;
 						}
 					
-					if(tempoTrascorso>1500) 
+					if(tempoTrascorso>500) 
 					{
 						if(msgCalibration.equals(""))
 						{
 							cambiaStato(Integer.parseInt(idSonda), 5);
 		                 	cambiaStatoOriginale(Integer.parseInt(idSonda), 5);
 						}
-						break;
+						numero_tentativi++;
+						if(numero_tentativi==3) 
+						{
+							break;
+						}
+						else 
+						{
+							PortReader.write("C"+listaSensori.get(i).getIdentifier());
+							tempoStart=System.currentTimeMillis();
+							System.out.println("Chiamata 2 ripetizione "+numero_tentativi);
+						}
 					}
 				}	
 					
@@ -321,7 +337,7 @@ public class RasterPanel extends JPanel{
 					{ 
 						String id=listaSensori.get(i).getIdentifier()+" (GR."+listaSensori.get(i).getType()+")";
 						
-						SendEmailBO mail = new SendEmailBO(id, stato,1,null);
+						SendEmailBO mail = new SendEmailBO(id, stato,1);
 						new Thread(mail).start();
 						
 						SendSMS sms = new SendSMS(id, stato);
