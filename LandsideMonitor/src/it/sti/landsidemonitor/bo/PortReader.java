@@ -105,16 +105,16 @@ public class PortReader implements SerialPortEventListener {
         scheduler = new StdSchedulerFactory().getScheduler();
         scheduler.start();
        
-//        JobDetail job2 = JobBuilder.newJob(JobService.class).build();
-//        Trigger trigger2 = TriggerBuilder.newTrigger()
-//                                        .startNow()
-//                                        .withSchedule(
-//                                             CronScheduleBuilder.cronSchedule("0 1 0 1/1 * ? *"))
-//                                        .build();
-//        scheduler.scheduleJob(job2, trigger2);       
-//        scheduler = new StdSchedulerFactory().getScheduler();
-//        scheduler.start();
-//        logger.warn("Start scheduler service");
+        JobDetail job2 = JobBuilder.newJob(JobService.class).build();
+        Trigger trigger2 = TriggerBuilder.newTrigger()
+                                       .startNow()
+                                        .withSchedule(
+                                             CronScheduleBuilder.cronSchedule("0 1 0 1/1 * ? *"))
+                                        .build();
+        scheduler.scheduleJob(job2, trigger2);       
+        scheduler = new StdSchedulerFactory().getScheduler();
+        scheduler.start();
+        logger.warn("Start scheduler service");
 //        
 //        JobDetail job3 = JobBuilder.newJob(JobServiceCalibration.class).build();
 //        Trigger trigger3 = TriggerBuilder.newTrigger()

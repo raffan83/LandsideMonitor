@@ -39,12 +39,11 @@ public class SendEmailBO implements Runnable {
 
 	public static void sendEmailReport() throws EmailException {
 
-		System.out.println("INVIO MAIL AVVIO SITEMA");
 		String[] destinatari=Costanti.DEST_MAIL_MAN.split(";");
 		for (String dest : destinatari) 
 		{
 			
-		
+		System.out.println("INVIO EMAIL AVVIO SITEMA A:"+dest);
 		// Create the email message
 		HtmlEmail email = new HtmlEmail();
 		email.setHostName(Costanti.HOST_NAME_MAIL);
@@ -219,7 +218,7 @@ public class SendEmailBO implements Runnable {
 						email.setSubject("Segnalazione ALLERTA sonda "+idSonda);
 						email.setFrom("genova@stisrl.com", "Segnalazione ALLERTA");
 					}
-					SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+					SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
 					email.setHtmlMsg("<html><h3>In data "+sdf.format(new Date())+" la sonda "+idSonda+" ha segnalato un "+labelAlarm+"</h3></html>");
 
