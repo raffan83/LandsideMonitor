@@ -1,6 +1,10 @@
 package it.sti.landsidemonitor.bo;
 
+import org.apache.log4j.Logger;
+
 public class Utility {
+	
+	final static Logger logger = Logger.getLogger(Utility.class);
 
 	public static Object getLabelStato(int stato) {
 
@@ -85,6 +89,30 @@ public class Utility {
 		{
 			return false;
 		}
+	}
+
+	public static boolean isAutomatiCalibration(double acc_X, double acc_Y, double acc_Z) {
+		
+		
+		
+		if( (acc_X>=2.4 && acc_X<=2.6) && (acc_Y>=0 && acc_Y<=0.19) && (acc_Z>=0 && acc_Z<=0.19) ) 
+		{
+			logger.warn("AUTOMATIC CALIBRATION AX["+acc_X+"] AY["+acc_Y+"] AZ["+acc_Z+"]");
+			return true;
+		}
+		
+		if( (acc_X>=0 && acc_X<=0.19) && (acc_Y>=2.4 && acc_Y<=2.6) && (acc_Z>=0 && acc_Z<=0.19) ) 
+		{
+			logger.warn("AUTOMATIC CALIBRATION AX["+acc_X+"] AY["+acc_Y+"] AZ["+acc_Z+"]");
+			return true;
+		}
+		if( (acc_X>=0 && acc_X<=0.19) && (acc_Y>=0 && acc_Y<=0.19) && (acc_Z>=2.4 && acc_Z<=2.6) ) 
+		{
+			logger.warn("AUTOMATIC CALIBRATION AX["+acc_X+"] AY["+acc_Y+"] AZ["+acc_Z+"]");
+			return true;
+		}
+		return false;
+	
 	}
 
 }

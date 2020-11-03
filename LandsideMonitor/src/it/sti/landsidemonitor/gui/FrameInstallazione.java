@@ -132,12 +132,12 @@ public class FrameInstallazione extends JFrame {
 
 			lab.setFont(new Font("Arial",Font.BOLD,15));
 			lab.setBounds(10, 10, 280, 30);
-			add(lab);
+		//	add(lab);
 
 			JLabel sonda = new JLabel("Sonda");
 			sonda.setFont(new Font("Arial",Font.BOLD,14));
 			sonda.setBounds(20, 50, 75, 30);
-			add(sonda);
+		//	add(sonda);
 
 			JComboBox<String> comboSonde = new JComboBox<String>();
 
@@ -148,13 +148,13 @@ public class FrameInstallazione extends JFrame {
 
 			comboSonde.setBounds(80, 50, 40, 25);
 			comboSonde.setFont(new Font("Arial",Font.BOLD,14));
-			add(comboSonde);
+		//	add(comboSonde);
 
 			JLabel lab_sign= new JLabel("Potenza segnale");
 
 			lab_sign.setFont(new Font("Arial",Font.BOLD,15));
 			lab_sign.setBounds(150, 50, 120, 25);
-			add(lab_sign);
+		//	add(lab_sign);
 
 			String[] data = new String[]{"10","11","12","13","14","15","16","17","18","19","20","21","22","23"};
 
@@ -162,13 +162,13 @@ public class FrameInstallazione extends JFrame {
 
 			comboSign.setBounds(280, 50, 50, 25);
 			comboSign.setFont(new Font("Arial",Font.BOLD,14));
-			add(comboSign);
+		//	add(comboSign);
 
 			JButton button = new JButton("Invia");
 			button.setIcon(new ImageIcon(FrameParametri.class.getResource("/image/continue.png")));
 			button.setFont(new Font("Arial", Font.BOLD, 14));
 			button.setBounds(360,44 , 120, 37);
-			add(button);
+		//	add(button);
 
 			button.addActionListener(new ActionListener() {
 
@@ -189,7 +189,7 @@ public class FrameInstallazione extends JFrame {
 			JButton buttonAgg = new JButton("Aggiorna");
 			buttonAgg.setIcon(new ImageIcon(FrameParametri.class.getResource("/image/update.png")));
 			buttonAgg.setFont(new Font("Arial", Font.BOLD, 14));
-			buttonAgg.setBounds(500,44 , 140, 37);
+			buttonAgg.setBounds(10,44 , 140, 37);
 			add(buttonAgg);
 
 			buttonAgg.addActionListener(new ActionListener() {

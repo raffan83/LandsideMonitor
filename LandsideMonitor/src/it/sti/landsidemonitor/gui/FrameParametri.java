@@ -22,7 +22,10 @@ import javax.swing.SwingConstants;
 
 import it.sti.landsidemonitor.bo.Core;
 import it.sti.landsidemonitor.bo.Costanti;
+import it.sti.landsidemonitor.bo.PortReader;
 import it.sti.landsidemonitor.dto.ParamDTO;
+import it.sti.landsidemonitor.dto.SensorDTO;
+import jssc.SerialPortException;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
@@ -77,14 +80,81 @@ public class FrameParametri extends JFrame {
 		JPanel panelMail = new JPanel();
 		panelMail.setBackground(Color.WHITE);
 		
+		JPanel panelSignal = new JPanel();
+		panelSignal.setBackground(Color.WHITE);
+		
 		tabbedPane.addTab("Parametri generali",panelMainParam);
 		
 		tabbedPane.addTab("Parametri Mail & SMS\r\n",panelMail);
+		
+		tabbedPane.addTab("Potenza segnale",panelSignal);
 		
 		setLocation(x, y);
 		panelMainParam.setLayout(new MigLayout("", "[pref!,grow][pref!,grow][grow][grow]", "[][9.00][30px:30px][:30px:30px][:30px:30px][grow][:20px:20px][grow]"));
 		
 		panelMail.setLayout(new MigLayout("", "[pref!,grow][pref!,grow][grow]", "[][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][][grow][]"));
+		
+		panelSignal.setLayout(null);
+		
+		JLabel lab= new JLabel("Impostazione livello potenza sonda");
+
+		lab.setFont(new Font("Arial",Font.BOLD,15));
+		lab.setBounds(10, 10, 280, 30);
+		panelSignal.add(lab);
+
+		JLabel sonda = new JLabel("Sonda");
+		sonda.setFont(new Font("Arial",Font.BOLD,14));
+		sonda.setBounds(20, 50, 75, 30);
+		panelSignal.add(sonda);
+
+		JComboBox<String> comboSonde = new JComboBox<String>();
+
+		for (SensorDTO sensorDTO : PortReader.listaSensori) {
+
+			comboSonde.addItem(sensorDTO.getIdentifier());
+		}
+
+		comboSonde.setBounds(80, 50, 40, 25);
+		comboSonde.setFont(new Font("Arial",Font.BOLD,14));
+		panelSignal.add(comboSonde);
+
+		JLabel lab_sign= new JLabel("Potenza segnale");
+
+		lab_sign.setFont(new Font("Arial",Font.BOLD,15));
+		lab_sign.setBounds(150, 50, 120, 25);
+		panelSignal.add(lab_sign);
+
+		String[] data = new String[]{"10","11","12","13","14","15","16","17","18","19","20","21","22","23"};
+
+		JComboBox<String> comboSign = new JComboBox<String>(data);
+
+		comboSign.setBounds(280, 50, 50, 25);
+		comboSign.setFont(new Font("Arial",Font.BOLD,14));
+		panelSignal.add(comboSign);
+
+		JButton button = new JButton("Invia");
+		button.setIcon(new ImageIcon(FrameParametri.class.getResource("/image/continue.png")));
+		button.setFont(new Font("Arial", Font.BOLD, 14));
+		button.setBounds(360,44 , 120, 37);
+		panelSignal.add(button);
+
+		button.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String sonda =comboSonde.getSelectedItem().toString();
+				String sign=comboSign.getSelectedItem().toString();
+
+				try {
+					PortReader.write("P"+sonda+sign);
+				} catch (SerialPortException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+
+		
 		
 		JLabel lblHostMail = new JLabel("HOST MAIL");
 		lblHostMail.setFont(new Font("Arial", Font.BOLD, 14));

@@ -4,6 +4,7 @@ package it.sti.landsidemonitor.executor;
 
 
 
+import java.net.URL;
 import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
@@ -38,6 +39,8 @@ public class Executor {
 	            	try
 	            	{
 	            	
+	            	final URL iconURL = this.getClass().getResource("/image/logo.png");
+	            		
 	            	Core.inizialize();
 	            	
 	            	final InitSplash fr= new InitSplash();
@@ -48,6 +51,12 @@ public class Executor {
 	           	    Thread.sleep(50);
 	           	        
 	            	MainFrame g1 = new MainFrame();
+	            	
+	            	ImageIcon img = new ImageIcon(iconURL);
+	            	g1.setIconImage(img.getImage());
+	            	
+	            	g1.setTitle("LMS - STI Sviluppo Tecnologie Industriali");
+	            	
 	            	g1.setResizable(false);
 	            	g1.setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
 	            	g1.setDefaultCloseOperation(3);

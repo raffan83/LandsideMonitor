@@ -379,10 +379,16 @@ public class PortReader implements SerialPortEventListener {
 			//	acc_Y=1.25;
 			//	acc_Z=1.25;
 				
+				/*Implementare esclusione per calibrazione (creare metrica)*/
+			
+				if(Utility.isAutomatiCalibration(acc_X,acc_Y,acc_Z)==false)
+				{
+				
 				/*SONDE APPARTENENTE AL GRUPPO A*/
 				if(sensor.getType().equals("A") && sensor.getStato()!=1 )
 				{
 
+					
 					if(sensor.getStato()!=1 && sensor.getStato()!=2) 
 					{
 						sensor.setStato(3);
@@ -490,15 +496,15 @@ public class PortReader implements SerialPortEventListener {
 				/*SONDE APPARTENENTE AL GRUPPO B*/
 				if(sensor.getType().equals("B") && sensor.getStato()!=1 )
 				{
-
 					if(sensor.getStato()!=1 && sensor.getStato()!=2) 
 					{
 						sensor.setStato(3);
 						mainP.cambiaStato(sensor.getId(), 3);
 						
 					}
+
 				}
-			
+			  }
 			}
 		}
 		
