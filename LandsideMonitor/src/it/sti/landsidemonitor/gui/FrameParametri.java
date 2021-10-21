@@ -83,11 +83,75 @@ public class FrameParametri extends JFrame {
 		JPanel panelSignal = new JPanel();
 		panelSignal.setBackground(Color.WHITE);
 		
+		JPanel panelAllarmi = new JPanel();
+		panelSignal.setBackground(Color.WHITE);
+		
 		tabbedPane.addTab("Parametri generali",panelMainParam);
 		
 		tabbedPane.addTab("Parametri Mail & SMS\r\n",panelMail);
 		
 		tabbedPane.addTab("Potenza segnale",panelSignal);
+		
+		tabbedPane.addTab("Allarmi",panelAllarmi);
+		
+		panelAllarmi.setLayout(null);
+		
+		JButton allarmeRosso= new JButton("ALLARME");
+		allarmeRosso.setFont(new Font("Arial", Font.BOLD, 14));
+		allarmeRosso.setBounds(10,10,100,35);
+		
+		allarmeRosso.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			try {
+				PortReader.write("Y");
+			} catch (SerialPortException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+				
+			}
+		});
+
+		JButton allarmeGiallo= new JButton("ALLERTA");
+		allarmeGiallo.setFont(new Font("Arial", Font.BOLD, 14));
+		allarmeGiallo.setBounds(10,55,100,35);
+		
+		allarmeGiallo.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			try {
+				PortReader.write("X");
+			} catch (SerialPortException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+				
+			}
+		});
+		
+		JButton stop= new JButton("STOP");
+		stop.setFont(new Font("Arial", Font.BOLD, 14));
+		stop.setBounds(10,100,100,35);
+		
+		stop.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			try {
+				PortReader.write("Z");
+			} catch (SerialPortException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+				
+			}
+		});
+		panelAllarmi.add(allarmeRosso);
+		panelAllarmi.add(allarmeGiallo);
+		panelAllarmi.add(stop);
 		
 		setLocation(x, y);
 		panelMainParam.setLayout(new MigLayout("", "[pref!,grow][pref!,grow][grow][grow]", "[][9.00][30px:30px][:30px:30px][:30px:30px][grow][:20px:20px][grow]"));
