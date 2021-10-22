@@ -113,7 +113,7 @@ public class Password extends JFrame  {
 	 */
 	private static boolean isPasswordCorrect(char[] input) {
 		boolean isCorrect = true;
-		char[] correctPassword = { '1', '2', '3', '4' };
+		char[] correctPassword = { 'l', 'm', 's', '2', '0', '2', '1', '!' };
 
 		if (input.length != correctPassword.length) {
 			isCorrect = false;
