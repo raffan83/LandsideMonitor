@@ -92,7 +92,7 @@ public class FrameParametri extends JFrame {
 		
 		tabbedPane.addTab("Potenza segnale",panelSignal);
 		
-		tabbedPane.addTab("Allarmi",panelAllarmi);
+	//	tabbedPane.addTab("Allarmi",panelAllarmi);
 		
 		panelAllarmi.setLayout(null);
 		

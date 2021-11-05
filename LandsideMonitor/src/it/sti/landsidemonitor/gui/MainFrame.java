@@ -41,7 +41,7 @@ public class MainFrame extends JFrame {
 	JMenuBar menuBar;
 	static PortReader pr=null;
 	JMenu menu;
-	JMenuItem it1,it2,it3,it4;
+	JMenuItem it1,it2,it3,it4,it5;
 	
 	final static Logger logger = Logger.getLogger(MainFrame.class);
 	
@@ -102,6 +102,7 @@ public class MainFrame extends JFrame {
 		  	it2= new JMenuItem("Sonde");
 		  	it3= new JMenuItem("Console");		  	
 		  	it4= new JMenuItem("Controllo Sonde");
+		  	it5= new JMenuItem("Allarmi");
 		  	
 		  
 		  	
@@ -112,6 +113,7 @@ public class MainFrame extends JFrame {
 		  	menu.add(it2);
 		  	menu.add(it3);
 		  	menu.add(it4);
+		  	menu.add(it5);
 		  	
 		  	setJMenuBar(menuBar);
 		  	
@@ -189,6 +191,22 @@ public class MainFrame extends JFrame {
 				}
 			});
 	
+			it5.addActionListener(new ActionListener() {
+				
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+				
+					try 
+					{
+					JFrame f=new FrameAllarmi();
+	            	f.setDefaultCloseOperation(1);
+	      	        f.setVisible(true);
+					}catch (Exception ex2) {
+						ex2.printStackTrace();
+					}
+				}
+			});
 			
 			
 		}catch (Exception e) {
