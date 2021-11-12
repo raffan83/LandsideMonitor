@@ -199,7 +199,7 @@ public class MainFrame extends JFrame {
 				
 					try 
 					{
-					JFrame f=new FrameAllarmi();
+					JFrame f=new PasswordAllarme(g);
 	            	f.setDefaultCloseOperation(1);
 	      	        f.setVisible(true);
 					}catch (Exception ex2) {
