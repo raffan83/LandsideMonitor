@@ -34,6 +34,10 @@ public class SendEmailBO implements Runnable {
 		{
 			return "<h3 style=\"color: orange\">ALLERTA</h3>";
 		}
+		if(tipoAllarme==3) 
+		{
+			return "<h3 style=\"color: orange\">PRE ALLERTA</h3>";
+		}
 		return null;
 	}
 
@@ -213,10 +217,15 @@ public class SendEmailBO implements Runnable {
 						email.setSubject("Segnalazione ALLARME sonda "+idSonda);
 						email.setFrom("genova@stisrl.com", "Segnalazione ALLARME");
 					}
-					else 
+					else if(tipoAllarme==2)
 					{
 						email.setSubject("Segnalazione ALLERTA sonda "+idSonda);
 						email.setFrom("genova@stisrl.com", "Segnalazione ALLERTA");
+					}
+					else 
+					{
+						email.setSubject("Segnalazione PRE ALLERTA sonda "+idSonda);
+						email.setFrom("genova@stisrl.com", "Segnalazione PRE ALLERTA");
 					}
 					SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 

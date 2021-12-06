@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.SwingUtilities;
 
+import it.sti.landsidemonitor.bo.PortReader;
 import net.miginfocom.swing.MigLayout;
 
 public class Password extends JFrame  {
@@ -28,7 +29,7 @@ public class Password extends JFrame  {
 
 	private JPasswordField passwordField;
 
-	public Password(JFrame f) {
+	public Password(JFrame f, int i, RasterPanel mainPanel, PortReader pr) {
 		//Use the default FlowLayout.
 	
 		
@@ -72,10 +73,16 @@ public class Password extends JFrame  {
 							            
 							            { 
 							            try 
-							            {	
+							            {	if(i==1) {
 							            	JFrame f=new FrameParametri();
 							            	f.setDefaultCloseOperation(1);
 							      	        f.setVisible(true);
+							      	        }else if(i==2) 
+							      	        {
+							      	      	JFrame f=new FrameSonde(mainPanel, pr);
+							            	f.setDefaultCloseOperation(1);
+							      	        f.setVisible(true);
+							      	        }
 							            }catch (Exception e) 
 							            {
 											e.printStackTrace();

@@ -134,7 +134,7 @@ public class MainFrame extends JFrame {
 				
 					try 
 					{
-					JFrame f=new Password(g);	
+					JFrame f=new Password(g,1,mainPanel,pr);	
 					f.setDefaultCloseOperation(1);
 	      	        f.setVisible(true);
 					}catch (Exception ex2) {
@@ -153,7 +153,7 @@ public class MainFrame extends JFrame {
 				
 					try 
 					{
-					JFrame f=new FrameSonde(mainPanel,pr);
+					JFrame f=new Password(g,2,mainPanel,pr);
 	            	f.setDefaultCloseOperation(1);
 	      	        f.setVisible(true);
 					}catch (Exception ex2) {

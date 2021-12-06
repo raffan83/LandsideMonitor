@@ -187,7 +187,7 @@ public class RasterPanel extends JPanel{
 	    	{
 	    		 g.fillOval(point.x, point.y,20, 20);
 	    		 g.setFont(new Font("Arial", Font.BOLD, 16)); 
-	    		 g.drawString("PRE ALLARME "+listaSensori.get(i).getIdentifier()+"("+listaSensori.get(i).getType()+")", point.x,point.y);
+	    		 g.drawString("PRE ALLERTA "+listaSensori.get(i).getIdentifier()+"("+listaSensori.get(i).getType()+")", point.x,point.y);
 	    		
 	    	}
 	    	else if(stato==2)
@@ -332,7 +332,7 @@ public class RasterPanel extends JPanel{
 				  {
 					Core.cambiaStato(idSonda, stato);  
 					
-					if(stato==1 || stato==2) 
+					if(stato==1 || stato==2 ||  stato==3) 
 						
 					{ 
 						String id=listaSensori.get(i).getIdentifier()+" (GR."+listaSensori.get(i).getType()+")";
