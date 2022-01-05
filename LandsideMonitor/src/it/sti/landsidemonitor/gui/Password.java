@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.swing.ImageIcon;
@@ -15,7 +16,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.SwingUtilities;
 
+import it.sti.landsidemonitor.bo.Core;
 import it.sti.landsidemonitor.bo.PortReader;
+import it.sti.landsidemonitor.dto.SensorDTO;
 import net.miginfocom.swing.MigLayout;
 
 public class Password extends JFrame  {
@@ -29,7 +32,7 @@ public class Password extends JFrame  {
 
 	private JPasswordField passwordField;
 
-	public Password(JFrame f, int i, RasterPanel mainPanel, PortReader pr) {
+	public Password(JFrame f, int i, RasterPanel mainPanel, PortReader pr, ArrayList<SensorDTO> listaSensori) {
 		//Use the default FlowLayout.
 	
 		
@@ -82,6 +85,11 @@ public class Password extends JFrame  {
 							      	      	JFrame f=new FrameSonde(mainPanel, pr);
 							            	f.setDefaultCloseOperation(1);
 							      	        f.setVisible(true);
+							      	        }else if(i==3) 
+							      	        {
+							      	        	JFrame f=new FrameInstallazione(listaSensori);
+							      	        	f.setDefaultCloseOperation(1);
+							     	      	    f.setVisible(true);
 							      	        }
 							            }catch (Exception e) 
 							            {

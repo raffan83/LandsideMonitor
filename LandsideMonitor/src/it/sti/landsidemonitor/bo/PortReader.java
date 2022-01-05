@@ -2,7 +2,6 @@ package it.sti.landsidemonitor.bo;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -25,7 +24,7 @@ import it.sti.landsidemonitor.gui.RasterPanel;
 import it.sti.landsidemonitor.scheduler.JobSchedulerAtTime;
 import it.sti.landsidemonitor.scheduler.JobSchedulerAtTimeRead;
 import it.sti.landsidemonitor.scheduler.JobService;
-import it.sti.landsidemonitor.scheduler.JobServiceCalibration;
+import it.sti.landsidemonitor.scheduler.JobServiceChekBattery;
 import jssc.SerialPort;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
@@ -115,18 +114,19 @@ public class PortReader implements SerialPortEventListener {
         scheduler = new StdSchedulerFactory().getScheduler();
         scheduler.start();
         logger.warn("Start scheduler service");
-//        
-//        JobDetail job3 = JobBuilder.newJob(JobServiceCalibration.class).build();
-//        Trigger trigger3 = TriggerBuilder.newTrigger()
-//                                        .startNow()
-//                                        .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(2).repeatForever())
-//                                        .build();
-//        
-//        scheduler.scheduleJob(job3, trigger3);       
-//        scheduler = new StdSchedulerFactory().getScheduler();
-//        scheduler.start();
-//        logger.warn("Start scheduler Calibration");
         
+        
+ /*       JobDetail job3 = JobBuilder.newJob(JobServiceChekBattery.class).build();
+        Trigger trigger3 = TriggerBuilder.newTrigger()
+                                        .startNow()
+                                        .withSchedule(CronScheduleBuilder.cronSchedule("0 0 23 * * ?"))
+                                        .build();
+        
+        scheduler.scheduleJob(job3, trigger3);       
+        scheduler = new StdSchedulerFactory().getScheduler();
+        scheduler.start();
+        logger.warn("Start scheduler Controllo Tensione");
+   */     
 	}
 
 	public static void checkHealthSensor(ArrayList<SensorDTO> _listaSensori) throws SerialPortException {
@@ -198,6 +198,21 @@ public class PortReader implements SerialPortEventListener {
 								sensorDTO.setPitch(pitch);
 								
 								sensorDTO.setRoll(roll);
+								
+								if(levBatt!=null && !levBatt.equals("")) 
+								{
+									double tension=Double.parseDouble(levBatt);
+											{
+												if(tension<=Costanti.SOGLIA_BATTERIA) 
+												{
+													System.out.println("Esclusione sonda:"+sensorDTO.getIdentifier());
+													logger.warn("Esclusione sonda:"+sensorDTO.getIdentifier()+" - low battery");
+													listaSensori.remove(sensorDTO);
+												}
+											}
+								}
+								
+								
 								
 								if(sensorDTO.getStato()!=1 || sensorDTO.getStato()!=2) 
 								{

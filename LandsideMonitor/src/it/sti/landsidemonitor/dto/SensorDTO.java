@@ -10,6 +10,7 @@ public class SensorDTO {
 	private String identifier;
 	private String type;
 	private Point point;
+	private boolean active;
 	
 	private String bering="N/D";
 	private String pitch="N/D";
@@ -119,7 +120,12 @@ public class SensorDTO {
 	public void setSignal(String signal) {
 		this.signal = signal;
 	}
+	public boolean isActive() {
+		return active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 
 	
-
 }

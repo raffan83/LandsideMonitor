@@ -14,6 +14,7 @@ public class Costanti {
 	public static final String COD_EVE_007="ALLARME SUPERAMENTO DURATA 3 PUNTI GR. B";
 	public static final String COD_EVE_008="ALLARME SUPERAMENTO DURATA 2 PUNTI GR. B";
 	public static final String COD_EVE_009="ALLARME SUPERAMENTO DURATA 1 PUNTI GR. B";
+	public static final double SOGLIA_BATTERIA = 4.5;
 	
 	
 	public static String PORT="";

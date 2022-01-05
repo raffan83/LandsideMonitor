@@ -22,7 +22,10 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.border.LineBorder;
 
+import org.apache.log4j.Logger;
+
 import it.sti.landsidemonitor.bo.Core;
+import it.sti.landsidemonitor.bo.Costanti;
 import it.sti.landsidemonitor.bo.PortReader;
 import it.sti.landsidemonitor.bo.SendEmailBO;
 import it.sti.landsidemonitor.dto.SensorDTO;
@@ -41,6 +44,8 @@ public class RasterPanel extends JPanel{
 	  static JFrame myFrame=null;
 	  private ArrayList<SensorDTO> listaSensori;
 	  public static JButton reset;
+	  
+	  final static Logger logger = Logger.getLogger(RasterPanel.class);
 	  
 	  public RasterPanel(URL imageURL, JFrame g, ArrayList<SensorDTO> _listaSensori){
 	    super(true); //crea un JPanel con doubleBuffered true
@@ -84,6 +89,7 @@ public class RasterPanel extends JPanel{
 			progress.setVisible(true);
 			
 			
+			listaSensori=Core.getListaSensori();
 			
 			for (int i=0;i<listaSensori.size();i++) 
 			{	
@@ -117,6 +123,22 @@ public class RasterPanel extends JPanel{
 							msgCalibration=message;
 							cambiaStato(Integer.parseInt(idSonda), 0);
 		                 	cambiaStatoOriginale(Integer.parseInt(idSonda), 0);
+		                 	
+		                 	/*Esclusione sonda*/
+		                 	String levBatt=message.split(",")[1];
+							if(levBatt!=null && !levBatt.equals("")) 
+							{
+								double tension=Double.parseDouble(levBatt);
+										{
+											if(tension<=3.0) 
+											{
+												System.out.println("Esclusione sonda da ciclo:"+listaSensori.get(i).getIdentifier());
+												logger.warn("Esclusione sonda da ciclo:"+listaSensori.get(i).getIdentifier()+" - low battery");
+												listaSensori.remove(i);
+											}
+										}
+							}
+		                 	
 							break;
 						}
 					
@@ -142,6 +164,8 @@ public class RasterPanel extends JPanel{
 				}	
 					
 				}
+			MainFrame.listaSensori=listaSensori;
+			PortReader.listaSensori=listaSensori;
 			PortReader.puntiAttiviB= new HashMap<SensorDTO, Long>();
           	PortReader.sogliaAllerta= new HashMap<String, SensorDTO>();
           	((JFrameProgress) progress).close();
