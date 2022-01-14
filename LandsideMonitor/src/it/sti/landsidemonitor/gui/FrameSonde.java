@@ -204,7 +204,7 @@ public class FrameSonde extends JFrame implements ActionListener{
 			{		
 				String idSonda = modelSonde.getValueAt(i, 7).toString();
             	 
-               	 mainP.cambiaStato(Integer.parseInt(idSonda), 0);
+               	 mainP.cambiaStato(Integer.parseInt(idSonda), 0,0);
                	 mainP.cambiaStatoOriginale(Integer.parseInt(idSonda), 0);
                	 
                	 modelSonde.setValueAt("ATTIVA", i, 3);
@@ -411,7 +411,7 @@ public class FrameSonde extends JFrame implements ActionListener{
                     
                 	 String idSonda = modelSonde.getValueAt(rowIndex, 7).toString();
                 	 
-                	 mainP.cambiaStato(Integer.parseInt(idSonda), 0);
+                	 mainP.cambiaStato(Integer.parseInt(idSonda), 0,0);
                 	 mainP.cambiaStatoOriginale(Integer.parseInt(idSonda), 0);
                 	 
                 	 try {

@@ -311,6 +311,7 @@ public class MainDAO {
 				param.setDEST_MAIL_MAN(rs.getString("DEST_MAIL_MAN"));
 				param.setFLAG_SMS(rs.getInt("FLAG_SMS"));
 				param.setNUMBER_SMS(rs.getString("SMS_NUMBER"));
+				param.setLIMITE_TENS_ESE(rs.getDouble("LIMITE_TENS_ESE"));
 			}
 			
 			
@@ -340,7 +341,7 @@ public class MainDAO {
 					+ "LIMITE_MIN_P2=?,LIMITE_MAX_P2=?,ITERAZIONI_P2=?,"
 					+ "LIMITE_MIN_P3=?,LIMITE_MAX_P3=?,ITERAZIONI_P3=?,"
 					+ "PUNTI_DET_5_SEC=?,PUNTI_DET_9_SEC=?,PUNTI_DET_12_SEC=?,PUNTI_DET_15_SEC=?,"
-					+ "HOST_NAME_MAIL=?,USER_NAME_MAIL=?,PASSWORD_MAIL=?,SMTP_AUTH=?,PORT_MAIL=?,SSL=?,DEST_MAIL_PRE=?,DEST_MAIL_ALARM=?,DEST_MAIL_MAN=?,FLAG_SMS=?,SMS_NUMBER=? WHERE id=1");
+					+ "HOST_NAME_MAIL=?,USER_NAME_MAIL=?,PASSWORD_MAIL=?,SMTP_AUTH=?,PORT_MAIL=?,SSL=?,DEST_MAIL_PRE=?,DEST_MAIL_ALARM=?,DEST_MAIL_MAN=?,FLAG_SMS=?,SMS_NUMBER=?,LIMITE_TENS_ESE=? WHERE id=1");
 			
 			pst.setString(1, param.getPORT());
 			pst.setInt(2,param.getFRAMERATE());
@@ -374,6 +375,7 @@ public class MainDAO {
 			pst.setString(25, param.getDEST_MAIL_MAN());
 			pst.setInt(26, param.getFLAG_SMS());
 			pst.setString(27, param.getNUMBER_SMS());
+			pst.setDouble(28, param.getLIMITE_TENS_ESE());
 			
 			pst.execute();
 			

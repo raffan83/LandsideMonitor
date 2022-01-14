@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -14,9 +16,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import it.sti.landsidemonitor.bo.Core;
 import it.sti.landsidemonitor.bo.PortReader;
 import it.sti.landsidemonitor.dto.SensorDTO;
 import net.miginfocom.swing.MigLayout;
@@ -30,7 +32,7 @@ public class Password extends JFrame  {
 
 	private static String OK = "ok";
 
-	private JPasswordField passwordField;
+	private static JPasswordField passwordField;
 
 	public Password(JFrame f, int i, RasterPanel mainPanel, PortReader pr, ArrayList<SensorDTO> listaSensori) {
 		//Use the default FlowLayout.
@@ -50,7 +52,7 @@ public class Password extends JFrame  {
 		passwordField.setFont(new Font("Arial", Font.PLAIN, 14));
 		passwordField.setActionCommand(OK);
 
-
+		passwordField.requestFocusInWindow();
 	
 
 		getContentPane().add(passwordField, "cell 0 0");
@@ -116,11 +118,40 @@ public class Password extends JFrame  {
 							}
 						});
 
+						 passwordField.addKeyListener(new KeyAdapter() {
+						      public void keyReleased(KeyEvent e) {
+						   //     JTextField textField = (JTextField) e.getSource();
+						    //    String text = textField.getText();
+						     //   textField.setText(text.toUpperCase());
+						       
+						    	     if(e.getKeyChar() == KeyEvent.VK_ENTER){
+
+					                      btnNewButton.doClick();
+					                       
+					                    }
+						    	     if(e.getKeyChar() == KeyEvent.VK_ESCAPE){
+
+					                      dispose();
+					                       
+					                    }
+						      }
+
+						      public void keyTyped(KeyEvent e) {
+						      }
+
+						      public void keyPressed(KeyEvent e) {
+						      }
+						    });
+						  
 	}
 	void resetFocus() {
 		passwordField.requestFocusInWindow();
 	}
 
+	public static  void setFocus() 
+	{
+		passwordField.requestFocusInWindow();
+	}
 	/**
 	 * Checks the passed-in array against the correct password.
 	 * After this method returns, you should invoke eraseArray

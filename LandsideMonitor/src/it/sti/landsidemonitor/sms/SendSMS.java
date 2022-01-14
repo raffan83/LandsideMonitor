@@ -31,7 +31,6 @@ public class SendSMS implements Runnable{
 	
 	public void run() {
     	
-       System.out.println("Inside");
   
         String username ="ncsnetowk";
         String password = "Ncsnetwork2020";

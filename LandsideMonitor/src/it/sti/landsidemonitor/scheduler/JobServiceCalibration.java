@@ -63,7 +63,7 @@ public class JobServiceCalibration  implements Job{
 								System.out.println("Mancata risposta: "+listaSensori.get(i).getIdentifier()+" invio mail");
 
 								listaSensoriAssenti.add(listaSensori.get(i));
-								PortReader.cambiaStato(listaSensori.get(i), 5);
+								PortReader.cambiaStato(listaSensori.get(i).getId(), 5);
 
 							}
 							break;

@@ -34,6 +34,7 @@ public class ParamDTO {
 	private  String DEST_MAIL_MAN;
 	private int FLAG_SMS;
 	private String NUMBER_SMS;
+	private double LIMITE_TENS_ESE;
 	
 	
 	public String getDEST_MAIL_PRE() {
@@ -202,8 +203,11 @@ public class ParamDTO {
 	public void setNUMBER_SMS(String nUMBER_SMS) {
 		NUMBER_SMS = nUMBER_SMS;
 	}
-	
-	
-	
+	public double getLIMITE_TENS_ESE() {
+		return LIMITE_TENS_ESE;
+	}
+	public void setLIMITE_TENS_ESE(double lIMITE_TENS_ESE) {
+		LIMITE_TENS_ESE = lIMITE_TENS_ESE;
+	}
 
 }

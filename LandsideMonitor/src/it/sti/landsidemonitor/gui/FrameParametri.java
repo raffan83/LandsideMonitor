@@ -61,6 +61,7 @@ public class FrameParametri extends JFrame {
 	private JTextField textField_det_15_sec;
 	private JTextField textField_destinatari_manutenzione;
 	private JTextField textField_lista_sms;
+	private JTextField textField_lte;
 
 	public FrameParametri() throws SQLException 
 	{
@@ -154,7 +155,7 @@ public class FrameParametri extends JFrame {
 		panelAllarmi.add(stop);
 		
 		setLocation(x, y);
-		panelMainParam.setLayout(new MigLayout("", "[pref!,grow][pref!,grow][grow][grow]", "[][9.00][30px:30px][:30px:30px][:30px:30px][grow][:20px:20px][grow]"));
+		panelMainParam.setLayout(new MigLayout("", "[pref!,grow][pref!,grow][grow][grow]", "[][9.00][30px:30px][:30px:30px][][:30px:30px][grow][:20px:20px][grow]"));
 		
 		panelMail.setLayout(new MigLayout("", "[pref!,grow][pref!,grow][grow]", "[][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][grow][][grow][]"));
 		
@@ -190,7 +191,7 @@ public class FrameParametri extends JFrame {
 
 		String[] data = new String[]{"10","11","12","13","14","15","16","17","18","19","20","21","22","23"};
 
-		JComboBox<String> comboSign = new JComboBox<String>(data);
+		JComboBox<String> comboSign = new JComboBox<String>(/*data*/);
 
 		comboSign.setBounds(280, 50, 50, 25);
 		comboSign.setFont(new Font("Arial",Font.BOLD,14));
@@ -301,10 +302,27 @@ public class FrameParametri extends JFrame {
 		textField_1.setColumns(10);
 		panelMainParam.add(textField_1, "cell 1 3,alignx left");
 		
+		JLabel lblDebug = new JLabel("DEBUG");
+		lblDebug.setFont(new Font("Arial", Font.BOLD, 14));
+		panelMainParam.add(lblDebug, "cell 0 4,alignx trailing");
+		
+		JComboBox comboBox = new JComboBox(new String[] {"SI","NO"});
+		panelMainParam.add(comboBox, "cell 1 4,alignx left");
+		
+		JLabel lblLimiteTensioneEsercizio = new JLabel("LTE");
+		lblLimiteTensioneEsercizio.setFont(new Font("Arial", Font.BOLD, 14));
+		panelMainParam.add(lblLimiteTensioneEsercizio, "cell 0 5,alignx trailing");
+		
+		textField_lte = new JTextField();
+		textField_lte.setText("");
+		textField_lte.setColumns(10);
+		panelMainParam.add(textField_lte, "cell 1 5,growx");
+		textField_lte.setText(""+Costanti.SOGLIA_BATTERIA);
+		
 		JPanel panel_rocc_a = new JPanel();
 		panel_rocc_a.setBorder(new TitledBorder(new LineBorder(new Color(255, 0, 0), 2, true), "Parametri sonde tipo roccioso (Gruppo A)", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(255, 0, 0)));
 		panel_rocc_a.setBackground(Color.WHITE);
-		panelMainParam.add(panel_rocc_a, "cell 0 5 4 1,grow");
+		panelMainParam.add(panel_rocc_a, "cell 0 6 4 1,grow");
 		panel_rocc_a.setLayout(new MigLayout("", "[grow][grow][grow][grow]", "[grow][grow][grow]"));
 		
 		JLabel lblLimiteAllarme = new JLabel("RANGE ALLERTA 1*");
@@ -436,17 +454,10 @@ public class FrameParametri extends JFrame {
 		textField_iter_p3.setColumns(10);
 		textField_iter_p3.setText(""+Costanti.TEMPO_ALLERTA_3/1000);
 		
-		JLabel lblDebug = new JLabel("DEBUG");
-		lblDebug.setFont(new Font("Arial", Font.BOLD, 14));
-		panelMainParam.add(lblDebug, "cell 0 4,alignx trailing");
-		
-		JComboBox comboBox = new JComboBox(new String[] {"SI","NO"});
-		panelMainParam.add(comboBox, "cell 1 4,alignx left");
-		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(new LineBorder(new Color(255, 0, 0), 2, true), "Parametri sonde detritiche (Gruppo B)", TitledBorder.LEADING, TitledBorder.TOP, null, Color.RED));
 		panel.setBackground(new Color(255, 255, 255));
-		panelMainParam.add(panel, "cell 0 7 4 1,grow");
+		panelMainParam.add(panel, "cell 0 8 4 1,grow");
 		panel.setLayout(new MigLayout("", "[131px][][][][]", "[17px,grow][grow][grow][grow]"));
 		
 		JLabel lblNPuntiAllarme = new JLabel("N\u00B0 PUNTI ALLARME MOVIMENTO 5 SECONDI");
@@ -784,6 +795,16 @@ public class FrameParametri extends JFrame {
 					textField_det_15_sec.setBackground(Color.white);
 				}
 				
+				if(textField_lte.getText().length()==0 || controllaNumero(textField_lte.getText())==false) 
+				{
+					textField_lte.setBackground(Color.red);
+					save =false;
+				}
+				else 
+				{
+					textField_lte.setBackground(Color.white);
+				}
+				
 				if(save) 
 				{
 					ParamDTO param = new ParamDTO();
@@ -824,7 +845,7 @@ public class FrameParametri extends JFrame {
 					param.setDEST_MAIL_PRE(textField_destinatari_pre.getText());
 					param.setDEST_MAIL_ALARM(textField_destinatari_alarm.getText());
 					param.setDEST_MAIL_MAN(textField_destinatari_manutenzione.getText());
-					
+					param.setLIMITE_TENS_ESE(Double.parseDouble(textField_lte.getText()));
 					if(chckbxInvioSms.isSelected()) 
 					{
 						param.setFLAG_SMS(1);

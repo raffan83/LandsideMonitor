@@ -99,7 +99,7 @@ public class RasterPanel extends JPanel{
 				int pr=(100/listaSensori.size())*(i+1);
 				((JFrameProgress) progress).setMessage("Calibrazione sonda "+listaSensori.get(i).getIdentifier(), pr);
               
-				cambiaStato(Integer.parseInt(idSonda), 0);
+				cambiaStato(Integer.parseInt(idSonda), 0,0);
                 cambiaStatoOriginale(Integer.parseInt(idSonda), 0);
 
                		
@@ -121,7 +121,7 @@ public class RasterPanel extends JPanel{
 						{
 							System.out.println("MGR RESET "+message);
 							msgCalibration=message;
-							cambiaStato(Integer.parseInt(idSonda), 0);
+							cambiaStato(Integer.parseInt(idSonda), 0,0);
 		                 	cambiaStatoOriginale(Integer.parseInt(idSonda), 0);
 		                 	
 		                 	/*Esclusione sonda*/
@@ -130,11 +130,13 @@ public class RasterPanel extends JPanel{
 							{
 								double tension=Double.parseDouble(levBatt);
 										{
-											if(tension<=3.0) 
+											if(tension<=/*Costanti.SOGLIA_BATTERIA*/3) 
 											{
 												System.out.println("Esclusione sonda da ciclo:"+listaSensori.get(i).getIdentifier());
 												logger.warn("Esclusione sonda da ciclo:"+listaSensori.get(i).getIdentifier()+" - low battery");
-												listaSensori.remove(i);
+												listaSensori.get(i).setIdentifier(listaSensori.get(i).getIdentifier()+"_");
+												cambiaStato(listaSensori.get(i).getId(), 5,5);
+												cambiaStatoOriginale(listaSensori.get(i).getId(), 5);
 											}
 										}
 							}
@@ -146,7 +148,7 @@ public class RasterPanel extends JPanel{
 					{
 						if(msgCalibration.equals(""))
 						{
-							cambiaStato(Integer.parseInt(idSonda), 5);
+							cambiaStato(Integer.parseInt(idSonda), 5,5);
 		                 	cambiaStatoOriginale(Integer.parseInt(idSonda), 5);
 						}
 						numero_tentativi++;
@@ -194,45 +196,45 @@ public class RasterPanel extends JPanel{
 	
 	    g.drawImage(img, 0, 0, myFrame.getWidth(), myFrame.getHeight()-40,this);
 	  
-	    for (int i=0;i<listaSensori.size();i++) {
+	    for (int i=0;i<MainFrame.listaSensori.size();i++) {
 	    	
-	    	int stato =listaSensori.get(i).getStato();
+	    	int stato =MainFrame.listaSensori.get(i).getStato();
 	    	
-	    	Point point=listaSensori.get(i).getPoint();
+	    	Point point=MainFrame.listaSensori.get(i).getPoint();
 	    	g.setColor(getStato(stato));
 	    	if(stato==4)
 	    	{
 	    		 g.fillOval(point.x, point.y,20, 20);
 	    		 g.setFont(new Font("Arial", Font.BOLD, 16)); 
-	    		 g.drawString("NON DEFINITO "+listaSensori.get(i).getIdentifier()+"("+listaSensori.get(i).getType()+")", point.x,point.y);
+	    		 g.drawString("NON DEFINITO "+MainFrame.listaSensori.get(i).getIdentifier()+"("+MainFrame.listaSensori.get(i).getType()+")", point.x,point.y);
 	    		
 	    	}
 	    	else if(stato==3)
 	    	{
 	    		 g.fillOval(point.x, point.y,20, 20);
 	    		 g.setFont(new Font("Arial", Font.BOLD, 16)); 
-	    		 g.drawString("PRE ALLERTA "+listaSensori.get(i).getIdentifier()+"("+listaSensori.get(i).getType()+")", point.x,point.y);
+	    		 g.drawString("PRE ALLERTA "+MainFrame.listaSensori.get(i).getIdentifier()+"("+MainFrame.listaSensori.get(i).getType()+")", point.x,point.y);
 	    		
 	    	}
 	    	else if(stato==2)
 	    	{
 	    		 g.fillOval(point.x, point.y,20, 20);
 	    		 g.setFont(new Font("Arial", Font.BOLD, 16)); 
-	    		 g.drawString("ALLERTA "+listaSensori.get(i).getIdentifier()+"("+listaSensori.get(i).getType()+")", point.x,point.y);
+	    		 g.drawString("ALLERTA "+MainFrame.listaSensori.get(i).getIdentifier()+"("+MainFrame.listaSensori.get(i).getType()+")", point.x,point.y);
 	    		
 	    	}
 	    	else if(stato==1)
 	    	{
 	    		 g.fillOval(point.x, point.y,20, 20);
 	    		 g.setFont(new Font("Arial", Font.BOLD, 16));
-	    		 g.drawString("ALLARME "+listaSensori.get(i).getIdentifier()+"("+listaSensori.get(i).getType()+")", point.x,point.y);
+	    		 g.drawString("ALLARME "+MainFrame.listaSensori.get(i).getIdentifier()+"("+MainFrame.listaSensori.get(i).getType()+")", point.x,point.y);
 	    		  
 	    	}
 	    	else 
 	    	{
 	    		g.fillOval(point.x, point.y,20, 20);
 	    		g.setFont(new Font("Arial", Font.BOLD,16));
-			    g.drawString(""+listaSensori.get(i).getIdentifier()+"("+listaSensori.get(i).getType()+")", point.x,point.y);
+			    g.drawString(""+MainFrame.listaSensori.get(i).getIdentifier()+"("+MainFrame.listaSensori.get(i).getType()+")", point.x,point.y);
 			   
 	    	}
 		    
@@ -345,7 +347,9 @@ public class RasterPanel extends JPanel{
 	}
 
 
-	public void cambiaStato(int idSonda , int stato) {
+	public void cambiaStato(int idSonda , int stato, int statoOriginale) {
+		
+		System.out.println("[CAMBIO STATO RASTERPANEL] ["+ idSonda+"] - STATO["+stato+"]"+ " - STATO ORIGINALE["+statoOriginale+"]");
 		
 		 for (int i = 0; i < listaSensori.size(); i++) 
 		  {
@@ -358,7 +362,10 @@ public class RasterPanel extends JPanel{
 					
 					if(stato==1 || stato==2 ||  stato==3) 
 						
-					{ 
+					{
+						listaSensori.get(i).setStatoOriginale(stato);
+						if(stato!=statoOriginale) 
+						{
 						String id=listaSensori.get(i).getIdentifier()+" (GR."+listaSensori.get(i).getType()+")";
 						
 						SendEmailBO mail = new SendEmailBO(id, stato,1);
@@ -368,6 +375,7 @@ public class RasterPanel extends JPanel{
 						new Thread(sms).start();
 						
 						PortReader.alarmDuration=System.currentTimeMillis();
+						}
 					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block

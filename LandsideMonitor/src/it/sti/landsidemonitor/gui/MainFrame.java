@@ -137,6 +137,7 @@ public class MainFrame extends JFrame {
 					JFrame f=new Password(g,1,mainPanel,pr,listaSensori);	
 					f.setDefaultCloseOperation(1);
 	      	        f.setVisible(true);
+	      	      Password.setFocus();
 					}catch (Exception ex2) {
 						ex2.printStackTrace();
 					}
@@ -156,6 +157,7 @@ public class MainFrame extends JFrame {
 					JFrame f=new Password(g,2,mainPanel,pr,listaSensori);
 	            	f.setDefaultCloseOperation(1);
 	      	        f.setVisible(true);
+	      	      Password.setFocus();
 					}catch (Exception ex2) {
 						ex2.printStackTrace();
 					}
@@ -171,6 +173,7 @@ public class MainFrame extends JFrame {
 					JFrame f=new FrameConsole(pr);
 	            	f.setDefaultCloseOperation(1);
 	      	        f.setVisible(true);
+	      	       
 				}
 			});
 			
@@ -184,7 +187,7 @@ public class MainFrame extends JFrame {
 						JFrame f=new Password(g,3,mainPanel,pr,PortReader.getListaSonde());
 		            	f.setDefaultCloseOperation(1);
 		      	        f.setVisible(true);
-		      	        
+		      	        Password.setFocus();
 				//	JFrame f=new FrameInstallazione(listaSensori);
 	           // 	f.setDefaultCloseOperation(1);
 	      	   //     f.setVisible(true);

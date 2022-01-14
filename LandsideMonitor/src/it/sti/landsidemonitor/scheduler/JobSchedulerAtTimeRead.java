@@ -87,7 +87,7 @@ public class JobSchedulerAtTimeRead implements Job{
 				 {
 					 if(sensorDTO.getStato()!=1 ) 
 						{
-						 PortReader.cambiaStato(sensorDTO, 1);
+						 PortReader.cambiaStato(sensorDTO.getId(), 1);
 						}
 				     logger.warn("Cambio Stato ALLARME sonda: "+sensorDTO.getIdentifier());
 				     Core.registraEvento(sensorDTO.getIdentifier(),"006",1,0,0,0);
@@ -121,7 +121,7 @@ public class JobSchedulerAtTimeRead implements Job{
 				 {
 					 if(sensorDTO.getStato()!=1 && sensorDTO.getStato()!=2) 
 					 {
-						 PortReader.cambiaStato(sensorDTO, 2);
+						 PortReader.cambiaStato(sensorDTO.getId(), 2);
 						 logger.warn("Cambio Stato ALLERTA sonda: "+sensorDTO.getIdentifier());
 					     Core.registraEvento(sensorDTO.getIdentifier(),"007",2,0,0,0);
 					 }
@@ -155,7 +155,7 @@ public class JobSchedulerAtTimeRead implements Job{
 				 {
 					 if(sensorDTO.getStato()!=1 && sensorDTO.getStato()!=2)
 					 {
-						 PortReader.cambiaStato(sensorDTO, 2);
+						 PortReader.cambiaStato(sensorDTO.getId(), 2);
 						 logger.warn("Cambio Stato ALLERTA sonda: "+sensorDTO.getIdentifier());
 					     Core.registraEvento(sensorDTO.getIdentifier(),"008",2,0,0,0);
 					 }
@@ -191,7 +191,7 @@ public class JobSchedulerAtTimeRead implements Job{
 				 {
 					 if(sensorDTO.getStato()!=1 && sensorDTO.getStato()!=2) 
 					 {
-						 PortReader.cambiaStato(sensorDTO, 2);
+						 PortReader.cambiaStato(sensorDTO.getId(), 2);
 						 logger.warn("Cambio Stato ALLERTA sonda: "+sensorDTO.getIdentifier());
 						 Core.registraEvento(sensorDTO.getIdentifier(),"009",2,0,0,0);
 					 }

@@ -25,6 +25,7 @@ import it.sti.landsidemonitor.scheduler.JobSchedulerAtTime;
 import it.sti.landsidemonitor.scheduler.JobSchedulerAtTimeRead;
 import it.sti.landsidemonitor.scheduler.JobService;
 import it.sti.landsidemonitor.scheduler.JobServiceChekBattery;
+import it.sti.landsidemonitor.sms.SendSMS;
 import jssc.SerialPort;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
@@ -177,6 +178,7 @@ public class PortReader implements SerialPortEventListener {
 							read=false;
 							msg=playload;
 							playload="";
+							
 							if(msg.startsWith("<CL-"+sensorDTO.getIdentifier()) && sensorDTO.getStato()!=1)
 							{
 
@@ -207,16 +209,19 @@ public class PortReader implements SerialPortEventListener {
 												{
 													System.out.println("Esclusione sonda:"+sensorDTO.getIdentifier());
 													logger.warn("Esclusione sonda:"+sensorDTO.getIdentifier()+" - low battery");
-													listaSensori.remove(sensorDTO);
+													//listaSensori.remove(sensorDTO);
+													sensorDTO.setIdentifier(sensorDTO.getIdentifier()+"_");
+													cambiaStato(sensorDTO.getId(), 5);
+													cambiaStatoOriginale(sensorDTO.getId(), 5);
 												}
 											}
 								}
 								
 								
 								
-								if(sensorDTO.getStato()!=1 || sensorDTO.getStato()!=2) 
+								if(sensorDTO.getStato()!=1 && sensorDTO.getStato()!=2 && sensorDTO.getStato()!=5) 
 								{
-									mainP.cambiaStato(sensorDTO.getId(), 0);
+									mainP.cambiaStato(sensorDTO.getId(), 0,sensorDTO.getStatoOriginale());
 									sensorDTO.setStato(0);
 									flagCalibrazione=true;
 								}
@@ -243,7 +248,7 @@ public class PortReader implements SerialPortEventListener {
 					numero_tentativi++;
 					if(numero_tentativi==3) 
 					{
-						mainP.cambiaStato(sensorDTO.getId(), 5);
+						mainP.cambiaStato(sensorDTO.getId(), 5,sensorDTO.getStatoOriginale());
 						sensorDTO.setStato(5);
 						break;
 					}
@@ -407,7 +412,7 @@ public class PortReader implements SerialPortEventListener {
 					if(sensor.getStato()!=1 && sensor.getStato()!=2) 
 					{
 						sensor.setStato(3);
-						mainP.cambiaStato(sensor.getId(), 3);
+						mainP.cambiaStato(sensor.getId(), 3,sensor.getStatoOriginale());
 						
 					}
 					
@@ -421,7 +426,7 @@ public class PortReader implements SerialPortEventListener {
 						sogliaAllerta.put(sensor.getIdentifier(), sensor);
 						if(sensor.getStato()!=1 && sensor.getStato()!=2) 
 						{	
-							mainP.cambiaStato(sensor.getId(), 2);
+							mainP.cambiaStato(sensor.getId(), 2,sensor.getStatoOriginale());
 							sensor.setStato(2);
 						}
 					}
@@ -433,7 +438,7 @@ public class PortReader implements SerialPortEventListener {
 						{
 							if(sensor.getStato()!=1 && sensor.getStato()!=2) 
 							{
-								mainP.cambiaStato(sensor.getId(), 2);
+								mainP.cambiaStato(sensor.getId(), 2,sensor.getStatoOriginale());
 								sensor.setStato(2);
 							}
 							sogliaAllerta.put(sensor.getIdentifier(),sensor);							
@@ -452,7 +457,7 @@ public class PortReader implements SerialPortEventListener {
 						{
 							if(sensor.getStato()!=1 && sensor.getStato()!=2) 
 							{
-								mainP.cambiaStato(sensor.getId(), 2);
+								mainP.cambiaStato(sensor.getId(), 2,sensor.getStatoOriginale());
 								sensor.setStato(2);
 							}
 							sogliaAllerta.put(sensor.getIdentifier(), sensor);
@@ -470,7 +475,7 @@ public class PortReader implements SerialPortEventListener {
 						{
 							if(sensor.getStato()!=1 && sensor.getStato()!=2) 
 							{
-								mainP.cambiaStato(sensor.getId(), 2);
+								mainP.cambiaStato(sensor.getId(), 2,sensor.getStatoOriginale());
 								sensor.setStato(2);
 							}
 							sogliaAllerta.put(sensor.getIdentifier(), sensor);
@@ -497,7 +502,7 @@ public class PortReader implements SerialPortEventListener {
 						       
 						       if(sensor.getStato()!=1) 
 						       {
-							       mainP.cambiaStato(s.getId(), 1);
+							       mainP.cambiaStato(s.getId(), 1,sensor.getStatoOriginale());
 								   s.setStato(1);
 						       }
 							   Core.registraEvento(s.getIdentifier(),"005",1,acc_X,acc_Y,acc_Z);
@@ -514,7 +519,7 @@ public class PortReader implements SerialPortEventListener {
 					if(sensor.getStato()!=1 && sensor.getStato()!=2) 
 					{
 						sensor.setStato(3);
-						mainP.cambiaStato(sensor.getId(), 3);
+						mainP.cambiaStato(sensor.getId(), 3,sensor.getStatoOriginale());
 						
 					}
 
@@ -644,10 +649,54 @@ public class PortReader implements SerialPortEventListener {
 			return msg;
 		}
 	}
-	public static void cambiaStato(SensorDTO s, int idStato) 
-	{
-		  mainP.cambiaStato(s.getId(), idStato);
-		  s.setStato(idStato);
+	public static void cambiaStato(int idSonda , int stato) {
+		
+		System.out.println("[CAMBIO STATO PORTREADER] ["+ idSonda+"] - STATO["+stato+"]");
+		
+		 for (int i = 0; i < listaSensori.size(); i++) 
+		  {
+			  if(listaSensori.get(i).getId()==idSonda) 
+			  {  
+				  listaSensori.get(i).setStato(stato);
+				  try 
+				  {
+					Core.cambiaStato(idSonda, stato);  
+					
+					if(stato==1 || stato==2 ||  stato==3) 
+						
+					{ 
+						String id=listaSensori.get(i).getIdentifier()+" (GR."+listaSensori.get(i).getType()+")";
+						
+						SendEmailBO mail = new SendEmailBO(id, stato,1);
+						new Thread(mail).start();
+						
+						SendSMS sms = new SendSMS(id, stato);
+						new Thread(sms).start();
+						
+						PortReader.alarmDuration=System.currentTimeMillis();
+					}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			  }
+			  
+		}
+		// repaint();
+	}
+	
+	public static void cambiaStatoOriginale(int idSonda, int statoOriginale) {
+		
+		 for (int i = 0; i < listaSensori.size(); i++) 
+		  {
+			  if(listaSensori.get(i).getId()==idSonda) 
+			  {  
+				  listaSensori.get(i).setStatoOriginale(statoOriginale);
+			  }
+			  
+		}
+	//	 repaint();
+		
 	}
 	
 	public static  void write(String string) throws SerialPortException 

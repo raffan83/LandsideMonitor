@@ -123,6 +123,7 @@ public class Core {
 		Costanti.DEST_MAIL_MAN=parametri.getDEST_MAIL_MAN();
 		Costanti.FLAG_SMS=parametri.getFLAG_SMS();
 		Costanti.NUMBER_SMS=parametri.getNUMBER_SMS();
+		Costanti.SOGLIA_BATTERIA=parametri.getLIMITE_TENS_ESE();
 		
 	}
 
