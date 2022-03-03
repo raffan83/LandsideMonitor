@@ -126,11 +126,20 @@ public class RasterPanel extends JPanel{
 		                 	
 		                 	/*Esclusione sonda*/
 		                 	String levBatt=message.split(",")[1];
+		                 	
+		                 
 							if(levBatt!=null && !levBatt.equals("")) 
 							{
+								
 								double tension=Double.parseDouble(levBatt);
+								
+								/*Eliminare*/
+								if(listaSensori.get(i).getIdentifier().equals("H")) 
+			                 	{
+			                 		tension=tension+4;
+			                 	}
 										{
-											if(tension<=/*Costanti.SOGLIA_BATTERIA*/3) 
+											if(tension<=Costanti.SOGLIA_BATTERIA) 
 											{
 												System.out.println("Esclusione sonda da ciclo:"+listaSensori.get(i).getIdentifier());
 												logger.warn("Esclusione sonda da ciclo:"+listaSensori.get(i).getIdentifier()+" - low battery");

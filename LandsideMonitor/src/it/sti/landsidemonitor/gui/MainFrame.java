@@ -39,7 +39,7 @@ public class MainFrame extends JFrame {
 	public static jssc.SerialPort serialPort;
 	public static ArrayList<SensorDTO> listaSensori=null;
 	JMenuBar menuBar;
-	static PortReader pr=null;
+	public static PortReader pr=null;
 	JMenu menu;
 	JMenuItem it1,it2,it3,it4,it5;
 	

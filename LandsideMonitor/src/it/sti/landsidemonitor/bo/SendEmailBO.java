@@ -122,6 +122,12 @@ public class SendEmailBO implements Runnable {
 					signal=Double.parseDouble(sensor.getSignal());
 				}
 				
+				if(sensor.getIdentifier().equals("H"))
+				{
+					double tension=Double.parseDouble(sensor.getBattLevel())+4;
+					sensor.setBattLevel(""+tension);
+				}
+				
 				if(Double.parseDouble(sensor.getBattLevel())<3.83 || signal<-100 )
 				{
 					tr="<tr>\n"+

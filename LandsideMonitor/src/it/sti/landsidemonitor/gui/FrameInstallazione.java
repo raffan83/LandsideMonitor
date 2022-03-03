@@ -322,6 +322,7 @@ public class FrameInstallazione extends JFrame {
 						URL imageURL = MainFrame.class.getResource(imgLocation);
 						BufferedImage img =(ImageIO.read(imageURL));
 						g.drawImage(img, 520, y_pos-20, 60, 30,this);
+						g.drawString(""+lev_bat, 570, y_pos-20);
 					}else 
 					{
 						g.setFont(new Font("Arial", Font.BOLD, 15));

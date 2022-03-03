@@ -111,6 +111,13 @@ public class PortReader implements SerialPortEventListener {
                                         .withSchedule(
                                              CronScheduleBuilder.cronSchedule("0 1 0 1/1 * ? *"))
                                         .build();
+        
+      /*  Trigger trigger2 = TriggerBuilder
+                .newTrigger()
+                .startNow()
+                .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(60).repeatForever())
+                .build();
+        */
         scheduler.scheduleJob(job2, trigger2);       
         scheduler = new StdSchedulerFactory().getScheduler();
         scheduler.start();
@@ -130,7 +137,7 @@ public class PortReader implements SerialPortEventListener {
    */     
 	}
 
-	public static void checkHealthSensor(ArrayList<SensorDTO> _listaSensori) throws SerialPortException {
+	public void checkHealthSensor(ArrayList<SensorDTO> _listaSensori) throws SerialPortException {
 		
 		
 		for (int i=0;i<_listaSensori.size();i++)
@@ -204,6 +211,12 @@ public class PortReader implements SerialPortEventListener {
 								if(levBatt!=null && !levBatt.equals("")) 
 								{
 									double tension=Double.parseDouble(levBatt);
+									
+									/*Eliminare*/
+									if(listaSensori.get(i).getIdentifier().equals("H")) 
+				                 	{
+				                 		tension=tension+4;
+				                 	}
 											{
 												if(tension<=Costanti.SOGLIA_BATTERIA) 
 												{
@@ -334,6 +347,17 @@ public class PortReader implements SerialPortEventListener {
 	//			logger.warn("CALIBRATION  "+sensor.getIdentifier()+" ["+levBatt+"] ["+bering+"]["+pitch+"]["+roll+"]");
 				
 				sensor.setBattLevel(levBatt);
+				/*Eliminare*/
+				
+				if(sensor.getIdentifier().equals("H")) 
+             	{
+             		if(levBatt!=null && !levBatt.equals("")) 
+             		{
+             			double tension=Double.parseDouble(levBatt);
+             			tension=tension+4;
+             			sensor.setBattLevel(""+tension);
+             		}
+             	}
 				
 				sensor.setBering(bering);
 				
