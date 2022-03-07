@@ -125,6 +125,7 @@ public class SendEmailBO implements Runnable {
 				if(sensor.getIdentifier().equals("H"))
 				{
 					double tension=Double.parseDouble(sensor.getBattLevel())+4;
+					
 					sensor.setBattLevel(""+tension);
 				}
 				
@@ -140,6 +141,8 @@ public class SendEmailBO implements Runnable {
 							"<td class=\"tg-d97j\">Livello batteria o segnale troppo bassi</td>\n"+
 							"</tr>\n";
 					html=html+tr;
+					
+					
 				}
 				else
 
@@ -154,6 +157,12 @@ public class SendEmailBO implements Runnable {
 							"<td class=\"tg-0lax\"></td>\n"+
 							"</tr>\n";
 					html=html+tr;
+					
+					if(sensor.getIdentifier().equals("H"))
+					{
+						double tension=Double.parseDouble(sensor.getBattLevel())-4;
+						sensor.setBattLevel(""+tension);
+					}
 				}
 			}
 

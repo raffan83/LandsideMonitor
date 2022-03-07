@@ -16,6 +16,9 @@ public class JobService implements Job{
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		try 
 		{
+			logger.warn("System exit");
+			System.exit(0);
+			/*
 			System.out.println("Report Manutenzione giornaliero");
 
 			MainFrame.pr.checkHealthSensor(PortReader.getListaSonde());
@@ -23,7 +26,7 @@ public class JobService implements Job{
 			SendEmailBO report =new SendEmailBO("", 0, 2);
 			Thread tReport = new Thread(report);
 			tReport.start();
-						
+				*/		
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
